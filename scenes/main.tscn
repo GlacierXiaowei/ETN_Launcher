@@ -1,0 +1,329 @@
+[gd_scene load_steps=12 format=3 uid="uid://bqxxtnilnfhvi"]
+
+[ext_resource type="Texture2D" uid="uid://c0jky3j1754dd" path="res://assets/image/LOGO-V2-WRITE.png" id="1_jyhfs"]
+[ext_resource type="Script" uid="uid://du21dghwktj4b" path="res://scenes/main.gd" id="1_tbgi4"]
+[ext_resource type="FontFile" uid="uid://dquqhgyljfytr" path="res://assets/fonts/中文12像素.ttf" id="2_tbgi4"]
+[ext_resource type="Texture2D" uid="uid://cr60mskle8miy" path="res://assets/image/签名-白色抠图.png" id="3_tefeu"]
+[ext_resource type="Texture2D" uid="uid://wqqu3chmie1f" path="res://assets/image/白色ETN抠图.png" id="4_o6xl0"]
+
+[sub_resource type="Animation" id="Animation_tefeu"]
+resource_name = "open_animation_1"
+length = 1.5
+step = 0.016666668
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("open_image_1:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("open_image_1:modulate:r")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.083333336, 0, 0, 0),
+"times": PackedFloat32Array(1, 1.5)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("open_image_1:modulate:g")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.083333336, 0, 0, 0),
+"times": PackedFloat32Array(1, 1.5)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("open_image_1:modulate:b")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.083333336, 0, 0, 0),
+"times": PackedFloat32Array(1, 1.5)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("open_image_1:modulate:a")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0, -0.083333336, 0.16666667, 0, 0),
+"times": PackedFloat32Array(1, 1.5)
+}
+
+[sub_resource type="Animation" id="Animation_o6xl0"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("open_image_1:modulate:r")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("open_image_1:modulate:g")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("open_image_1:modulate:b")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("open_image_1:modulate:a")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("open_image_2:modulate:r")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("open_image_2:modulate:g")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/6/type = "bezier"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("open_image_2:modulate:b")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/7/type = "bezier"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("open_image_2:modulate:a")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_tipki"]
+resource_name = "open_animation_2"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("open_image_2:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("open_image_2:modulate:r")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 2, 2, 2),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.083333336, 0, 0, 0, 1, -0.16666667, 0, 0, 0, 1, -0.083333336, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5, 1.5, 2)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("open_image_2:modulate:g")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 2, 2, 2),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.083333336, 0, 0, 0, 1, -0.16666667, 0, 0, 0, 1, -0.083333336, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5, 1.5, 2)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("open_image_2:modulate:b")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 2, 2, 2),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.083333336, 0, 0, 0, 1, -0.16666667, 0, 0, 0, 1, -0.083333336, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5, 1.5, 2)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("open_image_2:modulate:a")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0, 2, 2, 2),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.083333336, -0.16666667, 0, 0, 1, -0.16666667, 0, 0, 0, 1, -0.083333336, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5, 1.5, 2)
+}
+
+[sub_resource type="Animation" id="Animation_85g3d"]
+resource_name = "open_animation_3"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("open_image_3:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tbgi4"]
+_data = {
+&"RESET": SubResource("Animation_o6xl0"),
+&"open_animation_1": SubResource("Animation_tefeu"),
+&"open_animation_2": SubResource("Animation_tipki"),
+&"open_animation_3": SubResource("Animation_85g3d")
+}
+
+[sub_resource type="LabelSettings" id="LabelSettings_tipki"]
+font = ExtResource("2_tbgi4")
+font_size = 100
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tbgi4")
+
+[node name="Open_Ani_Player_1" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_tbgi4")
+}
+
+[node name="Open_Ani_Player_2" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_tbgi4")
+}
+
+[node name="bei_jin" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.49803922, 1, 1)
+
+[node name="open_image_1" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 270.0
+offset_top = 1039.0001
+offset_right = 1036.6802
+offset_bottom = 2401.6543
+rotation = -1.5358897
+texture = ExtResource("1_jyhfs")
+expand_mode = 1
+
+[node name="open_image_2" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -50.5
+offset_right = 200.0
+offset_bottom = 50.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "冰川小未"
+label_settings = SubResource("LabelSettings_tipki")
+
+[node name="qian_min" type="TextureRect" parent="open_image_2"]
+z_index = 2
+layout_mode = 0
+offset_left = 332.0
+offset_top = 66.0
+offset_right = 501.43024
+offset_bottom = 176.0
+rotation = -0.20769419
+texture = ExtResource("3_tefeu")
+expand_mode = 1
+
+[node name="open_image_3" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -436.0
+offset_top = -327.0
+offset_right = 436.0
+offset_bottom = 327.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_o6xl0")
+expand_mode = 1
