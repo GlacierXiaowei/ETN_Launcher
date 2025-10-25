@@ -15,7 +15,7 @@ config/tags=PackedStringArray("etn")
 run/main_scene="uid://bqxxtnilnfhvi"
 config/features=PackedStringArray("4.5", "Forward Plus")
 run/max_fps=60
-config/icon="res://icon.svg"
+config/icon="uid://cynqakcdn00hd"
 
 [display]
 
