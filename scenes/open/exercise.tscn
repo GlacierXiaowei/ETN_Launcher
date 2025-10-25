@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://4jhcwrjqpi84"]
+
+[node name="ScrollContainer" type="ScrollContainer"]
+offset_right = 59.0
+offset_bottom = 78.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Button2" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Button3" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Button4" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Button5" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Button6" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Button7" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Button8" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Button9" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Button10" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Button11" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Button12" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Button13" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Button14" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Button15" type="Button" parent="VBoxContainer"]
+layout_mode = 2

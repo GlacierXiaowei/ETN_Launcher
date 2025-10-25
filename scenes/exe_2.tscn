@@ -1,0 +1,57 @@
+[gd_scene load_steps=6 format=3 uid="uid://b8fydg058qnh3"]
+
+[ext_resource type="Texture2D" uid="uid://dywtpq5514tru" path="res://icon.svg" id="1_8j7pq"]
+[ext_resource type="Script" path="res://scenes/exe_2.gd" id="1_nmxgi"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_nmxgi"]
+resource_name = "nihao"
+allow_unpress = true
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_6r1w7"]
+resource_name = "nihao"
+allow_unpress = true
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_eqb81"]
+resource_name = "nihao"
+
+[node name="Node" type="Node"]
+script = ExtResource("1_nmxgi")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(200, 0)
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+toggle_mode = true
+keep_pressed_outside = true
+button_group = SubResource("ButtonGroup_nmxgi")
+text = "这是A"
+icon = ExtResource("1_8j7pq")
+autowrap_mode = 2
+expand_icon = true
+
+[node name="Button2" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+toggle_mode = true
+keep_pressed_outside = true
+button_group = SubResource("ButtonGroup_6r1w7")
+text = "这是B"
+icon = ExtResource("1_8j7pq")
+autowrap_mode = 2
+expand_icon = true
+
+[node name="Button3" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+toggle_mode = true
+keep_pressed_outside = true
+button_group = SubResource("ButtonGroup_eqb81")
+text = "这是C"
+icon = ExtResource("1_8j7pq")
+autowrap_mode = 2
+expand_icon = true
+
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Button3" to="." method="_on_button_pressed"]
