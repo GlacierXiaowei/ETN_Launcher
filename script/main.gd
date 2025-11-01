@@ -1,6 +1,7 @@
 extends Control
 
-@onready var _menu_bg_animation = preload("res://scenes/menu_bg_animation.tscn")
+@onready var menu_bg = preload("res://scenes/open/menu_bg.tscn")
+@onready var ui = preload("res://scenes/open/ui.tscn")
 var _version_judge_var=2
 
 # Called when the node enters the scene tree for the first time.
@@ -24,14 +25,14 @@ func _ready() -> void:
 	await $Open_Ani_Player_2.animation_finished
 	await _version_judge()
 	if ( _version_judge_var==1  ):
-		#很诡异 他们了可以调用所有的动画
+		#很诡异 他们可以调用所有的动画
 		$open_image_2.modulate.a=0
 		$Open_Ani_Player_2.play("open_animation_3")
 		$open_image_3.z_index=20
 		$bei_jin.z_index=15
 		
-		await get_tree().create_timer(1.95).timeout 
-		$Open_Ani_Player_2.pause()
+		await get_tree().create_timer(3.5).timeout 
+		#$Open_Ani_Player_2.pause()
 		
 		var tween_label_open_in = $".".create_tween()
 		var tween_label_open_out = $".".create_tween()
@@ -41,19 +42,25 @@ func _ready() -> void:
 		await $open_button.pressed
 		
 		tween_label_open_out.tween_property($Label_open,"modulate.a",0.0,0.25)
-		$Open_Ani_Player_2.play()
+		$Open_Ani_Player_2.play("open_animation_4")
 		
 		
+		var menu_bg_instance=menu_bg.instantiate()
+		menu_bg_instance.z_index=0
+		add_child(menu_bg_instance)
 		
-		var _menu_bg_animation_instance=_menu_bg_animation.instantiate()
-		_menu_bg_animation_instance.z_index=0
-		add_child(_menu_bg_animation_instance)
 		
 		$Label_open.queue_free()
 		$open_button.queue_free()
 		$open_image_1.queue_free()
 		$open_image_2.queue_free()
 		$Open_Ani_Player_1.queue_free()
+		
+		
+		await get_tree().create_timer(3.0).timeout
+		var ui_instance=ui.instantiate()
+		add_child(ui_instance)
+		ui_instance.z_index=30
 		
 		await $Open_Ani_Player_2.animation_finished
 		

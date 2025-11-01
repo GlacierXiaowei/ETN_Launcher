@@ -10,15 +10,23 @@ config_version=5
 
 [application]
 
-config/name="ETN_Launcher"
+config/name="ETN_Launcher (4.5)"
 config/tags=PackedStringArray("etn")
 run/main_scene="uid://bqxxtnilnfhvi"
 config/features=PackedStringArray("4.5", "Forward Plus")
 run/max_fps=60
 config/icon="uid://cynqakcdn00hd"
 
+[debug]
+
+settings/stdout/print_gpu_profile=true
+
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="viewport"
+
+[xr]
+
+openxr/extensions/debug_message_types=15
