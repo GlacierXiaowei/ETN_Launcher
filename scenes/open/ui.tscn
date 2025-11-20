@@ -91,7 +91,7 @@ theme = SubResource("Theme_y8eoc")
 theme_override_font_sizes/font_size = 120
 disabled = true
 
-[node name="game_begin" type="Button" parent="master_menu"]
+[node name="game_begin" type="Button" parent="master_menu" groups=["master_main_button"]]
 layout_mode = 0
 offset_left = 18.0
 offset_top = 915.0
@@ -103,7 +103,7 @@ button_mask = 7
 keep_pressed_outside = true
 text = "启动游戏"
 
-[node name="version_check" type="Button" parent="master_menu"]
+[node name="version_check" type="Button" parent="master_menu" groups=["master_main_button"]]
 layout_mode = 0
 offset_left = 1124.0
 offset_top = 915.0
@@ -132,28 +132,27 @@ alignment = 1
 script = ExtResource("4_wlewo")
 metadata/_edit_use_anchors_ = true
 
-[node name="settings" type="Button" parent="master_menu/VBoxContainer"]
+[node name="settings" type="Button" parent="master_menu/VBoxContainer" groups=["master_slide_button"]]
 layout_mode = 2
 theme = ExtResource("1_y8eoc")
 text = "设置"
 
-[node name="about" type="Button" parent="master_menu/VBoxContainer"]
+[node name="about" type="Button" parent="master_menu/VBoxContainer" groups=["master_slide_button"]]
 layout_mode = 2
 theme = ExtResource("1_y8eoc")
 text = "关于"
 
-[node name="donation" type="Button" parent="master_menu/VBoxContainer"]
+[node name="donation" type="Button" parent="master_menu/VBoxContainer" groups=["master_slide_button"]]
 layout_mode = 2
 theme = ExtResource("1_y8eoc")
 text = "支持"
 
-[node name="quit" type="Button" parent="master_menu/VBoxContainer"]
+[node name="quit" type="Button" parent="master_menu/VBoxContainer" groups=["master_slide_button"]]
 layout_mode = 2
 theme = ExtResource("1_y8eoc")
 text = "退出"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="master_menu"]
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.067507885
@@ -294,7 +293,9 @@ offset_top = 319.0
 offset_right = -49.0
 offset_bottom = 407.0
 theme = ExtResource("1_y8eoc")
+button_mask = 7
 text = "返回"
+language = "CN"
 script = ExtResource("4_t5yj0")
 
 [node name="donation_menu" type="Control" parent="."]
@@ -324,11 +325,22 @@ offset_bottom = 1092.0
 disabled = true
 flat = true
 
+[node name="zhe_zhao3" type="Button" parent="."]
+visible = false
+z_index = 50
+layout_mode = 0
+offset_left = -350.0
+offset_right = 1578.0
+offset_bottom = 1092.0
+disabled = true
+flat = true
+
 [connection signal="pressed" from="master_menu/VBoxContainer/settings" to="master_menu/VBoxContainer" method="_on_settings_pressed"]
 [connection signal="pressed" from="master_menu/VBoxContainer/about" to="master_menu/VBoxContainer" method="_on_about_pressed"]
 [connection signal="pressed" from="master_menu/VBoxContainer/donation" to="master_menu/VBoxContainer" method="_on_donation_pressed"]
 [connection signal="pressed" from="master_menu/VBoxContainer/quit" to="master_menu/VBoxContainer" method="_on_quit_pressed"]
 [connection signal="pressed" from="setting_menu/return" to="." method="_on_return_pressed"]
+[connection signal="pressed" from="setting_menu/return" to="setting_menu/return" method="_on_pressed"]
 [connection signal="pressed" from="about_menu/return" to="." method="_on_return_pressed"]
 [connection signal="pressed" from="about_menu/return" to="setting_menu/return" method="_on_return_pressed"]
 [connection signal="pressed" from="donation_menu/return" to="." method="_on_return_pressed"]
