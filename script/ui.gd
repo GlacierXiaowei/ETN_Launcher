@@ -56,6 +56,7 @@ func _on_return_pressed() -> void:
 			#并行就是 两个动画 共用一个 tween 并且使用 parallel 
 			#只是说 这样就不能 用名字区分了 所以 注意这里的名字
 			master_menu_in.parallel().tween_property(menu,"modulate:a",0.0,0.5)
+			$zhe_zhao4.show()
 	
 	await get_tree().create_timer(0.5).timeout
 	#$zhe_zhao2.hide()

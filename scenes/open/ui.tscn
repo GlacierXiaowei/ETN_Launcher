@@ -75,6 +75,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_uxty4")
 metadata/_edit_use_anchors_ = true
+metadata/_edit_vertical_guides_ = [347.0, 1442.0]
 
 [node name="master_menu" type="Control" parent="."]
 anchors_preset = 0
@@ -179,16 +180,17 @@ libraries = {
 }
 
 [node name="TextureRect" type="TextureRect" parent="master_menu"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
 anchor_left = 2.175
 anchor_top = 2.85
-anchor_right = 25.7
-anchor_bottom = 18.5
+anchor_right = 27.195644
+anchor_bottom = 17.925
 texture = ExtResource("5_xsbf7")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="master_menu"]
+[node name="version" type="Label" parent="master_menu"]
 layout_mode = 0
 offset_left = -293.0
 offset_top = 153.0
@@ -196,7 +198,7 @@ offset_right = -66.0
 offset_bottom = 176.0
 theme_override_fonts/font = ExtResource("1_dml82")
 theme_override_font_sizes/font_size = 20
-text = "version: v0.9.0.1"
+text = "version: v0.9.1.1"
 
 [node name="setting_menu" type="Control" parent="."]
 anchors_preset = 0
@@ -325,11 +327,10 @@ offset_bottom = 1092.0
 disabled = true
 flat = true
 
-[node name="zhe_zhao3" type="Button" parent="."]
-visible = false
+[node name="zhe_zhao4" type="Button" parent="."]
 z_index = 50
 layout_mode = 0
-offset_left = -350.0
+offset_left = -3.0
 offset_right = 1578.0
 offset_bottom = 1092.0
 disabled = true

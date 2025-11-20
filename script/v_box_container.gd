@@ -14,6 +14,7 @@ func _process(_delta: float) -> void:
 
 
 func _on_settings_pressed() -> void:
+	$"../../zhe_zhao4".hide()
 	$"../../setting_menu".show()
 	#$"../../zhe_zhao3".show()
 	
@@ -33,6 +34,7 @@ func _on_settings_pressed() -> void:
 
 
 func _on_about_pressed() -> void:
+	$"../../zhe_zhao4".hide()
 	$"../../about_menu".show()
 	#$"../../zhe_zhao3".show()
 	#zhezhao3本来是想用来点击侧面菜单的时候 禁止点击下面的选项 
@@ -59,6 +61,7 @@ func _on_about_pressed() -> void:
 
 
 func _on_donation_pressed() -> void:
+	$"../../zhe_zhao4".hide()
 	$"../../donation_menu".show()
 	#$"../../zhe_zhao2".show()
 	var master_menu_out = $".".create_tween()
