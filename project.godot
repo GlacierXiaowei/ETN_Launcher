@@ -10,19 +10,40 @@ config_version=5
 
 [application]
 
-config/name="ETN_Launcher (4.5)"
+config/name="ETN_Launcher "
 config/tags=PackedStringArray("etn")
 run/main_scene="uid://bqxxtnilnfhvi"
 config/features=PackedStringArray("4.5", "Forward Plus")
 run/max_fps=60
+boot_splash/show_image=false
+boot_splash/image="uid://cynqakcdn00hd"
 config/icon="uid://cynqakcdn00hd"
+
+[audio]
+
+driver/mix_rate=48000
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/stretch/mode="viewport"
+window/size/mode=2
+window/size/borderless=true
+window/size/transparent=true
+window/stretch/mode="canvas_items"
+window/per_pixel_transparency/allowed=true
+window/vsync/vsync_mode=0
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
+anti_aliasing/quality/msaa_2d=3
+anti_aliasing/quality/msaa_3d=3
+anti_aliasing/quality/screen_space_aa=2
+anti_aliasing/quality/use_taa=true
+anti_aliasing/quality/use_debanding=true
 
 [xr]
 
 openxr/extensions/debug_message_types=15
+shaders/enabled=true

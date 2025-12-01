@@ -1,0 +1,11 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dx5hm0xl1wi2s"]
+
+[ext_resource type="FontFile" uid="uid://dquqhgyljfytr" path="res://assets/fonts/中文12像素.ttf" id="1_et8vq"]
+
+[resource]
+RichTextLabel/constants/line_separation = 3
+RichTextLabel/constants/outline_size = 4
+RichTextLabel/constants/paragraph_separation = 3
+RichTextLabel/font_sizes/bold_font_size = 24
+RichTextLabel/font_sizes/normal_font_size = 24
+RichTextLabel/fonts/normal_font = ExtResource("1_et8vq")

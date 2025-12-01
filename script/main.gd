@@ -2,6 +2,7 @@ extends Control
 
 @onready var menu_bg = preload("res://scenes/open/menu_bg.tscn")
 @onready var ui = preload("res://scenes/open/ui.tscn")
+
 var _version_judge_var=2
 
 # Called when the node enters the scene tree for the first time.
@@ -9,6 +10,7 @@ func _ready() -> void:
 	$Label_open.modulate.a=0
 	$bei_jin.modulate.a=255
 	$open_button.hide()
+	$version.hide()
 	
 	$open_image_2.modulate.a=0
 	$open_image_3.modulate.a=0
@@ -49,7 +51,7 @@ func _ready() -> void:
 		menu_bg_instance.z_index=0
 		add_child(menu_bg_instance)
 		
-		
+		$version.show()
 		$Label_open.queue_free()
 		$open_button.queue_free()
 		$open_image_1.queue_free()
@@ -64,7 +66,7 @@ func _ready() -> void:
 		
 		await $Open_Ani_Player_2.animation_finished
 		
-		pass
+		
 	else:
 		pass
 	 # Replace with function body.

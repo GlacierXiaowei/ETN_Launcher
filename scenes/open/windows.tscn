@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://d1fxxsl1v44g0"]
+
+[node name="AcceptDialog" type="AcceptDialog"]
+oversampling_override = 1.0
+visible = true
+ok_button_text = "确定"
+dialog_autowrap = true
+
+[node name="Label" type="Label" parent="."]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 92.0
+offset_bottom = 51.0

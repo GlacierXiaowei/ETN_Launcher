@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://ch3fribt8n3xl" path="res://script/menu_bg.gd" id="1_n2i1t"]
 [ext_resource type="Texture2D" uid="uid://woy5c5jtlryg" path="res://assets/image/open_scene/菜单背景.png" id="2_7hjrn"]
 [ext_resource type="Texture2D" uid="uid://i6hashotkyky" path="res://assets/image/open_scene/菜单背景模糊.png" id="3_cut7n"]
-[ext_resource type="AudioStream" uid="uid://87g0yvmg1l8h" path="res://assets/audio/bgm/open_menu/AiSS EndCat-终猫 - 星相运轨-Echo of the Universe-.mp3" id="4_n3d0s"]
+[ext_resource type="AudioStream" uid="uid://71lgf4l1btes" path="res://assets/audio/bgm/open_menu/The Chainsmokers - Young.mp3" id="4_n2i1t"]
 
 [sub_resource type="Animation" id="Animation_h6mp8"]
 length = 0.001
@@ -212,5 +212,6 @@ libraries = {
 &"": SubResource("AnimationLibrary_66g3k")
 }
 
-[node name="menu_music" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("4_n3d0s")
+[node name="menu_music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_n2i1t")
+mix_target = 1

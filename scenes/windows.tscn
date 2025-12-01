@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3 uid="uid://c7tshu8aevxl5"]
+
+[ext_resource type="Theme" uid="uid://l6ypp2ai7b6j" path="res://assets/ui/windows.tres" id="1_8bl4e"]
+[ext_resource type="Theme" uid="uid://coji3machhxbo" path="res://assets/ui/ui_fake_blur.tres" id="1_h4hxy"]
+[ext_resource type="Script" uid="uid://batsyg4c0400r" path="res://scenes/windows.gd" id="1_vfbor"]
+[ext_resource type="Theme" uid="uid://ceu3hnr6i1wme" path="res://assets/ui/ui_small_menu_theme.theme" id="2_vfbor"]
+
+[node name="PanelContainer" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_8bl4e")
+script = ExtResource("1_vfbor")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="zhe_zhao_small_menu" type="Button" parent="MarginContainer"]
+modulate = Color(0.53333336, 0.53333336, 0.53333336, 0.8235294)
+layout_mode = 2
+theme = ExtResource("1_h4hxy")
+theme_override_font_sizes/font_size = 120
+disabled = true
+button_mask = 0
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/MarginContainer2"]
+layout_mode = 2
+theme = ExtResource("1_8bl4e")
+
+[node name="alarm" type="Label" parent="MarginContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_vfbor")
+theme_override_font_sizes/font_size = 70
+text = "提示"
+
+[node name="detail" type="RichTextLabel" parent="MarginContainer/MarginContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 320)
+layout_mode = 2
+fit_content = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_8bl4e")

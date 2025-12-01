@@ -1,30 +1,21 @@
-[gd_scene load_steps=14 format=3 uid="uid://bmn6jgkqcok5c"]
+[gd_scene load_steps=21 format=3 uid="uid://bmn6jgkqcok5c"]
 
 [ext_resource type="FontFile" uid="uid://dquqhgyljfytr" path="res://assets/fonts/中文12像素.ttf" id="1_dml82"]
 [ext_resource type="Script" uid="uid://c70i7234jipyx" path="res://script/ui.gd" id="1_uxty4"]
 [ext_resource type="Theme" uid="uid://dud4fsqx314nn" path="res://assets/ui/ui_big_button.theme" id="1_y8eoc"]
+[ext_resource type="Theme" uid="uid://coji3machhxbo" path="res://assets/ui/ui_fake_blur.tres" id="2_ml86w"]
 [ext_resource type="Script" uid="uid://d3nnips7sn2w5" path="res://return.gd" id="4_t5yj0"]
 [ext_resource type="Script" uid="uid://bmdq81g8n3b1w" path="res://script/v_box_container.gd" id="4_wlewo"]
 [ext_resource type="Theme" uid="uid://ceu3hnr6i1wme" path="res://assets/ui/ui_small_menu_theme.theme" id="5_h80a5"]
-[ext_resource type="Texture2D" uid="uid://woy5c5jtlryg" path="res://assets/image/open_scene/菜单背景.png" id="5_xsbf7"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y8eoc"]
-bg_color = Color(1, 1, 1, 0.47058824)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uxty4"]
-bg_color = Color(1, 1, 1, 0.47058824)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-
-[sub_resource type="Theme" id="Theme_y8eoc"]
-Button/styles/disabled = SubResource("StyleBoxFlat_y8eoc")
-Button/styles/normal = SubResource("StyleBoxFlat_uxty4")
+[ext_resource type="Shader" uid="uid://ju47n8dn5yb1" path="res://shader/ui.gdshader" id="5_osibf"]
+[ext_resource type="Texture2D" uid="uid://vygi24l05wjw" path="res://assets/image/open_scene/IMG_20250622_185657.jpg" id="6_osibf"]
+[ext_resource type="Script" uid="uid://cvplhyvt8l6y5" path="res://script/zhe_zhao_4.gd" id="8_g3r3f"]
+[ext_resource type="Script" uid="uid://dl18a1doneit5" path="res://script/h_box_volume.gd" id="10_xom70"]
+[ext_resource type="Script" uid="uid://wpurr0r4dxni" path="res://scenes/open/control.gd" id="11_525mn"]
+[ext_resource type="Theme" uid="uid://dx5hm0xl1wi2s" path="res://assets/ui/ui_about_script.tres" id="11_w2oft"]
+[ext_resource type="Script" uid="uid://crhq2g0vce4at" path="res://script/donation_control.gd" id="13_v8ow4"]
+[ext_resource type="Texture2D" uid="uid://cwj5ymjq7m1t1" path="res://assets/image/donation/1763985869558.jpg" id="14_wfnx1"]
+[ext_resource type="Texture2D" uid="uid://yttt6yw775u2" path="res://assets/image/donation/mm_facetoface_collect_qrcode_1763985953080.png" id="15_33gvf"]
 
 [sub_resource type="Animation" id="Animation_t5yj0"]
 length = 0.001
@@ -63,6 +54,10 @@ _data = {
 &"ui_show_animation": SubResource("Animation_uxty4")
 }
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g3r3f"]
+shader = ExtResource("5_osibf")
+shader_parameter/feather_size = 0.10000000475
+
 [node name="UI" type="Control"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 3
@@ -75,22 +70,25 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_uxty4")
 metadata/_edit_use_anchors_ = true
-metadata/_edit_vertical_guides_ = [347.0, 1442.0]
+metadata/_edit_vertical_guides_ = [352.0, 1894.0, 454.0, 1792.0, 428.0, 1825.0]
+metadata/_edit_horizontal_guides_ = [55.0, 871.0, 163.0, 787.0, 137.0, 817.0]
 
 [node name="master_menu" type="Control" parent="."]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="zhe_zhao" type="Button" parent="master_menu"]
+[node name="zhe_zhao3" type="Button" parent="master_menu"]
+modulate = Color(0.53333336, 0.53333336, 0.53333336, 0.8235294)
 layout_mode = 0
 offset_left = -3.0
 offset_top = 897.0
 offset_right = 1548.0
 offset_bottom = 1070.0
-theme = SubResource("Theme_y8eoc")
+theme = ExtResource("2_ml86w")
 theme_override_font_sizes/font_size = 120
 disabled = true
+button_mask = 0
 
 [node name="game_begin" type="Button" parent="master_menu" groups=["master_main_button"]]
 layout_mode = 0
@@ -119,15 +117,12 @@ text = "检查更新"
 [node name="VBoxContainer" type="VBoxContainer" parent="master_menu"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -0.20567855
-anchor_top = 0.44814834
-anchor_right = 2.9272869
-anchor_bottom = 0.83333284
-offset_left = -317.77286
-offset_top = 466.07407
-offset_right = -165.09148
-offset_bottom = 846.6667
+anchor_left = -8.15
+anchor_top = 12.1
+anchor_right = -1.2
+anchor_bottom = 22.0
 grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("1_y8eoc")
 alignment = 1
 script = ExtResource("4_wlewo")
@@ -153,21 +148,6 @@ layout_mode = 2
 theme = ExtResource("1_y8eoc")
 text = "退出"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="master_menu"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.067507885
-anchor_top = 0.85
-anchor_right = 0.9659306
-anchor_bottom = 0.9768519
-offset_left = 104.29968
-offset_top = 884.0
-offset_right = 104.29968
-offset_bottom = 884.0
-grow_horizontal = 2
-grow_vertical = 0
-metadata/_edit_use_anchors_ = true
-
 [node name="headline" type="Label" parent="master_menu"]
 layout_mode = 0
 offset_right = 40.0
@@ -180,63 +160,81 @@ libraries = {
 }
 
 [node name="TextureRect" type="TextureRect" parent="master_menu"]
+material = SubResource("ShaderMaterial_g3r3f")
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 2.175
-anchor_top = 2.85
-anchor_right = 27.195644
-anchor_bottom = 17.925
-texture = ExtResource("5_xsbf7")
+anchor_left = 1.925
+anchor_top = 3.5
+anchor_right = 25.534863
+anchor_bottom = 17.725
+texture = ExtResource("6_osibf")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="version" type="Label" parent="master_menu"]
-layout_mode = 0
-offset_left = -293.0
-offset_top = 153.0
-offset_right = -66.0
-offset_bottom = 176.0
-theme_override_fonts/font = ExtResource("1_dml82")
-theme_override_font_sizes/font_size = 20
-text = "version: v0.9.1.1"
-
 [node name="setting_menu" type="Control" parent="."]
-anchors_preset = 0
-offset_left = 2.0
-offset_top = 56.0
-offset_right = 1531.0
-offset_bottom = 872.0
+visible = false
+layout_mode = 1
+anchor_left = 0.0006309148
+anchor_top = 0.05185185
+anchor_right = 0.97287065
+anchor_bottom = 0.8074074
+metadata/_edit_use_anchors_ = true
 
 [node name="return" type="Button" parent="setting_menu"]
 layout_mode = 0
 offset_left = -327.0
-offset_top = 319.0
+offset_top = 340.0
 offset_right = -49.0
-offset_bottom = 407.0
+offset_bottom = 415.0
 theme = ExtResource("1_y8eoc")
 text = "返回"
 script = ExtResource("4_t5yj0")
 
 [node name="control" type="Control" parent="setting_menu"]
 layout_mode = 1
-anchor_left = 0.056015275
-anchor_top = 0.06845514
-anchor_right = 0.9323641
-anchor_bottom = 0.7678076
-grow_horizontal = 2
-grow_vertical = 2
+anchor_left = 0.06554186
+anchor_top = 0.13112745
+anchor_right = 0.9337663
+anchor_bottom = 0.8811275
 metadata/_edit_use_anchors_ = true
+
+[node name="zhe_zhao_small_menu" type="Button" parent="setting_menu/control"]
+modulate = Color(0.53333336, 0.53333336, 0.53333336, 0.8235294)
+layout_mode = 0
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 1370.0
+offset_bottom = 655.0
+theme = ExtResource("2_ml86w")
+theme_override_font_sizes/font_size = 120
+disabled = true
+button_mask = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="setting_menu/control"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = -1
+anchor_top = 0.0016339788
+anchor_right = 1.0000495
+anchor_bottom = 1.0016342
+offset_bottom = -0.00018310547
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("5_h80a5")
+metadata/_edit_use_anchors_ = true
+
+[node name="title" type="Label" parent="setting_menu/control/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 80
+text = "设置"
+
+[node name="jian_ge" type="Label" parent="setting_menu/control/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
 
 [node name="HBox_language" type="HBoxContainer" parent="setting_menu/control/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("5_h80a5")
+theme_override_constants/separation = 1070
 
 [node name="Label" type="Label" parent="setting_menu/control/VBoxContainer/HBox_language"]
 layout_mode = 2
@@ -252,6 +250,8 @@ text = "中文"
 [node name="HBox_volume" type="HBoxContainer" parent="setting_menu/control/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("5_h80a5")
+theme_override_constants/separation = 800
+script = ExtResource("10_xom70")
 
 [node name="Label" type="Label" parent="setting_menu/control/VBoxContainer/HBox_volume"]
 layout_mode = 2
@@ -259,7 +259,19 @@ text = "音量"
 
 [node name="HSlider" type="HSlider" parent="setting_menu/control/VBoxContainer/HBox_volume"]
 layout_mode = 2
-value = 50.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme = ExtResource("5_h80a5")
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="Label2" type="Label" parent="setting_menu/control/VBoxContainer/HBox_volume/HSlider"]
+layout_mode = 0
+offset_left = -54.0
+offset_top = -4.009857
+offset_right = -4.0
+offset_bottom = 21.990143
 
 [node name="HBox_launcher_fix" type="HBoxContainer" parent="setting_menu/control/VBoxContainer"]
 layout_mode = 2
@@ -291,16 +303,112 @@ offset_bottom = 872.0
 [node name="return" type="Button" parent="about_menu"]
 layout_mode = 0
 offset_left = -327.0
-offset_top = 319.0
+offset_top = 339.0
 offset_right = -49.0
-offset_bottom = 407.0
+offset_bottom = 414.0
 theme = ExtResource("1_y8eoc")
 button_mask = 7
 text = "返回"
 language = "CN"
 script = ExtResource("4_t5yj0")
 
+[node name="control" type="Control" parent="about_menu"]
+layout_mode = 1
+anchor_left = 0.06493507
+anchor_top = 0.13112745
+anchor_right = 0.93376625
+anchor_bottom = 0.8811275
+script = ExtResource("11_525mn")
+metadata/_edit_use_anchors_ = true
+
+[node name="zhe_zhao_small_menu" type="Button" parent="about_menu/control"]
+modulate = Color(0.53333336, 0.53333336, 0.53333336, 0.8235294)
+layout_mode = 0
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 1370.0
+offset_bottom = 655.0
+theme = ExtResource("2_ml86w")
+theme_override_font_sizes/font_size = 120
+disabled = true
+button_mask = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="about_menu/control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0005376799
+anchor_top = 0.0049019526
+anchor_right = 1.0069791
+anchor_bottom = 1.0103172
+offset_bottom = -0.00018310547
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_h80a5")
+metadata/_edit_use_anchors_ = true
+
+[node name="title" type="Label" parent="about_menu/control/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 80
+text = "关于"
+
+[node name="jian_ge" type="Label" parent="about_menu/control/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+
+[node name="Thanks" type="RichTextLabel" parent="about_menu/control/VBoxContainer"]
+custom_minimum_size = Vector2(1337, 105)
+layout_mode = 2
+theme = ExtResource("11_w2oft")
+theme_override_constants/shadow_outline_size = 4
+bbcode_enabled = true
+text = "   [color=red][b]感谢：[/b][/color]
+   我尊敬的朋友们，你们好😊。首先我要忠心感谢你们对于ETN项目的支持，再一次，非常感谢🌹；正是因为你们的支持，我的项目才能够走到今天，非常感谢你们的支持。
+   但是，也请接受我的道歉👌，我毕竟只是一名普通的大一学生，况且整个游戏引擎非本人专业所学，受限于开发水平，这个项目将会异常的艰难😞，更新速度自然不言而喻......但是，我坚信，既然在2025年6月11日的这天，我谋划已久的ETN项目正式立项🎇，那么在未来的某一天我一定可以完美的完成这款游戏的制作，我预估这个游戏至少会在我毕业之前，向各位朋友发行，甚至上架商店。😉"
+
+[node name="introduction" type="RichTextLabel" parent="about_menu/control/VBoxContainer"]
+custom_minimum_size = Vector2(1337, 105)
+layout_mode = 2
+theme = ExtResource("11_w2oft")
+theme_override_constants/shadow_outline_size = 4
+theme_override_font_sizes/bold_italics_font_size = 24
+theme_override_font_sizes/italics_font_size = 24
+theme_override_font_sizes/mono_font_size = 24
+bbcode_enabled = true
+text = "   [color=yellow][b]游戏简介：[/b][/color]
+   [u]制作初心:[/u]
+   ETN 项目立项于 2025年6月11日。我致力于寻找回我高中的三年，我许下承诺：我一定会做出一个游戏，只为了纪念。
+   [u]开发方向:[/u]
+   目前，我仍然以RPG剧情向游戏为主，在游戏中书写我和朋友们的故事，并且达成不同的亲密度和结局。游戏的美术和剧情部分也将由我完成，所以细节上可能难以差强人意，还希望谅解。
+   [u]作者简介:[/u]
+   天津大学2025级本科生，计算机科学与技术专业。独立游戏开发者，独立新媒体制作人。感谢支持。"
+
+[node name="version_detail" type="RichTextLabel" parent="about_menu/control/VBoxContainer"]
+custom_minimum_size = Vector2(1337, 82)
+layout_mode = 2
+theme = ExtResource("11_w2oft")
+theme_override_constants/shadow_outline_size = 4
+bbcode_enabled = true
+text = "   [color=green][b]版本更新公告：[/b][/color]
+   感谢您下载ETN，包括启动器和游戏本体在内的更新公告将会在这里展示。再一次，感谢支持！
+   [color=94d7f2]启动器更新公告                                                          游戏本体更新公告
+"
+scroll_active = false
+
+[node name="website" type="RichTextLabel" parent="about_menu/control/VBoxContainer"]
+custom_minimum_size = Vector2(1337, 90)
+layout_mode = 2
+theme = ExtResource("11_w2oft")
+theme_override_constants/shadow_outline_size = 4
+bbcode_enabled = true
+text = "   再一次感谢对于我的想法和ETN项目的巨大支持，再一次，感谢！🌹针对游戏的所有意见可以向我提出！
+   欢迎各位朋友们通过以下方式联系我😁，我非常愿意倾听你们的意见和想法。同时，我也会“广纳贤才”😍，欢迎各位朋友们的合作和支持！！！再一次，感谢！！！👇
+
+  [color=94d7f2][url=https://github.com/GlacierXiaowei/ETN_Launcher]点击访问Github项目主页（启动器）[/url] [url=https://github.com/GlacierXiaowei/ETN]（游戏主体）[/url]               [url=glacier_xiaowei@163.com]点击复制:glacier_xiaowei@163.com[/url]
+  [url=https://www.douyin.com/user/MS4wLjABAAAAqAe9UicpIp32jOaVACOouIFT0ZLEfikf79bjKo_GUDtOjPZjAiBd96FYOvjqWPzF?from_tab_name=main]欢迎关注本人社交媒体账号 抖音：冰川小未[/url]"
+fit_content = true
+
 [node name="donation_menu" type="Control" parent="."]
+visible = false
 anchors_preset = 0
 offset_left = 2.0
 offset_top = 56.0
@@ -310,12 +418,98 @@ offset_bottom = 872.0
 [node name="return" type="Button" parent="donation_menu"]
 layout_mode = 0
 offset_left = -327.0
-offset_top = 319.0
+offset_top = 340.0
 offset_right = -49.0
-offset_bottom = 407.0
+offset_bottom = 415.0
 theme = ExtResource("1_y8eoc")
 text = "返回"
 script = ExtResource("4_t5yj0")
+
+[node name="zhe_zhao_small_menu" type="Button" parent="donation_menu"]
+modulate = Color(0.53333336, 0.53333336, 0.53333336, 0.8235294)
+layout_mode = 0
+offset_left = 74.285736
+offset_top = 82.0
+offset_right = 1469.2858
+offset_bottom = 762.0
+theme = ExtResource("2_ml86w")
+theme_override_font_sizes/font_size = 120
+disabled = true
+button_mask = 0
+
+[node name="control" type="Control" parent="donation_menu"]
+layout_mode = 1
+anchor_left = 0.06493507
+anchor_top = 0.13112745
+anchor_right = 0.94113797
+anchor_bottom = 0.8811275
+script = ExtResource("13_v8ow4")
+metadata/_edit_use_anchors_ = true
+
+[node name="title" type="Label" parent="donation_menu/control"]
+layout_mode = 0
+offset_left = 0.7142639
+offset_right = 160.71426
+offset_bottom = 110.0
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("1_dml82")
+theme_override_font_sizes/font_size = 80
+text = "关于"
+
+[node name="alipay" type="Sprite2D" parent="donation_menu/control"]
+position = Vector2(836.71423, 423)
+scale = Vector2(0.2653128, 0.23831776)
+texture = ExtResource("14_wfnx1")
+
+[node name="we_chat_pay" type="Sprite2D" parent="donation_menu/control"]
+position = Vector2(1165.7142, 423.00003)
+scale = Vector2(0.24794918, 0.24496645)
+texture = ExtResource("15_33gvf")
+
+[node name="RichTextLabel_1" type="RichTextLabel" parent="donation_menu/control"]
+layout_mode = 0
+offset_left = 0.7142639
+offset_top = 109.0
+offset_right = 1339.4285
+offset_bottom = 198.0
+theme = ExtResource("11_w2oft")
+bbcode_enabled = true
+text = "  再一次非常感谢各位的支持，非常感谢各位的支持！！！你们的支持就是我最大的动力！！！
+  [color=red]如果能够请我喝一杯肥美的奶茶就更好了......🌹🌹🌹[/color]
+  [color=94d7f2][url=fu_kuan_ma]点击这里显示(隐藏)二维码，同时朋友们的每一笔支持都将作为我的梦想资金[/url][/color]"
+
+[node name="RichTextLabel_2" type="RichTextLabel" parent="donation_menu/control"]
+layout_mode = 0
+offset_left = 1.7142639
+offset_top = 198.0
+offset_right = 676.71423
+offset_bottom = 227.0
+theme = ExtResource("11_w2oft")
+bbcode_enabled = true
+text = "  感谢人员名单(按照时间排序)(技术限制，不能够实时更新)"
+fit_content = true
+
+[node name="TextureRect" type="TextureRect" parent="donation_menu/control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="min_dan_left" type="RichTextLabel" parent="donation_menu/control"]
+layout_mode = 0
+offset_left = 44.714264
+offset_top = 247.0
+offset_right = 324.71426
+offset_bottom = 588.0
+theme = ExtResource("11_w2oft")
+text = "吞***"
+
+[node name="min_dan_right" type="RichTextLabel" parent="donation_menu/control"]
+layout_mode = 0
+offset_left = 363.71426
+offset_top = 247.0
+offset_right = 648.71423
+offset_bottom = 598.0
+theme = ExtResource("11_w2oft")
 
 [node name="zhe_zhao2" type="Button" parent="."]
 visible = false
@@ -328,20 +522,25 @@ disabled = true
 flat = true
 
 [node name="zhe_zhao4" type="Button" parent="."]
+visible = false
 z_index = 50
 layout_mode = 0
 offset_left = -3.0
 offset_right = 1578.0
 offset_bottom = 1092.0
 disabled = true
+button_mask = 0
 flat = true
+script = ExtResource("8_g3r3f")
 
-[connection signal="pressed" from="master_menu/VBoxContainer/settings" to="master_menu/VBoxContainer" method="_on_settings_pressed"]
-[connection signal="pressed" from="master_menu/VBoxContainer/about" to="master_menu/VBoxContainer" method="_on_about_pressed"]
-[connection signal="pressed" from="master_menu/VBoxContainer/donation" to="master_menu/VBoxContainer" method="_on_donation_pressed"]
-[connection signal="pressed" from="master_menu/VBoxContainer/quit" to="master_menu/VBoxContainer" method="_on_quit_pressed"]
+[connection signal="pressed" from="master_menu/VBoxContainer/settings" to="master_menu/VBoxContainer" method="_on_menu_button_pressed" binds= ["setting"]]
+[connection signal="pressed" from="master_menu/VBoxContainer/about" to="master_menu/VBoxContainer" method="_on_menu_button_pressed" binds= ["about"]]
+[connection signal="pressed" from="master_menu/VBoxContainer/donation" to="master_menu/VBoxContainer" method="_on_menu_button_pressed" binds= ["donation"]]
+[connection signal="pressed" from="master_menu/VBoxContainer/quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="setting_menu/return" to="." method="_on_return_pressed"]
 [connection signal="pressed" from="setting_menu/return" to="setting_menu/return" method="_on_pressed"]
 [connection signal="pressed" from="about_menu/return" to="." method="_on_return_pressed"]
 [connection signal="pressed" from="about_menu/return" to="setting_menu/return" method="_on_return_pressed"]
+[connection signal="meta_clicked" from="about_menu/control/VBoxContainer/website" to="about_menu/control" method="_on_website_meta_clicked"]
 [connection signal="pressed" from="donation_menu/return" to="." method="_on_return_pressed"]
+[connection signal="meta_clicked" from="donation_menu/control/RichTextLabel_1" to="donation_menu/control" method="_on_rich_text_label_1_meta_clicked"]
