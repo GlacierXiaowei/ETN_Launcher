@@ -12,11 +12,8 @@ var current_menu_tween: Tween
 }
 @onready var master_main_button = get_tree().get_nodes_in_group("master_main_button")
 @onready var master_slide_button = get_tree().get_nodes_in_group("master_slide_button")
-@onready var windows_preload = preload("res://scenes/windows.tscn")
-
 func _ready() -> void:
-	
-	
+	$master_menu/zhe_zhao3.focus_mode=Control.FOCUS_NONE
 	$zhe_zhao4.hide()
 	for menu_key in menus:
 		if menu_key != "master":
@@ -109,49 +106,46 @@ func _on_return_pressed() -> void:
 
 
 func _on_quit_pressed() -> void:
-	# 完整代码
-	# 1. 实例化场景
-	var windows_scene = windows_preload.instantiate()
-	add_child(windows_scene)
-	
-	# 2. 【最终修改】设置它的尺寸为固定的 1080x1920
-	windows_scene.size = Vector2(1920, 1080)
-	
-	# 3. 设置它的位置
-	windows_scene.position = Vector2i(-352, 0)
-	
-	# 4. 准备参数并调用函数
-	var buttons: Array[String] = ["确定", "取消"]
-	windows_scene.show_dialog("提示", "你确定要退出游戏吗\\n 再一次，感谢朋友们对ETN的大力支持", buttons)
+	var button_text:Array[String]=["确定","取消"]
+	var detail="确定要退出吗？
+非常感谢大家的支持，再一次，谢谢各位朋友们"
+	var result=await WindowsManager.show_dialog("提示",detail, button_text)
 	
 	
+	if result=="确定":
+		get_tree().quit()
+	else:
+		pass
+	pass
+
+
+func _on_game_begin_pressed() -> void:
 	
+	#注意 text没有负数 
+	#var result=await WindowsManager.show_dialog("提示",detail, button_text)
+	var text_button:Array[String]=["确定","取消"]
+	var result=await WindowsManager.show_dialog("提示","当你看到这条提示的时候，说明游戏还没有制作完毕\n（除非你的启动器不是最新版）\n点击确定查看作者的游戏开发进展和阶段性计划（实时更新）",text_button)
+	if result=="确定":
+		WindowsManager.version_check(2)
+	#1：只检查启动器更新
 	
-	##一下代码直接复制粘贴 
-	#var windows_scene = windows_preload.instantiate()
-	#add_child(windows_scene)
-	# 3. 【正确做法】直接设置它的尺寸和位置
-	# 获取屏幕（视口）的大小
-	#var screen_size = get_viewport().get_visible_rect().size
-	# 设置对话框的大小为屏幕大小
-	#windows_scene.size = screen_size
-	# 设置对话框的位置为屏幕左上角 (0, 0)
-	#dows_scene.position = Vector2i(-352, 0)
-	#由于ui节点的锚点不是覆盖全 也就是盖不住 整个游戏画面 所以需要向左偏移
+func _on_version_check_pressed() -> void:
+	var button_text:Array[String]=["启动器","游戏本体","取消"]
+	#注意 text没有负数 
+	#var result=await WindowsManager.show_dialog("提示",detail, button_text)
+	var detail="请选择你希望检查更新的类型：
+你可以分开检查启动器更新和游戏本体的更新
+请确保科学上网
+再一次，感谢朋友们的支持"
+	var result=await WindowsManager.show_dialog("提示",detail, button_text)
+	#1代表启动器更新 2代表游戏本体
+	if result=="启动器":
 	
+		WindowsManager.version_check(1)
+		print("已经开始检查更新")
 	
-	#get_node可以单独使用 并且 这里应该时实例化之后的脚本地方 应该是在ui节点之下的
-	#var windows_node_get= windows_scene.get_node("/root/PanelContainer")
-	
-	# 检查一下是否找到了节点，这是一个好习惯
-	##if windows_node_get:
-  	# 4. 在正确的子节点上调用函数
-	#	windows_node_get.show_dialog("提示", "你确定要退出游戏吗\\n 再一次，感谢朋友们对ETN的大力支持", ["确定", "取消"])
-	#else:
-	#	# 如果找不到节点，打印错误信息，方便调试
-	#	print("错误：在 windows.tscn 场景中没有找到名为 'PanelContainer' 的节点！")
-	
-	#当脚本附加于根节点上 可以不用获取子节点 就可以直接调用
-	#参数分别是 顶部文本框 中间的文字说明（可以滚动翻页） 选项的名字 
-	#var button_texts: Array[String] = ["确定", "取消"]
-	#windows_scene.show_dialog("提示", "你确定要退出游戏吗\\n 再一次，感谢朋友们对ETN的大力支持", button_texts)
+	if result=="游戏本体":
+		print("已经开始检查更新")
+		
+		WindowsManager.version_check(2)
+		#游戏包体为2

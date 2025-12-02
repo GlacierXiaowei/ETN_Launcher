@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://l6qlsyxfj1en"]
+
+[ext_resource type="Script" uid="uid://b5c4pm3koitya" path="res://script/windows_manager.gd" id="1_1wl4x"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_1wl4x")
+
+[node name="ReleaseRequest" type="HTTPRequest" parent="."]
+unique_name_in_owner = true

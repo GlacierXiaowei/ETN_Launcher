@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bmn6jgkqcok5c"]
+[gd_scene load_steps=32 format=3 uid="uid://bmn6jgkqcok5c"]
 
 [ext_resource type="FontFile" uid="uid://dquqhgyljfytr" path="res://assets/fonts/中文12像素.ttf" id="1_dml82"]
 [ext_resource type="Script" uid="uid://c70i7234jipyx" path="res://script/ui.gd" id="1_uxty4"]
@@ -11,11 +11,21 @@
 [ext_resource type="Texture2D" uid="uid://vygi24l05wjw" path="res://assets/image/open_scene/IMG_20250622_185657.jpg" id="6_osibf"]
 [ext_resource type="Script" uid="uid://cvplhyvt8l6y5" path="res://script/zhe_zhao_4.gd" id="8_g3r3f"]
 [ext_resource type="Script" uid="uid://dl18a1doneit5" path="res://script/h_box_volume.gd" id="10_xom70"]
+[ext_resource type="Script" uid="uid://d187m6833i75t" path="res://script/choose_music.gd" id="11_33gvf"]
 [ext_resource type="Script" uid="uid://wpurr0r4dxni" path="res://scenes/open/control.gd" id="11_525mn"]
 [ext_resource type="Theme" uid="uid://dx5hm0xl1wi2s" path="res://assets/ui/ui_about_script.tres" id="11_w2oft"]
+[ext_resource type="AudioStream" uid="uid://87g0yvmg1l8h" path="res://assets/audio/bgm/open_menu/AiSS EndCat-终猫 - 星相运轨-Echo of the Universe-.mp3" id="12_6e8qu"]
+[ext_resource type="AudioStream" uid="uid://71lgf4l1btes" path="res://assets/audio/bgm/open_menu/The Chainsmokers - Young.mp3" id="13_lao2l"]
 [ext_resource type="Script" uid="uid://crhq2g0vce4at" path="res://script/donation_control.gd" id="13_v8ow4"]
+[ext_resource type="AudioStream" uid="uid://ca3jukux63dtj" path="res://assets/audio/bgm/open_menu/Daniel Deuschle - What Do You See.mp3" id="14_ssa3l"]
 [ext_resource type="Texture2D" uid="uid://cwj5ymjq7m1t1" path="res://assets/image/donation/1763985869558.jpg" id="14_wfnx1"]
-[ext_resource type="Texture2D" uid="uid://yttt6yw775u2" path="res://assets/image/donation/mm_facetoface_collect_qrcode_1763985953080.png" id="15_33gvf"]
+[ext_resource type="Texture2D" uid="uid://dvvnyuqn8djoi" path="res://assets/image/donation/mm_facetoface_collect_qrcode_1763985953080.png" id="15_33gvf"]
+[ext_resource type="AudioStream" uid="uid://ljmfklgiuxfo" path="res://assets/audio/bgm/open_menu/Lindsey Stirling Mako - Lose You Now.mp3" id="15_qnu5g"]
+[ext_resource type="AudioStream" uid="uid://djaibp0vc4umh" path="res://assets/audio/bgm/open_menu/Youzee Music - 诀别无尽夏.mp3" id="16_mb1ci"]
+[ext_resource type="AudioStream" uid="uid://bt7sfj80njswx" path="res://assets/audio/bgm/open_menu/不是花火呀 - 记·念.mp3" id="17_g6bvm"]
+[ext_resource type="AudioStream" uid="uid://d3kp88vy35mx0" path="res://assets/audio/bgm/open_menu/刘大拿 刘兆宇 AFMC黑子 - 童话.mp3" id="18_4rh4o"]
+[ext_resource type="AudioStream" uid="uid://dtwvqvtv0xsp3" path="res://assets/audio/bgm/open_menu/菲道尔 DIOR大颖 - 在加纳共和国离婚 (你还爱我吗).mp3" id="19_41rdk"]
+[ext_resource type="Script" uid="uid://dgu7g0gqpwgdq" path="res://scenes/open/h_box_fix.gd" id="20_qnu5g"]
 
 [sub_resource type="Animation" id="Animation_t5yj0"]
 length = 0.001
@@ -57,6 +67,8 @@ _data = {
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_g3r3f"]
 shader = ExtResource("5_osibf")
 shader_parameter/feather_size = 0.10000000475
+
+[sub_resource type="DPITexture" id="DPITexture_qnu5g"]
 
 [node name="UI" type="Control"]
 modulate = Color(1, 1, 1, 0)
@@ -234,13 +246,16 @@ theme_override_font_sizes/font_size = 24
 [node name="HBox_language" type="HBoxContainer" parent="setting_menu/control/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("5_h80a5")
-theme_override_constants/separation = 1070
 
 [node name="Label" type="Label" parent="setting_menu/control/VBoxContainer/HBox_language"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("5_h80a5")
 text = "语言"
+
+[node name="spacer" type="Control" parent="setting_menu/control/VBoxContainer/HBox_language"]
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Button" type="Button" parent="setting_menu/control/VBoxContainer/HBox_language"]
 layout_mode = 2
@@ -273,25 +288,42 @@ offset_top = -4.009857
 offset_right = -4.0
 offset_bottom = 21.990143
 
-[node name="HBox_launcher_fix" type="HBoxContainer" parent="setting_menu/control/VBoxContainer"]
+[node name="choose_music" type="HBoxContainer" parent="setting_menu/control/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("5_h80a5")
+script = ExtResource("11_33gvf")
+music_tracks = Array[AudioStream]([ExtResource("12_6e8qu"), ExtResource("13_lao2l"), ExtResource("14_ssa3l"), ExtResource("15_qnu5g"), ExtResource("16_mb1ci"), ExtResource("17_g6bvm"), ExtResource("18_4rh4o"), ExtResource("19_41rdk")])
 
-[node name="Label" type="Label" parent="setting_menu/control/VBoxContainer/HBox_launcher_fix"]
+[node name="Label" type="Label" parent="setting_menu/control/VBoxContainer/choose_music"]
 layout_mode = 2
+text = "选择音乐"
 
-[node name="Button" type="Button" parent="setting_menu/control/VBoxContainer/HBox_launcher_fix"]
+[node name="spacer" type="Control" parent="setting_menu/control/VBoxContainer/choose_music"]
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="HBox_game_fix" type="HBoxContainer" parent="setting_menu/control/VBoxContainer"]
+[node name="OptionButton" type="OptionButton" parent="setting_menu/control/VBoxContainer/choose_music"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+theme_override_icons/arrow = SubResource("DPITexture_qnu5g")
+fit_to_longest_item = false
+
+[node name="HBox_fix" type="HBoxContainer" parent="setting_menu/control/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("5_h80a5")
+script = ExtResource("20_qnu5g")
 
-[node name="Label" type="Label" parent="setting_menu/control/VBoxContainer/HBox_game_fix"]
+[node name="Label" type="Label" parent="setting_menu/control/VBoxContainer/HBox_fix"]
 layout_mode = 2
+text = "游戏修复"
 
-[node name="Button" type="Button" parent="setting_menu/control/VBoxContainer/HBox_game_fix"]
+[node name="spacer" type="Control" parent="setting_menu/control/VBoxContainer/HBox_fix"]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="setting_menu/control/VBoxContainer/HBox_fix"]
+layout_mode = 2
+text = "建议直接重新安装"
 
 [node name="about_menu" type="Control" parent="."]
 anchors_preset = 0
@@ -356,54 +388,38 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 
 [node name="Thanks" type="RichTextLabel" parent="about_menu/control/VBoxContainer"]
-custom_minimum_size = Vector2(1337, 105)
+custom_minimum_size = Vector2(1337, 410)
 layout_mode = 2
 theme = ExtResource("11_w2oft")
 theme_override_constants/shadow_outline_size = 4
 bbcode_enabled = true
 text = "   [color=red][b]感谢：[/b][/color]
    我尊敬的朋友们，你们好😊。首先我要忠心感谢你们对于ETN项目的支持，再一次，非常感谢🌹；正是因为你们的支持，我的项目才能够走到今天，非常感谢你们的支持。
-   但是，也请接受我的道歉👌，我毕竟只是一名普通的大一学生，况且整个游戏引擎非本人专业所学，受限于开发水平，这个项目将会异常的艰难😞，更新速度自然不言而喻......但是，我坚信，既然在2025年6月11日的这天，我谋划已久的ETN项目正式立项🎇，那么在未来的某一天我一定可以完美的完成这款游戏的制作，我预估这个游戏至少会在我毕业之前，向各位朋友发行，甚至上架商店。😉"
+   但是，也请接受我的道歉👌，我毕竟只是一名普通的大一学生，况且整个游戏引擎非本人专业所学，受限于开发水平，这个项目将会异常的艰难😞，更新速度自然不言而喻......但是，我坚信，既然在2025年6月11日的这天，我谋划已久的ETN项目正式立项🎇，那么在未来的某一天我一定可以完美的完成这款游戏的制作，我预估这个游戏至少会在我毕业之前，向各位朋友发行，甚至上架商店。😉
 
-[node name="introduction" type="RichTextLabel" parent="about_menu/control/VBoxContainer"]
-custom_minimum_size = Vector2(1337, 105)
-layout_mode = 2
-theme = ExtResource("11_w2oft")
-theme_override_constants/shadow_outline_size = 4
-theme_override_font_sizes/bold_italics_font_size = 24
-theme_override_font_sizes/italics_font_size = 24
-theme_override_font_sizes/mono_font_size = 24
-bbcode_enabled = true
-text = "   [color=yellow][b]游戏简介：[/b][/color]
+   [color=yellow][b]游戏简介：[/b][/color]
    [u]制作初心:[/u]
    ETN 项目立项于 2025年6月11日。我致力于寻找回我高中的三年，我许下承诺：我一定会做出一个游戏，只为了纪念。
    [u]开发方向:[/u]
    目前，我仍然以RPG剧情向游戏为主，在游戏中书写我和朋友们的故事，并且达成不同的亲密度和结局。游戏的美术和剧情部分也将由我完成，所以细节上可能难以差强人意，还希望谅解。
    [u]作者简介:[/u]
-   天津大学2025级本科生，计算机科学与技术专业。独立游戏开发者，独立新媒体制作人。感谢支持。"
+   天津大学2025级本科生，计算机科学与技术专业。独立游戏开发者，独立新媒体制作人。感谢支持。
 
-[node name="version_detail" type="RichTextLabel" parent="about_menu/control/VBoxContainer"]
-custom_minimum_size = Vector2(1337, 82)
-layout_mode = 2
-theme = ExtResource("11_w2oft")
-theme_override_constants/shadow_outline_size = 4
-bbcode_enabled = true
-text = "   [color=green][b]版本更新公告：[/b][/color]
+   [color=green][b]版本更新公告：[/b][/color]
    感谢您下载ETN，包括启动器和游戏本体在内的更新公告将会在这里展示。再一次，感谢支持！
-   [color=94d7f2]启动器更新公告                                                          游戏本体更新公告
+   [color=94d7f2][url=launcher]启动器更新公告[/url]                                                        [url=ben_ti]游戏本体更新公告[/url][/color]
+
+   再一次感谢对于我的想法和ETN项目的巨大支持，再一次，感谢！🌹针对游戏的所有意见可以向我提出！
+   欢迎各位朋友们通过以下方式联系我😁，我非常愿意倾听你们的意见和想法。同时，我也会“广纳贤才”😍，欢迎各位朋友们的合作和支持！！！再一次，感谢！！！👇
 "
-scroll_active = false
 
 [node name="website" type="RichTextLabel" parent="about_menu/control/VBoxContainer"]
-custom_minimum_size = Vector2(1337, 90)
+custom_minimum_size = Vector2(1337, 63)
 layout_mode = 2
 theme = ExtResource("11_w2oft")
 theme_override_constants/shadow_outline_size = 4
 bbcode_enabled = true
-text = "   再一次感谢对于我的想法和ETN项目的巨大支持，再一次，感谢！🌹针对游戏的所有意见可以向我提出！
-   欢迎各位朋友们通过以下方式联系我😁，我非常愿意倾听你们的意见和想法。同时，我也会“广纳贤才”😍，欢迎各位朋友们的合作和支持！！！再一次，感谢！！！👇
-
-  [color=94d7f2][url=https://github.com/GlacierXiaowei/ETN_Launcher]点击访问Github项目主页（启动器）[/url] [url=https://github.com/GlacierXiaowei/ETN]（游戏主体）[/url]               [url=glacier_xiaowei@163.com]点击复制:glacier_xiaowei@163.com[/url]
+text = "  [color=94d7f2][url=https://github.com/GlacierXiaowei/ETN_Launcher]点击访问Github项目主页（启动器）[/url] [url=https://github.com/GlacierXiaowei/ETN]（游戏主体）[/url]               [url=glacier_xiaowei@163.com]点击复制:glacier_xiaowei@163.com[/url]
   [url=https://www.douyin.com/user/MS4wLjABAAAAqAe9UicpIp32jOaVACOouIFT0ZLEfikf79bjKo_GUDtOjPZjAiBd96FYOvjqWPzF?from_tab_name=main]欢迎关注本人社交媒体账号 抖音：冰川小未[/url]"
 fit_content = true
 
@@ -501,7 +517,20 @@ offset_top = 247.0
 offset_right = 324.71426
 offset_bottom = 588.0
 theme = ExtResource("11_w2oft")
-text = "吞***"
+bbcode_enabled = true
+text = "吞***
+1***
+智***
+恹***
+C***
+J***
+V***
+P***
+广***
+R***
+🌟***
+Z***
+常***"
 
 [node name="min_dan_right" type="RichTextLabel" parent="donation_menu/control"]
 layout_mode = 0
@@ -510,6 +539,11 @@ offset_top = 247.0
 offset_right = 648.71423
 offset_bottom = 598.0
 theme = ExtResource("11_w2oft")
+bbcode_enabled = true
+text = "目前已经收到：
+[color=yellow]28元[/color]
+用途：
+购买tokens ￥24"
 
 [node name="zhe_zhao2" type="Button" parent="."]
 visible = false
@@ -533,14 +567,17 @@ button_mask = 0
 flat = true
 script = ExtResource("8_g3r3f")
 
+[connection signal="pressed" from="master_menu/game_begin" to="." method="_on_game_begin_pressed"]
+[connection signal="pressed" from="master_menu/version_check" to="." method="_on_version_check_pressed"]
 [connection signal="pressed" from="master_menu/VBoxContainer/settings" to="master_menu/VBoxContainer" method="_on_menu_button_pressed" binds= ["setting"]]
 [connection signal="pressed" from="master_menu/VBoxContainer/about" to="master_menu/VBoxContainer" method="_on_menu_button_pressed" binds= ["about"]]
 [connection signal="pressed" from="master_menu/VBoxContainer/donation" to="master_menu/VBoxContainer" method="_on_menu_button_pressed" binds= ["donation"]]
 [connection signal="pressed" from="master_menu/VBoxContainer/quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="setting_menu/return" to="." method="_on_return_pressed"]
 [connection signal="pressed" from="setting_menu/return" to="setting_menu/return" method="_on_pressed"]
+[connection signal="pressed" from="setting_menu/control/VBoxContainer/HBox_fix/Button" to="setting_menu/control/VBoxContainer/HBox_fix" method="_on_button_pressed"]
 [connection signal="pressed" from="about_menu/return" to="." method="_on_return_pressed"]
-[connection signal="pressed" from="about_menu/return" to="setting_menu/return" method="_on_return_pressed"]
+[connection signal="meta_clicked" from="about_menu/control/VBoxContainer/Thanks" to="about_menu/control" method="_on_thanks_meta_clicked"]
 [connection signal="meta_clicked" from="about_menu/control/VBoxContainer/website" to="about_menu/control" method="_on_website_meta_clicked"]
 [connection signal="pressed" from="donation_menu/return" to="." method="_on_return_pressed"]
 [connection signal="meta_clicked" from="donation_menu/control/RichTextLabel_1" to="donation_menu/control" method="_on_rich_text_label_1_meta_clicked"]

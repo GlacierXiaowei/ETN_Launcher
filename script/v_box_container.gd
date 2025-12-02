@@ -1,7 +1,7 @@
 # VBoxContainer.gd
 extends VBoxContainer
 
-@onready var node_ui = get_node("../..")
+
 
 # 这个脚本现在只负责一件事：
 # 告诉它的父节点（也就是 Control 节点）用户点击了哪个按钮。
@@ -12,11 +12,12 @@ func _on_menu_button_pressed(menu_name: String) -> void:
 	owner.switch_to_submenu(menu_name)
 
 func _on_quit_pressed() -> void:
+	pass
 	
 	
 	#直接复制粘贴就好 以下代码 只需要 
 	#@onready 是因为 我们需要获取到ui脚本下的预加载场景
-	var windows_var=node_ui.windows
+	
 	
 	
 	

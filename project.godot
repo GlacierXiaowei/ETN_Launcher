@@ -8,6 +8,11 @@
 
 config_version=5
 
+[animation]
+
+warnings/check_invalid_track_paths=false
+warnings/check_angle_interpolation_type_conflicting=false
+
 [application]
 
 config/name="ETN_Launcher "
@@ -22,6 +27,10 @@ config/icon="uid://cynqakcdn00hd"
 [audio]
 
 driver/mix_rate=48000
+
+[autoload]
+
+WindowsManager="*res://scenes/open/windows_manager.tscn"
 
 [display]
 
