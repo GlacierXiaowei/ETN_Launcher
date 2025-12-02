@@ -870,4 +870,4 @@ offset_right = 283.0
 offset_bottom = 176.0
 theme_override_fonts/font = ExtResource("2_tbgi4")
 theme_override_font_sizes/font_size = 20
-text = "version: v1.0.0.0"
+text = "version: v1.0.0.1"

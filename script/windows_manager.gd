@@ -7,7 +7,7 @@ extends CanvasLayer
 const GITHUB_OWNER = "GlacierXiaowei"
 
 # !! 重要：每次您打包新版本时，都需要在这里更新当前版本号 !!
-const CURRENT_VERSION ="1.0.0.0"
+const CURRENT_VERSION ="v1.0.0.0"
 # 与您的 GitHub Release Tag 保持一致(请在函数中修改)
 
 # --- 游戏可执行文件名 ---
