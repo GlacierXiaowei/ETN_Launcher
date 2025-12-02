@@ -7,7 +7,7 @@ extends CanvasLayer
 const GITHUB_OWNER = "GlacierXiaowei"
 
 # !! 重要：每次您打包新版本时，都需要在这里更新当前版本号 !!
-const CURRENT_VERSION ="v1.0.0.0"
+const CURRENT_VERSION ="v1.0.0.1"
 # 与您的 GitHub Release Tag 保持一致(请在函数中修改)
 
 # --- 游戏可执行文件名 ---
@@ -88,10 +88,10 @@ func version_check(type: int) ->void:
 	
 	# 2. 如果请求本身就失败了（比如没网络）
 	if error != OK:
-		var windows=windows_preload.instantiate()
-		add_child(windows)
-		# 2. 【最终修改】设置它的尺寸为固定的 1080x1920
-		windows.size = Vector2(1920, 1080)
+		#var windows=windows_preload.instantiate()
+		#add_child(windows)
+		## 2. 【最终修改】设置它的尺寸为固定的 1080x1920
+		#windows.size = Vector2(1920, 1080)
 		
 		# HTTPRequest.Result.RESULT_SUCCESS 是 Godot 内置的常量，值为 0
 		if error != HTTPRequest.Result.RESULT_SUCCESS:
