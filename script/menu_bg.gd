@@ -4,7 +4,7 @@ extends Control
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	$white_bg_animation.play("white_bg_animation")
-	$menu_music.play()
+	
 	await get_tree().create_timer(2.5).timeout 
 	
 	

@@ -5,7 +5,8 @@
 [resource]
 RichTextLabel/constants/line_separation = 3
 RichTextLabel/constants/outline_size = 6
-RichTextLabel/constants/paragraph_separation = 3
+RichTextLabel/constants/paragraph_separation = 6
+RichTextLabel/constants/underline_alpha = 255
 RichTextLabel/font_sizes/bold_font_size = 24
 RichTextLabel/font_sizes/normal_font_size = 24
 RichTextLabel/fonts/normal_font = ExtResource("1_et8vq")

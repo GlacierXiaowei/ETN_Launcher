@@ -7,7 +7,7 @@ extends CanvasLayer
 const GITHUB_OWNER = "GlacierXiaowei"
 
 # !! 重要：每次您打包新版本时，都需要在这里更新当前版本号 !!
-const CURRENT_VERSION ="v1.0.0.1"
+const CURRENT_VERSION ="v1.0.0.2"
 # 与您的 GitHub Release Tag 保持一致(请在函数中修改)
 
 # --- 游戏可执行文件名 ---
@@ -60,7 +60,7 @@ func version_check(type: int) ->void:
 	var detail="正在从github获取更新......
 使用最新版本的程序是一个好习惯哦
 请确保科学上网
-请等待该窗口更新"
+请等待该窗口刷新"
 	var button_text:Array[String]=["取消"]
 	WindowsManager.show_dialog("请稍后",detail, button_text)
 	

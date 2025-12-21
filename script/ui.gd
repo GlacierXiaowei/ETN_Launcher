@@ -13,6 +13,7 @@ var current_menu_tween: Tween
 @onready var master_main_button = get_tree().get_nodes_in_group("master_main_button")
 @onready var master_slide_button = get_tree().get_nodes_in_group("master_slide_button")
 func _ready() -> void:
+	
 	$master_menu/zhe_zhao3.focus_mode=Control.FOCUS_NONE
 	$zhe_zhao4.hide()
 	for menu_key in menus:

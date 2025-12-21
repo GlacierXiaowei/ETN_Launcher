@@ -3,7 +3,7 @@ extends Control
 @onready var menu_bg = preload("res://scenes/open/menu_bg.tscn")
 @onready var ui = preload("res://scenes/open/ui.tscn")
 
-var _version_judge_var=2
+var _version_judge_var=1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -28,6 +28,7 @@ func _ready() -> void:
 	await _version_judge()
 	if ( _version_judge_var==1  ):
 		#很诡异 他们可以调用所有的动画
+		print("动画3已经播放")
 		$open_image_2.modulate.a=0
 		$Open_Ani_Player_2.play("open_animation_3")
 		$open_image_3.z_index=20
@@ -36,14 +37,11 @@ func _ready() -> void:
 		await get_tree().create_timer(3.5).timeout 
 		#$Open_Ani_Player_2.pause()
 		
-		var tween_label_open_in = $".".create_tween()
-		var tween_label_open_out = $".".create_tween()
-		
-		tween_label_open_in.tween_property($Label_open,"modulate:a",1.0,0.5)
+		$Open_Ani_Player_3.play("open_meanings_label_ani")
 		$open_button.show()
 		await $open_button.pressed
 		
-		tween_label_open_out.tween_property($Label_open,"modulate.a",0.0,0.25)
+		#tween_label_open_out.tween_property($Label_open,"modulate.a",0.0,0.25)
 		$Open_Ani_Player_2.play("open_animation_4")
 		
 		
@@ -57,6 +55,7 @@ func _ready() -> void:
 		$open_image_1.queue_free()
 		$open_image_2.queue_free()
 		$Open_Ani_Player_1.queue_free()
+		$open_image_30.queue_free()
 		
 		
 		await get_tree().create_timer(3.0).timeout

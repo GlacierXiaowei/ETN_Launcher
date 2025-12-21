@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bqxxtnilnfhvi"]
+[gd_scene format=3 uid="uid://bqxxtnilnfhvi"]
 
 [ext_resource type="Texture2D" uid="uid://c0jky3j1754dd" path="res://assets/image/open_scene/LOGO-V2-WRITE.png" id="1_jyhfs"]
 [ext_resource type="Script" uid="uid://du21dghwktj4b" path="res://script/main.gd" id="1_tbgi4"]
@@ -100,32 +100,34 @@ tracks/7/keys = {
 "points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
-tracks/8/type = "bezier"
+tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("open_image_3:modulate:r")
+tracks/8/path = NodePath("bei_jin:size")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1920, 1080)]
 }
-tracks/9/type = "bezier"
+tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("open_image_3:modulate:g")
+tracks/9/path = NodePath("bei_jin:position")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
 }
 tracks/10/type = "bezier"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("open_image_3:modulate:b")
+tracks/10/path = NodePath("bei_jin:modulate:r")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
@@ -136,185 +138,107 @@ tracks/10/keys = {
 tracks/11/type = "bezier"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("open_image_3:modulate:a")
+tracks/11/path = NodePath("bei_jin:modulate:g")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
 "handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
-tracks/12/type = "value"
+tracks/12/type = "bezier"
 tracks/12/imported = false
 tracks/12/enabled = true
-tracks/12/path = NodePath("bei_jin:size")
+tracks/12/path = NodePath("bei_jin:modulate:b")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1920, 1080)]
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
 }
 tracks/13/type = "bezier"
 tracks/13/imported = false
 tracks/13/enabled = true
-tracks/13/path = NodePath("open_image_3:size:x")
+tracks/13/path = NodePath("bei_jin:modulate:a")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/keys = {
 "handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1084, -0.25, 0, 0.25, 0),
+"points": PackedFloat32Array(0.47843137, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
-tracks/14/type = "bezier"
+tracks/14/type = "value"
 tracks/14/imported = false
 tracks/14/enabled = true
-tracks/14/path = NodePath("open_image_3:size:y")
+tracks/14/path = NodePath("bei_jin:modulate")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(813, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
 }
-tracks/15/type = "bezier"
+tracks/15/type = "value"
 tracks/15/imported = false
 tracks/15/enabled = true
-tracks/15/path = NodePath("open_image_3:position:x")
+tracks/15/path = NodePath("open_image_3:modulate")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(418, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
 }
-tracks/16/type = "bezier"
+tracks/16/type = "value"
 tracks/16/imported = false
 tracks/16/enabled = true
-tracks/16/path = NodePath("open_image_3:position:y")
+tracks/16/path = NodePath("open_image_3:position")
 tracks/16/interp = 1
 tracks/16/loop_wrap = true
 tracks/16/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(133.5, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-430, -322)]
 }
 tracks/17/type = "value"
 tracks/17/imported = false
 tracks/17/enabled = true
-tracks/17/path = NodePath("bei_jin:position")
+tracks/17/path = NodePath("open_image_3:size")
 tracks/17/interp = 1
 tracks/17/loop_wrap = true
 tracks/17/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, 0)]
+"values": [Vector2(474.66663, 356)]
 }
-tracks/18/type = "bezier"
+tracks/18/type = "value"
 tracks/18/imported = false
 tracks/18/enabled = true
-tracks/18/path = NodePath("bei_jin:modulate:r")
+tracks/18/path = NodePath("version:self_modulate")
 tracks/18/interp = 1
 tracks/18/loop_wrap = true
 tracks/18/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/19/type = "bezier"
-tracks/19/imported = false
-tracks/19/enabled = true
-tracks/19/path = NodePath("bei_jin:modulate:g")
-tracks/19/interp = 1
-tracks/19/loop_wrap = true
-tracks/19/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/20/type = "bezier"
-tracks/20/imported = false
-tracks/20/enabled = true
-tracks/20/path = NodePath("bei_jin:modulate:b")
-tracks/20/interp = 1
-tracks/20/loop_wrap = true
-tracks/20/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/21/type = "bezier"
-tracks/21/imported = false
-tracks/21/enabled = true
-tracks/21/path = NodePath("bei_jin:modulate:a")
-tracks/21/interp = 1
-tracks/21/loop_wrap = true
-tracks/21/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.47843137, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/22/type = "value"
-tracks/22/imported = false
-tracks/22/enabled = true
-tracks/22/path = NodePath("bei_jin:modulate")
-tracks/22/interp = 1
-tracks/22/loop_wrap = true
-tracks/22/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
-tracks/23/type = "value"
-tracks/23/imported = false
-tracks/23/enabled = true
-tracks/23/path = NodePath("open_image_3:modulate")
-tracks/23/interp = 1
-tracks/23/loop_wrap = true
-tracks/23/keys = {
+tracks/19/type = "value"
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/path = NodePath("open_image_30:modulate")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(1, 1, 1, 0)]
-}
-tracks/24/type = "value"
-tracks/24/imported = false
-tracks/24/enabled = true
-tracks/24/path = NodePath("open_image_3:position")
-tracks/24/interp = 1
-tracks/24/loop_wrap = true
-tracks/24/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-430, -322)]
-}
-tracks/25/type = "value"
-tracks/25/imported = false
-tracks/25/enabled = true
-tracks/25/path = NodePath("open_image_3:size")
-tracks/25/interp = 1
-tracks/25/loop_wrap = true
-tracks/25/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(474.66663, 356)]
-}
-tracks/26/type = "value"
-tracks/26/imported = false
-tracks/26/enabled = true
-tracks/26/path = NodePath("version:self_modulate")
-tracks/26/interp = 1
-tracks/26/loop_wrap = true
-tracks/26/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_tefeu"]
@@ -444,182 +368,94 @@ length = 4.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("open_image_3:modulate:a")
+tracks/0/path = NodePath("bei_jin:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(),
-"transitions": PackedFloat32Array(),
-"update": 1,
-"values": []
+"times": PackedFloat32Array(0, 4.133333, 5.633333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(-1588, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("bei_jin:position")
+tracks/1/path = NodePath("bei_jin:size")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 4.133333, 5.633333),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(0, 0), Vector2(-1588, 0)]
+"values": [Vector2(1920, 1080), Vector2(1920, 1080), Vector2(1920, 1080)]
 }
-tracks/2/type = "value"
+tracks/2/type = "bezier"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("bei_jin:size")
+tracks/2/path = NodePath("bei_jin:modulate:r")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 4.133333, 5.633333),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(1920, 1080), Vector2(1920, 1080), Vector2(1920, 1080)]
+"handle_modes": PackedInt32Array(2, 0, 0, 0, 0, 0, 0, 0),
+"points": PackedFloat32Array(1, 0, 0, 0.33333334, 0, 1, -0.33331668, 0, 1.6669434e-05, 0, 1, -1.6669434e-05, 0, 0.083333336, 0, 1, -0.01666665, 0, 0.066666685, 0, 1, -0.083333336, 0, 0.083333336, 0, 1, -0.083333336, 0, 0.083333336, 0, 1, -0.049999993, 0, 0.033333343, 0, 1, -0.033333343, 0, 0, 0),
+"times": PackedFloat32Array(0, 4.133233, 4.133333, 4.233333, 4.633333, 5.133333, 5.433333, 5.633333)
 }
 tracks/3/type = "bezier"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("open_image_3:modulate:r")
+tracks/3/path = NodePath("bei_jin:modulate:g")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"handle_modes": PackedInt32Array(2, 0, 0, 0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.083333336, 0, 0, 0, 1, -0.16666667, 0, 0, 0, 1, -0.083333336, 0, 0, 0),
-"times": PackedFloat32Array(0, 0.96666664, 3.4666667, 3.9666667)
+"handle_modes": PackedInt32Array(2, 0, 0, 0, 0, 0, 0, 0),
+"points": PackedFloat32Array(1, 0, 0, 0.33333334, 0, 1, -0.33331668, 0, 1.6669434e-05, 0, 1, -1.6669434e-05, 0, 0.083333336, 0, 1, -0.01666665, 0, 0.066666685, 0, 1, -0.083333336, 0, 0.083333336, 0, 1, -0.083333336, 0, 0.083333336, 0, 1, -0.049999993, 0, 0.033333343, 0, 1, -0.033333343, 0, 0, 0),
+"times": PackedFloat32Array(0, 4.133233, 4.133333, 4.233333, 4.633333, 5.133333, 5.433333, 5.633333)
 }
 tracks/4/type = "bezier"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("open_image_3:modulate:g")
+tracks/4/path = NodePath("bei_jin:modulate:b")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"handle_modes": PackedInt32Array(2, 0, 0, 0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.083333336, 0, 0, 0, 1, -0.16666667, 0, 0, 0, 1, -0.083333336, 0, 0, 0),
-"times": PackedFloat32Array(0, 0.96666664, 3.4666667, 3.9666667)
+"handle_modes": PackedInt32Array(2, 0, 0, 0, 0, 0, 0, 0),
+"points": PackedFloat32Array(1, 0, 0, 0.33333334, 0, 1, -0.33331668, 0, 1.6669434e-05, 0, 1, -1.6669434e-05, 0, 0.083333336, 0, 1, -0.01666665, 0, 0.066666685, 0, 1, -0.083333336, 0, 0.083333336, 0, 1, -0.083333336, 0, 0.083333336, 0, 1, -0.049999993, 0, 0.033333343, 0, 1, -0.033333343, 0, 0, 0),
+"times": PackedFloat32Array(0, 4.133233, 4.133333, 4.233333, 4.633333, 5.133333, 5.433333, 5.633333)
 }
 tracks/5/type = "bezier"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("open_image_3:modulate:b")
+tracks/5/path = NodePath("bei_jin:modulate:a")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"handle_modes": PackedInt32Array(2, 0, 0, 0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.083333336, 0, 0, 0, 1, -0.16666667, 0, 0, 0, 1, -0.083333336, 0, 0, 0),
-"times": PackedFloat32Array(0, 0.96666664, 3.4666667, 3.9666667)
-}
-tracks/6/type = "bezier"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("open_image_3:modulate:a")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"handle_modes": PackedInt32Array(2, 0, 0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.083333336, -0.16666667, 0, 0, 1, -0.16666667, 0, 0, 0, 1, -0.083333336, 0, 0, 0),
-"times": PackedFloat32Array(0, 0.96666664, 3.4666667, 3.9666667)
-}
-tracks/7/type = "bezier"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("open_image_3:size:x")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"handle_modes": PackedInt32Array(2, 0),
-"points": PackedFloat32Array(1084, 0, 0, 0.33333334, 0, 1084, -0.33333334, 0, 0, 0),
-"times": PackedFloat32Array(0, 3.9666667)
-}
-tracks/8/type = "bezier"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("open_image_3:size:y")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
-"handle_modes": PackedInt32Array(2, 0),
-"points": PackedFloat32Array(813, 0, 0, 0.33333334, 0, 813, -0.33333334, 0, 0, 0),
-"times": PackedFloat32Array(0, 3.9666667)
-}
-tracks/9/type = "bezier"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("open_image_3:position:x")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/keys = {
-"handle_modes": PackedInt32Array(2, 0),
-"points": PackedFloat32Array(418, 0, 0, 0.33333334, 0, 418, -0.33333334, 0, 0, 0),
-"times": PackedFloat32Array(0, 3.9666667)
-}
-tracks/10/type = "bezier"
-tracks/10/imported = false
-tracks/10/enabled = true
-tracks/10/path = NodePath("open_image_3:position:y")
-tracks/10/interp = 1
-tracks/10/loop_wrap = true
-tracks/10/keys = {
-"handle_modes": PackedInt32Array(2, 0),
-"points": PackedFloat32Array(133.5, 0, 0, 0.33333334, 0, 133.5, -0.33333334, 0, 0, 0),
-"times": PackedFloat32Array(0, 3.9666667)
-}
-tracks/11/type = "bezier"
-tracks/11/imported = false
-tracks/11/enabled = true
-tracks/11/path = NodePath("bei_jin:modulate:r")
-tracks/11/interp = 1
-tracks/11/loop_wrap = true
-tracks/11/keys = {
-"handle_modes": PackedInt32Array(2, 0, 0, 0, 0, 0, 0, 0),
-"points": PackedFloat32Array(1, 0, 0, 0.33333334, 0, 1, -0.33331668, 0, 1.6669434e-05, 0, 1, -1.6669434e-05, 0, 0.083333336, 0, 1, -0.01666665, 0, 0.066666685, 0, 1, -0.083333336, 0, 0.083333336, 0, 1, -0.083333336, 0, 0.083333336, 0, 1, -0.049999993, 0, 0.033333343, 0, 1, -0.033333343, 0, 0, 0),
-"times": PackedFloat32Array(0, 4.133233, 4.133333, 4.233333, 4.633333, 5.133333, 5.433333, 5.633333)
-}
-tracks/12/type = "bezier"
-tracks/12/imported = false
-tracks/12/enabled = true
-tracks/12/path = NodePath("bei_jin:modulate:g")
-tracks/12/interp = 1
-tracks/12/loop_wrap = true
-tracks/12/keys = {
-"handle_modes": PackedInt32Array(2, 0, 0, 0, 0, 0, 0, 0),
-"points": PackedFloat32Array(1, 0, 0, 0.33333334, 0, 1, -0.33331668, 0, 1.6669434e-05, 0, 1, -1.6669434e-05, 0, 0.083333336, 0, 1, -0.01666665, 0, 0.066666685, 0, 1, -0.083333336, 0, 0.083333336, 0, 1, -0.083333336, 0, 0.083333336, 0, 1, -0.049999993, 0, 0.033333343, 0, 1, -0.033333343, 0, 0, 0),
-"times": PackedFloat32Array(0, 4.133233, 4.133333, 4.233333, 4.633333, 5.133333, 5.433333, 5.633333)
-}
-tracks/13/type = "bezier"
-tracks/13/imported = false
-tracks/13/enabled = true
-tracks/13/path = NodePath("bei_jin:modulate:b")
-tracks/13/interp = 1
-tracks/13/loop_wrap = true
-tracks/13/keys = {
-"handle_modes": PackedInt32Array(2, 0, 0, 0, 0, 0, 0, 0),
-"points": PackedFloat32Array(1, 0, 0, 0.33333334, 0, 1, -0.33331668, 0, 1.6669434e-05, 0, 1, -1.6669434e-05, 0, 0.083333336, 0, 1, -0.01666665, 0, 0.066666685, 0, 1, -0.083333336, 0, 0.083333336, 0, 1, -0.083333336, 0, 0.083333336, 0, 1, -0.049999993, 0, 0.033333343, 0, 1, -0.033333343, 0, 0, 0),
-"times": PackedFloat32Array(0, 4.133233, 4.133333, 4.233333, 4.633333, 5.133333, 5.433333, 5.633333)
-}
-tracks/14/type = "bezier"
-tracks/14/imported = false
-tracks/14/enabled = true
-tracks/14/path = NodePath("bei_jin:modulate:a")
-tracks/14/interp = 1
-tracks/14/loop_wrap = true
-tracks/14/keys = {
 "handle_modes": PackedInt32Array(2, 0, 0, 0, 0, 0, 0, 0),
 "points": PackedFloat32Array(1, 0, 0, 0.33333334, 0, 1, -0.33331668, 0, 1.6669434e-05, 0, 1, -1.6669434e-05, 3.33322e-05, 0.083333336, -0.16663334, 0, -0.01666665, 0.0333333, 0.066666685, -0.13333337, 0, -0.083333336, 0.0506536, 0.083333336, -0.0506536, 0.39215687, -0.083333336, -0.024509802, 0.083333336, 0.024509802, 0.47058824, -0.049999993, -0.060784306, 0.033333343, 0.04052289, 0.47843137, -0.033333343, -0.0013071895, 0, 0),
 "times": PackedFloat32Array(0, 4.133233, 4.133333, 4.233333, 4.633333, 5.133333, 5.433333, 5.633333)
 }
-tracks/15/type = "value"
-tracks/15/imported = false
-tracks/15/enabled = true
-tracks/15/path = NodePath("bei_jin:modulate")
-tracks/15/interp = 1
-tracks/15/loop_wrap = true
-tracks/15/keys = {
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("bei_jin:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
 "times": PackedFloat32Array(4.166567, 4.166667, 4.266667, 4.666667, 5.166667, 5.4666667, 5.666667),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0.39215687), Color(1, 1, 1, 0.47058824), Color(1, 1, 1, 0.47843137)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("open_image_30:modulate")
+tracks/7/interp = 2
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_i3o6h"]
@@ -729,7 +565,45 @@ unicode = 32
 [sub_resource type="Shortcut" id="Shortcut_o6xl0"]
 events = [SubResource("InputEventKey_tbgi4"), SubResource("InputEventKey_tefeu"), SubResource("InputEventKey_i3o6h")]
 
-[node name="Main" type="Control"]
+[sub_resource type="Animation" id="Animation_crh8q"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label_open:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_m5rf5"]
+resource_name = "open_meanings_label_ani"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label_open:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.75, 1.5, 2.0333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jda1q"]
+_data = {
+&"RESET": SubResource("Animation_crh8q"),
+&"open_meanings_label_ani": SubResource("Animation_m5rf5")
+}
+
+[node name="Main" type="Control" unique_id=1704104763]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -739,7 +613,7 @@ grow_vertical = 2
 script = ExtResource("1_tbgi4")
 metadata/_edit_vertical_guides_ = [333.0, 1920.0]
 
-[node name="Label_open" type="Label" parent="."]
+[node name="Label_open" type="Label" parent="." unique_id=773252181]
 z_index = 40
 layout_mode = 1
 anchors_preset = 14
@@ -756,7 +630,7 @@ text = "点击空白处以继续"
 label_settings = SubResource("LabelSettings_tbgi4")
 horizontal_alignment = 1
 
-[node name="Label_meanings" type="Label" parent="Label_open"]
+[node name="Label_meanings" type="Label" parent="Label_open" unique_id=1032981980]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.39114583
@@ -770,17 +644,13 @@ label_settings = SubResource("LabelSettings_tbgi4")
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Open_Ani_Player_1" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_tbgi4")
-}
+[node name="Open_Ani_Player_1" type="AnimationPlayer" parent="." unique_id=800840312]
+libraries/ = SubResource("AnimationLibrary_tbgi4")
 
-[node name="Open_Ani_Player_2" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_tbgi4")
-}
+[node name="Open_Ani_Player_2" type="AnimationPlayer" parent="." unique_id=388275490]
+libraries/ = SubResource("AnimationLibrary_tbgi4")
 
-[node name="bei_jin" type="ColorRect" parent="."]
+[node name="bei_jin" type="ColorRect" parent="." unique_id=615333102]
 z_index = 2
 layout_mode = 1
 anchors_preset = 15
@@ -790,7 +660,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0.49803922, 1, 1)
 
-[node name="open_image_1" type="TextureRect" parent="."]
+[node name="open_image_1" type="TextureRect" parent="." unique_id=819635879]
 modulate = Color(1, 1, 1, 0)
 z_index = 5
 layout_mode = 0
@@ -802,7 +672,7 @@ rotation = -1.5358897
 texture = ExtResource("1_jyhfs")
 expand_mode = 1
 
-[node name="open_image_2" type="Label" parent="."]
+[node name="open_image_2" type="Label" parent="." unique_id=620205504]
 z_index = 5
 layout_mode = 1
 anchors_preset = 8
@@ -819,7 +689,7 @@ grow_vertical = 2
 text = "冰川小未"
 label_settings = SubResource("LabelSettings_tipki")
 
-[node name="qian_min" type="TextureRect" parent="open_image_2"]
+[node name="qian_min" type="TextureRect" parent="open_image_2" unique_id=1184416004]
 z_index = 2
 layout_mode = 0
 offset_left = 332.0
@@ -830,25 +700,41 @@ rotation = -0.20769419
 texture = ExtResource("3_tefeu")
 expand_mode = 1
 
-[node name="open_image_3" type="TextureRect" parent="."]
+[node name="open_image_3" type="TextureRect" parent="." unique_id=974140851]
 modulate = Color(1, 1, 1, 0)
 z_index = 5
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -1390.0
-offset_top = -862.0
-offset_right = -915.3334
-offset_bottom = -506.0
+anchors_preset = -1
+anchor_left = 0.2482481
+anchor_top = 0.17685185
+anchor_right = 0.76718754
+anchor_bottom = 0.8435185
+offset_left = -906.63635
+offset_top = -513.0
+offset_right = -1428.3335
+offset_bottom = -877.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("4_o6xl0")
 expand_mode = 1
+metadata/_edit_use_anchors_ = true
 
-[node name="open_button" type="Button" parent="."]
+[node name="open_image_30" type="TextureRect" parent="." unique_id=401811463]
+modulate = Color(1, 1, 1, 0)
+z_index = 30
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.22517364
+anchor_top = 0.12314815
+anchor_right = 0.7807289
+anchor_bottom = 0.86388886
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_o6xl0")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="open_button" type="Button" parent="." unique_id=828566111]
 z_index = 50
 layout_mode = 1
 anchors_preset = 15
@@ -861,7 +747,7 @@ button_mask = 7
 shortcut = SubResource("Shortcut_o6xl0")
 flat = true
 
-[node name="version" type="Label" parent="."]
+[node name="version" type="Label" parent="." unique_id=1562934045]
 z_index = 60
 layout_mode = 0
 offset_left = 56.0
@@ -871,3 +757,6 @@ offset_bottom = 176.0
 theme_override_fonts/font = ExtResource("2_tbgi4")
 theme_override_font_sizes/font_size = 20
 text = "version: v1.0.0.1"
+
+[node name="Open_Ani_Player_3" type="AnimationPlayer" parent="." unique_id=87760314]
+libraries/ = SubResource("AnimationLibrary_jda1q")

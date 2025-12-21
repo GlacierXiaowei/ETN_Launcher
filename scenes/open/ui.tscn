@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://bmn6jgkqcok5c"]
+[gd_scene format=3 uid="uid://bmn6jgkqcok5c"]
 
 [ext_resource type="FontFile" uid="uid://dquqhgyljfytr" path="res://assets/fonts/中文12像素.ttf" id="1_dml82"]
 [ext_resource type="Script" uid="uid://c70i7234jipyx" path="res://script/ui.gd" id="1_uxty4"]
@@ -70,7 +70,7 @@ shader_parameter/feather_size = 0.10000000475
 
 [sub_resource type="DPITexture" id="DPITexture_qnu5g"]
 
-[node name="UI" type="Control"]
+[node name="UI" type="Control" unique_id=1396892222]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 3
 anchors_preset = 15
@@ -85,12 +85,12 @@ metadata/_edit_use_anchors_ = true
 metadata/_edit_vertical_guides_ = [352.0, 1894.0, 454.0, 1792.0, 428.0, 1825.0]
 metadata/_edit_horizontal_guides_ = [55.0, 871.0, 163.0, 787.0, 137.0, 817.0]
 
-[node name="master_menu" type="Control" parent="."]
+[node name="master_menu" type="Control" parent="." unique_id=784039257]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="zhe_zhao3" type="Button" parent="master_menu"]
+[node name="zhe_zhao3" type="Button" parent="master_menu" unique_id=1770716835]
 modulate = Color(0.53333336, 0.53333336, 0.53333336, 0.8235294)
 layout_mode = 0
 offset_left = -3.0
@@ -102,7 +102,7 @@ theme_override_font_sizes/font_size = 120
 disabled = true
 button_mask = 0
 
-[node name="game_begin" type="Button" parent="master_menu" groups=["master_main_button"]]
+[node name="game_begin" type="Button" parent="master_menu" unique_id=2135083173 groups=["master_main_button"]]
 layout_mode = 0
 offset_left = 18.0
 offset_top = 915.0
@@ -114,7 +114,7 @@ button_mask = 7
 keep_pressed_outside = true
 text = "启动游戏"
 
-[node name="version_check" type="Button" parent="master_menu" groups=["master_main_button"]]
+[node name="version_check" type="Button" parent="master_menu" unique_id=1174894070 groups=["master_main_button"]]
 layout_mode = 0
 offset_left = 1124.0
 offset_top = 915.0
@@ -126,7 +126,7 @@ button_mask = 7
 keep_pressed_outside = true
 text = "检查更新"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="master_menu"]
+[node name="VBoxContainer" type="VBoxContainer" parent="master_menu" unique_id=335678608]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -8.15
@@ -140,38 +140,36 @@ alignment = 1
 script = ExtResource("4_wlewo")
 metadata/_edit_use_anchors_ = true
 
-[node name="settings" type="Button" parent="master_menu/VBoxContainer" groups=["master_slide_button"]]
+[node name="settings" type="Button" parent="master_menu/VBoxContainer" unique_id=283974833 groups=["master_slide_button"]]
 layout_mode = 2
 theme = ExtResource("1_y8eoc")
 text = "设置"
 
-[node name="about" type="Button" parent="master_menu/VBoxContainer" groups=["master_slide_button"]]
+[node name="about" type="Button" parent="master_menu/VBoxContainer" unique_id=2138234445 groups=["master_slide_button"]]
 layout_mode = 2
 theme = ExtResource("1_y8eoc")
 text = "关于"
 
-[node name="donation" type="Button" parent="master_menu/VBoxContainer" groups=["master_slide_button"]]
+[node name="donation" type="Button" parent="master_menu/VBoxContainer" unique_id=782844398 groups=["master_slide_button"]]
 layout_mode = 2
 theme = ExtResource("1_y8eoc")
-text = "支持"
+text = "捐赠"
 
-[node name="quit" type="Button" parent="master_menu/VBoxContainer" groups=["master_slide_button"]]
+[node name="quit" type="Button" parent="master_menu/VBoxContainer" unique_id=393007076 groups=["master_slide_button"]]
 layout_mode = 2
 theme = ExtResource("1_y8eoc")
 text = "退出"
 
-[node name="headline" type="Label" parent="master_menu"]
+[node name="headline" type="Label" parent="master_menu" unique_id=1714229267]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 
-[node name="ui_show_animation" type="AnimationPlayer" parent="master_menu"]
+[node name="ui_show_animation" type="AnimationPlayer" parent="master_menu" unique_id=1677982497]
 root_node = NodePath("../..")
-libraries = {
-&"": SubResource("AnimationLibrary_h80a5")
-}
+libraries/ = SubResource("AnimationLibrary_h80a5")
 
-[node name="TextureRect" type="TextureRect" parent="master_menu"]
+[node name="TextureRect" type="TextureRect" parent="master_menu" unique_id=1420441739]
 material = SubResource("ShaderMaterial_g3r3f")
 layout_mode = 1
 anchors_preset = -1
@@ -183,7 +181,7 @@ texture = ExtResource("6_osibf")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="setting_menu" type="Control" parent="."]
+[node name="setting_menu" type="Control" parent="." unique_id=539397208]
 visible = false
 layout_mode = 1
 anchor_left = 0.0006309148
@@ -192,7 +190,7 @@ anchor_right = 0.97287065
 anchor_bottom = 0.8074074
 metadata/_edit_use_anchors_ = true
 
-[node name="return" type="Button" parent="setting_menu"]
+[node name="return" type="Button" parent="setting_menu" unique_id=886461017]
 layout_mode = 0
 offset_left = -327.0
 offset_top = 340.0
@@ -202,7 +200,7 @@ theme = ExtResource("1_y8eoc")
 text = "返回"
 script = ExtResource("4_t5yj0")
 
-[node name="control" type="Control" parent="setting_menu"]
+[node name="control" type="Control" parent="setting_menu" unique_id=117660760]
 layout_mode = 1
 anchor_left = 0.06554186
 anchor_top = 0.13112745
@@ -210,7 +208,7 @@ anchor_right = 0.9337663
 anchor_bottom = 0.8811275
 metadata/_edit_use_anchors_ = true
 
-[node name="zhe_zhao_small_menu" type="Button" parent="setting_menu/control"]
+[node name="zhe_zhao_small_menu" type="Button" parent="setting_menu/control" unique_id=1230948163]
 modulate = Color(0.53333336, 0.53333336, 0.53333336, 0.8235294)
 layout_mode = 0
 offset_left = -25.0
@@ -222,7 +220,7 @@ theme_override_font_sizes/font_size = 120
 disabled = true
 button_mask = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="setting_menu/control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="setting_menu/control" unique_id=567812612]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.0016339788
@@ -234,45 +232,45 @@ grow_vertical = 2
 theme = ExtResource("5_h80a5")
 metadata/_edit_use_anchors_ = true
 
-[node name="title" type="Label" parent="setting_menu/control/VBoxContainer"]
+[node name="title" type="Label" parent="setting_menu/control/VBoxContainer" unique_id=82143432]
 layout_mode = 2
 theme_override_font_sizes/font_size = 80
 text = "设置"
 
-[node name="jian_ge" type="Label" parent="setting_menu/control/VBoxContainer"]
+[node name="jian_ge" type="Label" parent="setting_menu/control/VBoxContainer" unique_id=1105789029]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 
-[node name="HBox_language" type="HBoxContainer" parent="setting_menu/control/VBoxContainer"]
+[node name="HBox_language" type="HBoxContainer" parent="setting_menu/control/VBoxContainer" unique_id=1259848507]
 layout_mode = 2
 theme = ExtResource("5_h80a5")
 
-[node name="Label" type="Label" parent="setting_menu/control/VBoxContainer/HBox_language"]
+[node name="Label" type="Label" parent="setting_menu/control/VBoxContainer/HBox_language" unique_id=1401929349]
 layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("5_h80a5")
 text = "语言"
 
-[node name="spacer" type="Control" parent="setting_menu/control/VBoxContainer/HBox_language"]
+[node name="spacer" type="Control" parent="setting_menu/control/VBoxContainer/HBox_language" unique_id=43073929]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="setting_menu/control/VBoxContainer/HBox_language"]
+[node name="Button" type="Button" parent="setting_menu/control/VBoxContainer/HBox_language" unique_id=1638633194]
 layout_mode = 2
 theme = ExtResource("5_h80a5")
 text = "中文"
 
-[node name="HBox_volume" type="HBoxContainer" parent="setting_menu/control/VBoxContainer"]
+[node name="HBox_volume" type="HBoxContainer" parent="setting_menu/control/VBoxContainer" unique_id=1346920581]
 layout_mode = 2
 theme = ExtResource("5_h80a5")
 theme_override_constants/separation = 800
 script = ExtResource("10_xom70")
 
-[node name="Label" type="Label" parent="setting_menu/control/VBoxContainer/HBox_volume"]
+[node name="Label" type="Label" parent="setting_menu/control/VBoxContainer/HBox_volume" unique_id=645977503]
 layout_mode = 2
 text = "音量"
 
-[node name="HSlider" type="HSlider" parent="setting_menu/control/VBoxContainer/HBox_volume"]
+[node name="HSlider" type="HSlider" parent="setting_menu/control/VBoxContainer/HBox_volume" unique_id=874861080]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -281,58 +279,58 @@ max_value = 1.0
 step = 0.01
 value = 1.0
 
-[node name="Label2" type="Label" parent="setting_menu/control/VBoxContainer/HBox_volume/HSlider"]
+[node name="Label2" type="Label" parent="setting_menu/control/VBoxContainer/HBox_volume/HSlider" unique_id=440300382]
 layout_mode = 0
 offset_left = -54.0
 offset_top = -4.009857
 offset_right = -4.0
 offset_bottom = 21.990143
 
-[node name="choose_music" type="HBoxContainer" parent="setting_menu/control/VBoxContainer"]
+[node name="choose_music" type="HBoxContainer" parent="setting_menu/control/VBoxContainer" unique_id=1126984747]
 layout_mode = 2
 theme = ExtResource("5_h80a5")
 script = ExtResource("11_33gvf")
 music_tracks = Array[AudioStream]([ExtResource("12_6e8qu"), ExtResource("13_lao2l"), ExtResource("14_ssa3l"), ExtResource("15_qnu5g"), ExtResource("16_mb1ci"), ExtResource("17_g6bvm"), ExtResource("18_4rh4o"), ExtResource("19_41rdk")])
 
-[node name="Label" type="Label" parent="setting_menu/control/VBoxContainer/choose_music"]
+[node name="Label" type="Label" parent="setting_menu/control/VBoxContainer/choose_music" unique_id=1582772906]
 layout_mode = 2
 text = "选择音乐"
 
-[node name="spacer" type="Control" parent="setting_menu/control/VBoxContainer/choose_music"]
+[node name="spacer" type="Control" parent="setting_menu/control/VBoxContainer/choose_music" unique_id=1147106278]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="OptionButton" type="OptionButton" parent="setting_menu/control/VBoxContainer/choose_music"]
+[node name="OptionButton" type="OptionButton" parent="setting_menu/control/VBoxContainer/choose_music" unique_id=1472709212]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 theme_override_icons/arrow = SubResource("DPITexture_qnu5g")
 fit_to_longest_item = false
 
-[node name="HBox_fix" type="HBoxContainer" parent="setting_menu/control/VBoxContainer"]
+[node name="HBox_fix" type="HBoxContainer" parent="setting_menu/control/VBoxContainer" unique_id=1809138574]
 layout_mode = 2
 theme = ExtResource("5_h80a5")
 script = ExtResource("20_qnu5g")
 
-[node name="Label" type="Label" parent="setting_menu/control/VBoxContainer/HBox_fix"]
+[node name="Label" type="Label" parent="setting_menu/control/VBoxContainer/HBox_fix" unique_id=212457082]
 layout_mode = 2
 text = "游戏修复"
 
-[node name="spacer" type="Control" parent="setting_menu/control/VBoxContainer/HBox_fix"]
+[node name="spacer" type="Control" parent="setting_menu/control/VBoxContainer/HBox_fix" unique_id=1302637998]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="setting_menu/control/VBoxContainer/HBox_fix"]
+[node name="Button" type="Button" parent="setting_menu/control/VBoxContainer/HBox_fix" unique_id=1616519897]
 layout_mode = 2
 text = "建议直接重新安装"
 
-[node name="about_menu" type="Control" parent="."]
+[node name="about_menu" type="Control" parent="." unique_id=1683355750]
 anchors_preset = 0
 offset_left = 2.0
 offset_top = 56.0
 offset_right = 1531.0
 offset_bottom = 872.0
 
-[node name="return" type="Button" parent="about_menu"]
+[node name="return" type="Button" parent="about_menu" unique_id=491653792]
 layout_mode = 0
 offset_left = -327.0
 offset_top = 339.0
@@ -344,7 +342,7 @@ text = "返回"
 language = "CN"
 script = ExtResource("4_t5yj0")
 
-[node name="control" type="Control" parent="about_menu"]
+[node name="control" type="Control" parent="about_menu" unique_id=839260073]
 layout_mode = 1
 anchor_left = 0.06493507
 anchor_top = 0.13112745
@@ -353,7 +351,7 @@ anchor_bottom = 0.8811275
 script = ExtResource("11_525mn")
 metadata/_edit_use_anchors_ = true
 
-[node name="zhe_zhao_small_menu" type="Button" parent="about_menu/control"]
+[node name="zhe_zhao_small_menu" type="Button" parent="about_menu/control" unique_id=1463407245]
 modulate = Color(0.53333336, 0.53333336, 0.53333336, 0.8235294)
 layout_mode = 0
 offset_left = -25.0
@@ -365,7 +363,7 @@ theme_override_font_sizes/font_size = 120
 disabled = true
 button_mask = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="about_menu/control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="about_menu/control" unique_id=1210350394]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.0005376799
@@ -378,16 +376,16 @@ grow_vertical = 2
 theme = ExtResource("5_h80a5")
 metadata/_edit_use_anchors_ = true
 
-[node name="title" type="Label" parent="about_menu/control/VBoxContainer"]
+[node name="title" type="Label" parent="about_menu/control/VBoxContainer" unique_id=915364550]
 layout_mode = 2
 theme_override_font_sizes/font_size = 80
 text = "关于"
 
-[node name="jian_ge" type="Label" parent="about_menu/control/VBoxContainer"]
+[node name="jian_ge" type="Label" parent="about_menu/control/VBoxContainer" unique_id=25697872]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 
-[node name="Thanks" type="RichTextLabel" parent="about_menu/control/VBoxContainer"]
+[node name="Thanks" type="RichTextLabel" parent="about_menu/control/VBoxContainer" unique_id=1721145719]
 custom_minimum_size = Vector2(1337, 410)
 layout_mode = 2
 theme = ExtResource("11_w2oft")
@@ -397,23 +395,25 @@ text = "   [color=red][b]感谢：[/b][/color]
    我尊敬的朋友们，你们好😊。首先我要忠心感谢你们对于ETN项目的支持，再一次，非常感谢🌹；正是因为你们的支持，我的项目才能够走到今天，非常感谢你们的支持。
    但是，也请接受我的道歉👌，我毕竟只是一名普通的大一学生，况且整个游戏引擎非本人专业所学，受限于开发水平，这个项目将会异常的艰难😞，更新速度自然不言而喻......但是，我坚信，既然在2025年6月11日的这天，我谋划已久的ETN项目正式立项🎇，那么在未来的某一天我一定可以完美的完成这款游戏的制作，我预估这个游戏至少会在我毕业之前，向各位朋友发行，甚至上架商店。😉
 
-   [color=yellow][b]游戏简介：[/b][/color]
-   [u]制作初心:[/u]
+   [color=yellow][b][u]制作初心:[/u][/b][/color]
    ETN 项目立项于 2025年6月11日。我致力于寻找回我高中的三年，我许下承诺：我一定会做出一个游戏，只为了纪念。
-   [u]开发方向:[/u]
+
+   [color=yellow][b][u]开发方向：[/u][/b][/color]
    目前，我仍然以RPG剧情向游戏为主，在游戏中书写我和朋友们的故事，并且达成不同的亲密度和结局。游戏的美术和剧情部分也将由我完成，所以细节上可能难以差强人意，还希望谅解。
-   [u]作者简介:[/u]
-   天津大学2025级本科生，计算机科学与技术专业。独立游戏开发者，独立新媒体制作人。感谢支持。
+
+   [color=yellow][b][u]作者介绍：[/u][/b][/color]
+   天津大学2025级本科生，计算机科学与技术专业。独立游戏开发者，独立新媒体制作人。
 
    [color=green][b]版本更新公告：[/b][/color]
    感谢您下载ETN，包括启动器和游戏本体在内的更新公告将会在这里展示。再一次，感谢支持！
+
    [color=94d7f2][url=launcher]启动器更新公告[/url]                                                        [url=ben_ti]游戏本体更新公告[/url][/color]
 
    再一次感谢对于我的想法和ETN项目的巨大支持，再一次，感谢！🌹针对游戏的所有意见可以向我提出！
    欢迎各位朋友们通过以下方式联系我😁，我非常愿意倾听你们的意见和想法。同时，我也会“广纳贤才”😍，欢迎各位朋友们的合作和支持！！！再一次，感谢！！！👇
 "
 
-[node name="website" type="RichTextLabel" parent="about_menu/control/VBoxContainer"]
+[node name="website" type="RichTextLabel" parent="about_menu/control/VBoxContainer" unique_id=1132018250]
 custom_minimum_size = Vector2(1337, 63)
 layout_mode = 2
 theme = ExtResource("11_w2oft")
@@ -423,7 +423,7 @@ text = "  [color=94d7f2][url=https://github.com/GlacierXiaowei/ETN_Launcher]点�
   [url=https://www.douyin.com/user/MS4wLjABAAAAqAe9UicpIp32jOaVACOouIFT0ZLEfikf79bjKo_GUDtOjPZjAiBd96FYOvjqWPzF?from_tab_name=main]欢迎关注本人社交媒体账号 抖音：冰川小未[/url]"
 fit_content = true
 
-[node name="donation_menu" type="Control" parent="."]
+[node name="donation_menu" type="Control" parent="." unique_id=1219462169]
 visible = false
 anchors_preset = 0
 offset_left = 2.0
@@ -431,7 +431,7 @@ offset_top = 56.0
 offset_right = 1531.0
 offset_bottom = 872.0
 
-[node name="return" type="Button" parent="donation_menu"]
+[node name="return" type="Button" parent="donation_menu" unique_id=1598393681]
 layout_mode = 0
 offset_left = -327.0
 offset_top = 340.0
@@ -441,7 +441,7 @@ theme = ExtResource("1_y8eoc")
 text = "返回"
 script = ExtResource("4_t5yj0")
 
-[node name="zhe_zhao_small_menu" type="Button" parent="donation_menu"]
+[node name="zhe_zhao_small_menu" type="Button" parent="donation_menu" unique_id=1131500161]
 modulate = Color(0.53333336, 0.53333336, 0.53333336, 0.8235294)
 layout_mode = 0
 offset_left = 74.285736
@@ -453,7 +453,7 @@ theme_override_font_sizes/font_size = 120
 disabled = true
 button_mask = 0
 
-[node name="control" type="Control" parent="donation_menu"]
+[node name="control" type="Control" parent="donation_menu" unique_id=786694427]
 layout_mode = 1
 anchor_left = 0.06493507
 anchor_top = 0.13112745
@@ -462,7 +462,7 @@ anchor_bottom = 0.8811275
 script = ExtResource("13_v8ow4")
 metadata/_edit_use_anchors_ = true
 
-[node name="title" type="Label" parent="donation_menu/control"]
+[node name="title" type="Label" parent="donation_menu/control" unique_id=2051002532]
 layout_mode = 0
 offset_left = 0.7142639
 offset_right = 160.71426
@@ -470,19 +470,19 @@ offset_bottom = 110.0
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("1_dml82")
 theme_override_font_sizes/font_size = 80
-text = "关于"
+text = "捐赠"
 
-[node name="alipay" type="Sprite2D" parent="donation_menu/control"]
+[node name="alipay" type="Sprite2D" parent="donation_menu/control" unique_id=1156584090]
 position = Vector2(836.71423, 423)
 scale = Vector2(0.2653128, 0.23831776)
 texture = ExtResource("14_wfnx1")
 
-[node name="we_chat_pay" type="Sprite2D" parent="donation_menu/control"]
+[node name="we_chat_pay" type="Sprite2D" parent="donation_menu/control" unique_id=184543806]
 position = Vector2(1165.7142, 423.00003)
 scale = Vector2(0.24794918, 0.24496645)
 texture = ExtResource("15_33gvf")
 
-[node name="RichTextLabel_1" type="RichTextLabel" parent="donation_menu/control"]
+[node name="RichTextLabel_1" type="RichTextLabel" parent="donation_menu/control" unique_id=421949262]
 layout_mode = 0
 offset_left = 0.7142639
 offset_top = 109.0
@@ -494,7 +494,7 @@ text = "  再一次非常感谢各位的支持，非常感谢各位的支持！�
   [color=red]如果能够请我喝一杯肥美的奶茶就更好了......🌹🌹🌹[/color]
   [color=94d7f2][url=fu_kuan_ma]点击这里显示(隐藏)二维码，同时朋友们的每一笔支持都将作为我的梦想资金[/url][/color]"
 
-[node name="RichTextLabel_2" type="RichTextLabel" parent="donation_menu/control"]
+[node name="RichTextLabel_2" type="RichTextLabel" parent="donation_menu/control" unique_id=59218609]
 layout_mode = 0
 offset_left = 1.7142639
 offset_top = 198.0
@@ -505,12 +505,12 @@ bbcode_enabled = true
 text = "  感谢人员名单(按照时间排序)(技术限制，不能够实时更新)"
 fit_content = true
 
-[node name="TextureRect" type="TextureRect" parent="donation_menu/control"]
+[node name="TextureRect" type="TextureRect" parent="donation_menu/control" unique_id=743509036]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="min_dan_left" type="RichTextLabel" parent="donation_menu/control"]
+[node name="min_dan_left" type="RichTextLabel" parent="donation_menu/control" unique_id=1741138380]
 layout_mode = 0
 offset_left = 44.714264
 offset_top = 247.0
@@ -532,7 +532,7 @@ R***
 Z***
 常***"
 
-[node name="min_dan_right" type="RichTextLabel" parent="donation_menu/control"]
+[node name="min_dan_right" type="RichTextLabel" parent="donation_menu/control" unique_id=1854313005]
 layout_mode = 0
 offset_left = 363.71426
 offset_top = 247.0
@@ -545,7 +545,7 @@ text = "目前已经收到：
 用途：
 购买tokens ￥24"
 
-[node name="zhe_zhao2" type="Button" parent="."]
+[node name="zhe_zhao2" type="Button" parent="." unique_id=204427535]
 visible = false
 z_index = 50
 layout_mode = 0
@@ -555,7 +555,7 @@ offset_bottom = 1092.0
 disabled = true
 flat = true
 
-[node name="zhe_zhao4" type="Button" parent="."]
+[node name="zhe_zhao4" type="Button" parent="." unique_id=2025421921]
 visible = false
 z_index = 50
 layout_mode = 0
@@ -566,6 +566,9 @@ disabled = true
 button_mask = 0
 flat = true
 script = ExtResource("8_g3r3f")
+
+[node name="menu_music" type="AudioStreamPlayer" parent="." unique_id=261303829]
+mix_target = 1
 
 [connection signal="pressed" from="master_menu/game_begin" to="." method="_on_game_begin_pressed"]
 [connection signal="pressed" from="master_menu/version_check" to="." method="_on_version_check_pressed"]

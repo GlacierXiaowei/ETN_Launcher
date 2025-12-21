@@ -2,13 +2,17 @@ extends HBoxContainer
 @onready var option_button = $OptionButton
 
 #如果只是 该场景启动1会因为地址不对而报错
-@onready var audio_player = get_node("/root/Main/menu_bg/menu_music")
+@onready var audio_player = $"../../../../menu_music"
 # 【技巧】使用 @export，可以直接在编辑器里把音乐文件拖进来！
 @export var music_tracks: Array[AudioStream] = []
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# 1. 填充 OptionButton，并关联元数据
 	_populate_music_options()
+	
+	#随机播放音乐
+	randomize()
+	play_random_music_tracks()
 	
 	# 2. 根据当前播放的音乐，设置初始选中项
 	_update_selection_from_player()
@@ -32,6 +36,13 @@ func _populate_music_options() -> void:
 			# 【核心】将 AudioStream 资源本身作为元数据附加到刚添加的项目上
 			var index = option_button.get_item_count() - 1
 			option_button.set_item_metadata(index, track)
+
+func play_random_music_tracks():
+	var random_index = randi() % music_tracks.size()
+	var selected_stream = music_tracks[random_index]
+	audio_player.stream = selected_stream
+	audio_player.play()
+	pass
 
 # 负责根据播放器状态更新UI
 func _update_selection_from_player() -> void:

@@ -12,13 +12,14 @@ config_version=5
 
 warnings/check_invalid_track_paths=false
 warnings/check_angle_interpolation_type_conflicting=false
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
 config/name="ETN_Launcher "
 config/tags=PackedStringArray("etn")
 run/main_scene="uid://bqxxtnilnfhvi"
-config/features=PackedStringArray("4.5", "Forward Plus")
+config/features=PackedStringArray("4.6", "Forward Plus")
 run/max_fps=60
 boot_splash/show_image=false
 boot_splash/image="uid://cynqakcdn00hd"
@@ -43,14 +44,18 @@ window/stretch/mode="canvas_items"
 window/per_pixel_transparency/allowed=true
 window/vsync/vsync_mode=0
 
+[editor]
+
+movie_writer/disable_vsync=true
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
 anti_aliasing/quality/msaa_2d=3
 anti_aliasing/quality/msaa_3d=3
+anti_aliasing/quality/use_debanding=true
 anti_aliasing/quality/screen_space_aa=2
 anti_aliasing/quality/use_taa=true
-anti_aliasing/quality/use_debanding=true
 
 [xr]
 
