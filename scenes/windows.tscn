@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://c7tshu8aevxl5"]
+[gd_scene format=3 uid="uid://c7tshu8aevxl5"]
 
 [ext_resource type="Theme" uid="uid://l6ypp2ai7b6j" path="res://assets/ui/windows.tres" id="1_8bl4e"]
 [ext_resource type="Theme" uid="uid://coji3machhxbo" path="res://assets/ui/ui_fake_blur.tres" id="1_h4hxy"]
@@ -12,7 +12,7 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[node name="PanelContainer" type="PanelContainer"]
+[node name="PanelContainer" type="PanelContainer" unique_id=248492796]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -21,10 +21,10 @@ grow_vertical = 2
 theme = ExtResource("1_8bl4e")
 script = ExtResource("1_vfbor")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=226948386]
 layout_mode = 2
 
-[node name="zhe_zhao_small_menu" type="Button" parent="MarginContainer"]
+[node name="zhe_zhao_small_menu" type="Button" parent="MarginContainer" unique_id=1018591868]
 modulate = Color(0.53333336, 0.53333336, 0.53333336, 0.8235294)
 layout_mode = 2
 theme = ExtResource("1_h4hxy")
@@ -33,7 +33,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_8bl4e")
 disabled = true
 button_mask = 0
 
-[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer" unique_id=1396693550]
 layout_mode = 2
 theme = ExtResource("1_8bl4e")
 theme_override_constants/margin_left = 20
@@ -41,20 +41,24 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/MarginContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/MarginContainer2" unique_id=515011520]
 layout_mode = 2
 theme = ExtResource("1_8bl4e")
 
-[node name="alarm" type="Label" parent="MarginContainer/MarginContainer2/VBoxContainer"]
+[node name="alarm" type="Label" parent="MarginContainer/MarginContainer2/VBoxContainer" unique_id=858876926]
 layout_mode = 2
 theme = ExtResource("2_vfbor")
 theme_override_font_sizes/font_size = 70
 
-[node name="detail" type="RichTextLabel" parent="MarginContainer/MarginContainer2/VBoxContainer"]
+[node name="detail" type="RichTextLabel" parent="MarginContainer/MarginContainer2/VBoxContainer" unique_id=1759588859]
 custom_minimum_size = Vector2(0, 320)
 layout_mode = 2
 bbcode_enabled = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MarginContainer2/VBoxContainer"]
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/MarginContainer2/VBoxContainer" unique_id=1196217625]
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MarginContainer2/VBoxContainer" unique_id=773835524]
 layout_mode = 2
 theme = ExtResource("1_8bl4e")

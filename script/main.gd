@@ -1,19 +1,16 @@
 extends Control
-
 @onready var menu_bg = preload("res://scenes/open/menu_bg.tscn")
 @onready var ui = preload("res://scenes/open/ui.tscn")
-
 var _version_judge_var=1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	#加载补丁包
 	$Label_open.modulate.a=0
 	$bei_jin.modulate.a=255
 	$open_button.hide()
-	$version.hide()
-	
 	$open_image_2.modulate.a=0
-	$open_image_3.modulate.a=0
+	
 	$Open_Ani_Player_1.play("open_animation_1")
 	
 	#1 代表 检查通过 2代表正在检查 0代表版本需要更新
@@ -31,7 +28,7 @@ func _ready() -> void:
 		print("动画3已经播放")
 		$open_image_2.modulate.a=0
 		$Open_Ani_Player_2.play("open_animation_3")
-		$open_image_3.z_index=20
+		
 		$bei_jin.z_index=15
 		
 		await get_tree().create_timer(3.5).timeout 
@@ -42,39 +39,31 @@ func _ready() -> void:
 		await $open_button.pressed
 		
 		#tween_label_open_out.tween_property($Label_open,"modulate.a",0.0,0.25)
-		$Open_Ani_Player_2.play("open_animation_4")
 		
 		
 		var menu_bg_instance=menu_bg.instantiate()
 		menu_bg_instance.z_index=0
 		add_child(menu_bg_instance)
 		
-		$version.show()
 		$Label_open.queue_free()
 		$open_button.queue_free()
 		$open_image_1.queue_free()
 		$open_image_2.queue_free()
 		$Open_Ani_Player_1.queue_free()
 		$open_image_30.queue_free()
-		
-		
-		await get_tree().create_timer(3.0).timeout
+		$bei_jin.queue_free()
 		var ui_instance=ui.instantiate()
 		add_child(ui_instance)
 		ui_instance.z_index=30
-		
-		await $Open_Ani_Player_2.animation_finished
-		
-		
+
 	else:
 		pass
 	 # Replace with function body.
-
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	pass
 	
 func _version_judge():
+	
 	#1 代表 检查通过 2代表正在检查 0代表版本需要更新
 	_version_judge_var=1

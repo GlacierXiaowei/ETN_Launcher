@@ -32,6 +32,9 @@ driver/mix_rate=48000
 [autoload]
 
 WindowsManager="*res://scenes/open/windows_manager.tscn"
+Utils="*uid://beqbi8w2el0mr"
+PatchManager="*uid://cm1hlh6ixxvtl"
+VersionCheck="*uid://bpjosvps7gk0e"
 
 [display]
 

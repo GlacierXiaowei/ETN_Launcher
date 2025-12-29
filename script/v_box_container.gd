@@ -1,5 +1,5 @@
 # VBoxContainer.gd
-extends VBoxContainer
+extends HBoxContainer
 
 
 

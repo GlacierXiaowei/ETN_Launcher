@@ -6,15 +6,22 @@
 [ext_resource type="Theme" uid="uid://coji3machhxbo" path="res://assets/ui/ui_fake_blur.tres" id="2_ml86w"]
 [ext_resource type="Script" uid="uid://d3nnips7sn2w5" path="res://return.gd" id="4_t5yj0"]
 [ext_resource type="Script" uid="uid://bmdq81g8n3b1w" path="res://script/v_box_container.gd" id="4_wlewo"]
+[ext_resource type="Texture2D" uid="uid://wqqu3chmie1f" path="res://assets/image/open_scene/白色ETN抠图.png" id="5_2horb"]
 [ext_resource type="Theme" uid="uid://ceu3hnr6i1wme" path="res://assets/ui/ui_small_menu_theme.theme" id="5_h80a5"]
 [ext_resource type="Shader" uid="uid://ju47n8dn5yb1" path="res://shader/ui.gdshader" id="5_osibf"]
+[ext_resource type="Texture2D" uid="uid://dxci67efoanrx" path="res://assets/image/settings/settings.svg" id="6_cqb11"]
 [ext_resource type="Texture2D" uid="uid://vygi24l05wjw" path="res://assets/image/open_scene/IMG_20250622_185657.jpg" id="6_osibf"]
+[ext_resource type="Texture2D" uid="uid://745cjccayxkt" path="res://assets/image/about/info-circle.svg" id="7_2horb"]
+[ext_resource type="Texture2D" uid="uid://bxk6vytd3wpgl" path="res://assets/image/donation/heart.svg" id="8_ag0nm"]
 [ext_resource type="Script" uid="uid://cvplhyvt8l6y5" path="res://script/zhe_zhao_4.gd" id="8_g3r3f"]
+[ext_resource type="Texture2D" uid="uid://c41khg1vpcj52" path="res://assets/image/quit/logout (2).svg" id="9_jusyc"]
+[ext_resource type="FontFile" uid="uid://c81j3cfcf3n8b" path="res://assets/fonts/SmileySans-Oblique.otf" id="10_7d8sy"]
 [ext_resource type="Script" uid="uid://dl18a1doneit5" path="res://script/h_box_volume.gd" id="10_xom70"]
 [ext_resource type="Script" uid="uid://d187m6833i75t" path="res://script/choose_music.gd" id="11_33gvf"]
 [ext_resource type="Script" uid="uid://wpurr0r4dxni" path="res://scenes/open/control.gd" id="11_525mn"]
 [ext_resource type="Theme" uid="uid://dx5hm0xl1wi2s" path="res://assets/ui/ui_about_script.tres" id="11_w2oft"]
 [ext_resource type="AudioStream" uid="uid://87g0yvmg1l8h" path="res://assets/audio/bgm/open_menu/AiSS EndCat-终猫 - 星相运轨-Echo of the Universe-.mp3" id="12_6e8qu"]
+[ext_resource type="Texture2D" uid="uid://dxe0popjo1ym0" path="res://assets/image/quit/circle-x.svg" id="13_6d61n"]
 [ext_resource type="AudioStream" uid="uid://71lgf4l1btes" path="res://assets/audio/bgm/open_menu/The Chainsmokers - Young.mp3" id="13_lao2l"]
 [ext_resource type="Script" uid="uid://crhq2g0vce4at" path="res://script/donation_control.gd" id="13_v8ow4"]
 [ext_resource type="AudioStream" uid="uid://ca3jukux63dtj" path="res://assets/audio/bgm/open_menu/Daniel Deuschle - What Do You See.mp3" id="14_ssa3l"]
@@ -44,7 +51,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_uxty4"]
 resource_name = "ui_show_animation"
-length = 2.5
+length = 3.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -52,7 +59,7 @@ tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 2.4666667),
+"times": PackedFloat32Array(0, 2.9666667),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
@@ -76,14 +83,16 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 352.0
-offset_right = 17.0
+offset_left = 333.0
+offset_top = -3.0
+offset_right = -2.0
+offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_uxty4")
 metadata/_edit_use_anchors_ = true
-metadata/_edit_vertical_guides_ = [352.0, 1894.0, 454.0, 1792.0, 428.0, 1825.0]
-metadata/_edit_horizontal_guides_ = [55.0, 871.0, 163.0, 787.0, 137.0, 817.0]
+metadata/_edit_vertical_guides_ = [283.0, 1684.0, 984.0, 69.0, 1852.0]
+metadata/_edit_horizontal_guides_ = [55.0, 163.0, 787.0, 139.0, 1028.0, 819.0, 869.0, 1009.0, 888.0]
 
 [node name="master_menu" type="Control" parent="." unique_id=784039257]
 anchors_preset = 0
@@ -93,10 +102,11 @@ offset_bottom = 40.0
 [node name="zhe_zhao3" type="Button" parent="master_menu" unique_id=1770716835]
 modulate = Color(0.53333336, 0.53333336, 0.53333336, 0.8235294)
 layout_mode = 0
-offset_left = -3.0
-offset_top = 897.0
-offset_right = 1548.0
-offset_bottom = 1070.0
+offset_left = 98.0
+offset_top = 875.0
+offset_right = 1182.0
+offset_bottom = 1030.0
+focus_mode = 0
 theme = ExtResource("2_ml86w")
 theme_override_font_sizes/font_size = 120
 disabled = true
@@ -104,35 +114,50 @@ button_mask = 0
 
 [node name="game_begin" type="Button" parent="master_menu" unique_id=2135083173 groups=["master_main_button"]]
 layout_mode = 0
-offset_left = 18.0
-offset_top = 915.0
-offset_right = 1089.0
-offset_bottom = 1052.0
+offset_left = 121.0
+offset_top = 896.0
+offset_right = 635.0
+offset_bottom = 1011.0
 theme = ExtResource("1_y8eoc")
 theme_override_fonts/font = ExtResource("1_dml82")
 button_mask = 7
 keep_pressed_outside = true
 text = "启动游戏"
 
+[node name="open_image_3" type="TextureRect" parent="master_menu" unique_id=1347142979]
+z_index = 100
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -9.125
+anchor_top = -2.3
+anchor_right = 3.5650024
+anchor_bottom = 7.5250015
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_2horb")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="version_check" type="Button" parent="master_menu" unique_id=1174894070 groups=["master_main_button"]]
 layout_mode = 0
-offset_left = 1124.0
-offset_top = 915.0
-offset_right = 1529.0
-offset_bottom = 1052.0
+offset_left = 666.0
+offset_top = 894.0
+offset_right = 1160.0
+offset_bottom = 1012.0
 theme = ExtResource("1_y8eoc")
 theme_override_fonts/font = ExtResource("1_dml82")
 button_mask = 7
 keep_pressed_outside = true
 text = "检查更新"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="master_menu" unique_id=335678608]
+[node name="HBoxContainer" type="HBoxContainer" parent="master_menu" unique_id=550424385]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -8.15
-anchor_top = 12.1
-anchor_right = -1.2
-anchor_bottom = 22.0
+anchor_left = 26.775
+anchor_top = 1.55
+anchor_right = 33.725
+anchor_bottom = 3.425
+offset_right = 230.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_y8eoc")
@@ -140,30 +165,73 @@ alignment = 1
 script = ExtResource("4_wlewo")
 metadata/_edit_use_anchors_ = true
 
-[node name="settings" type="Button" parent="master_menu/VBoxContainer" unique_id=283974833 groups=["master_slide_button"]]
+[node name="settings" type="Button" parent="master_menu/HBoxContainer" unique_id=283974833 groups=["master_slide_button"]]
 layout_mode = 2
 theme = ExtResource("1_y8eoc")
-text = "设置"
+icon = ExtResource("6_cqb11")
+flat = true
 
-[node name="about" type="Button" parent="master_menu/VBoxContainer" unique_id=2138234445 groups=["master_slide_button"]]
+[node name="about" type="Button" parent="master_menu/HBoxContainer" unique_id=2138234445 groups=["master_slide_button"]]
 layout_mode = 2
 theme = ExtResource("1_y8eoc")
-text = "关于"
+icon = ExtResource("7_2horb")
+flat = true
 
-[node name="donation" type="Button" parent="master_menu/VBoxContainer" unique_id=782844398 groups=["master_slide_button"]]
+[node name="donation" type="Button" parent="master_menu/HBoxContainer" unique_id=782844398 groups=["master_slide_button"]]
 layout_mode = 2
 theme = ExtResource("1_y8eoc")
-text = "捐赠"
+icon = ExtResource("8_ag0nm")
+flat = true
 
-[node name="quit" type="Button" parent="master_menu/VBoxContainer" unique_id=393007076 groups=["master_slide_button"]]
+[node name="quit" type="Button" parent="master_menu/HBoxContainer" unique_id=393007076 groups=["master_slide_button"]]
 layout_mode = 2
 theme = ExtResource("1_y8eoc")
-text = "退出"
+icon = ExtResource("9_jusyc")
+flat = true
 
 [node name="headline" type="Label" parent="master_menu" unique_id=1714229267]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 346.995
+offset_top = 42.0
+offset_right = 1288.995
+offset_bottom = 155.0
+theme = ExtResource("1_y8eoc")
+theme_override_fonts/font = ExtResource("10_7d8sy")
+theme_override_font_sizes/font_size = 93
+text = "Embody The Now"
+
+[node name="Label" type="Label" parent="master_menu/headline" unique_id=75904347]
+layout_mode = 0
+offset_left = 22.005005
+offset_top = 124.0
+offset_right = 289.005
+offset_bottom = 175.0
+theme = ExtResource("1_y8eoc")
+theme_override_font_sizes/font_size = 32
+text = "Launcher"
+
+[node name="top_label" type="Label" parent="master_menu/headline" unique_id=1891055313]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.08067409
+anchor_top = -0.31858408
+anchor_right = 0.7505361
+anchor_bottom = 0.13274336
+theme = ExtResource("1_y8eoc")
+theme_override_fonts/font = ExtResource("10_7d8sy")
+theme_override_font_sizes/font_size = 32
+metadata/_edit_use_anchors_ = true
+
+[node name="version" type="Label" parent="master_menu/headline" unique_id=511357439]
+z_index = 60
+layout_mode = 0
+offset_left = 220.005
+offset_top = 123.0
+offset_right = 583.005
+offset_bottom = 163.0
+theme = ExtResource("1_y8eoc")
+theme_override_font_sizes/font_size = 32
+text = "version: v1.0.0.1"
 
 [node name="ui_show_animation" type="AnimationPlayer" parent="master_menu" unique_id=1677982497]
 root_node = NodePath("../..")
@@ -173,10 +241,12 @@ libraries/ = SubResource("AnimationLibrary_h80a5")
 material = SubResource("ShaderMaterial_g3r3f")
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.925
-anchor_top = 3.5
-anchor_right = 25.534863
-anchor_bottom = 17.725
+anchor_left = 4.525125
+anchor_top = 5.025
+anchor_right = 28.60883
+anchor_bottom = 20.2
+offset_left = -20.005005
+offset_right = -20.005005
 texture = ExtResource("6_osibf")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
@@ -184,20 +254,22 @@ metadata/_edit_use_anchors_ = true
 [node name="setting_menu" type="Control" parent="." unique_id=539397208]
 visible = false
 layout_mode = 1
-anchor_left = 0.0006309148
-anchor_top = 0.05185185
-anchor_right = 0.97287065
-anchor_bottom = 0.8074074
+anchor_left = -0.07507887
+anchor_top = 0.058333334
+anchor_right = 0.8971609
+anchor_bottom = 0.8138889
 metadata/_edit_use_anchors_ = true
 
 [node name="return" type="Button" parent="setting_menu" unique_id=886461017]
 layout_mode = 0
-offset_left = -327.0
-offset_top = 340.0
-offset_right = -49.0
-offset_bottom = 415.0
+offset_left = -171.0
+offset_top = 108.0
+offset_right = 107.0
+offset_bottom = 192.0
 theme = ExtResource("1_y8eoc")
-text = "返回"
+icon = ExtResource("13_6d61n")
+flat = true
+icon_alignment = 1
 script = ExtResource("4_t5yj0")
 
 [node name="control" type="Control" parent="setting_menu" unique_id=117660760]
@@ -234,6 +306,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="title" type="Label" parent="setting_menu/control/VBoxContainer" unique_id=82143432]
 layout_mode = 2
+theme = ExtResource("1_y8eoc")
 theme_override_font_sizes/font_size = 80
 text = "设置"
 
@@ -324,21 +397,24 @@ layout_mode = 2
 text = "建议直接重新安装"
 
 [node name="about_menu" type="Control" parent="." unique_id=1683355750]
+visible = false
 anchors_preset = 0
-offset_left = 2.0
-offset_top = 56.0
-offset_right = 1531.0
-offset_bottom = 872.0
+offset_left = -119.0
+offset_top = 62.0
+offset_right = 1410.0
+offset_bottom = 878.0
 
 [node name="return" type="Button" parent="about_menu" unique_id=491653792]
 layout_mode = 0
-offset_left = -327.0
-offset_top = 339.0
-offset_right = -49.0
-offset_bottom = 414.0
+offset_left = -175.0
+offset_top = 106.0
+offset_right = 103.0
+offset_bottom = 190.0
 theme = ExtResource("1_y8eoc")
 button_mask = 7
-text = "返回"
+icon = ExtResource("13_6d61n")
+flat = true
+icon_alignment = 1
 language = "CN"
 script = ExtResource("4_t5yj0")
 
@@ -426,19 +502,21 @@ fit_content = true
 [node name="donation_menu" type="Control" parent="." unique_id=1219462169]
 visible = false
 anchors_preset = 0
-offset_left = 2.0
+offset_left = -118.0
 offset_top = 56.0
-offset_right = 1531.0
+offset_right = 1411.0
 offset_bottom = 872.0
 
 [node name="return" type="Button" parent="donation_menu" unique_id=1598393681]
 layout_mode = 0
-offset_left = -327.0
-offset_top = 340.0
-offset_right = -49.0
-offset_bottom = 415.0
+offset_left = -171.0
+offset_top = 108.0
+offset_right = 107.0
+offset_bottom = 192.0
 theme = ExtResource("1_y8eoc")
-text = "返回"
+icon = ExtResource("13_6d61n")
+flat = true
+icon_alignment = 1
 script = ExtResource("4_t5yj0")
 
 [node name="zhe_zhao_small_menu" type="Button" parent="donation_menu" unique_id=1131500161]
@@ -552,16 +630,18 @@ layout_mode = 0
 offset_left = -350.0
 offset_right = 1578.0
 offset_bottom = 1092.0
+focus_mode = 0
 disabled = true
 flat = true
 
 [node name="zhe_zhao4" type="Button" parent="." unique_id=2025421921]
-visible = false
 z_index = 50
 layout_mode = 0
-offset_left = -3.0
-offset_right = 1578.0
+offset_left = -375.0
+offset_top = 168.0
+offset_right = 1540.0
 offset_bottom = 1092.0
+focus_mode = 0
 disabled = true
 button_mask = 0
 flat = true
@@ -570,12 +650,18 @@ script = ExtResource("8_g3r3f")
 [node name="menu_music" type="AudioStreamPlayer" parent="." unique_id=261303829]
 mix_target = 1
 
+[node name="LauncherUpdateRequest" type="HTTPRequest" parent="." unique_id=2063620127]
+use_threads = true
+
+[node name="GameUpdateRequest" type="HTTPRequest" parent="." unique_id=1360986305]
+use_threads = true
+
 [connection signal="pressed" from="master_menu/game_begin" to="." method="_on_game_begin_pressed"]
 [connection signal="pressed" from="master_menu/version_check" to="." method="_on_version_check_pressed"]
-[connection signal="pressed" from="master_menu/VBoxContainer/settings" to="master_menu/VBoxContainer" method="_on_menu_button_pressed" binds= ["setting"]]
-[connection signal="pressed" from="master_menu/VBoxContainer/about" to="master_menu/VBoxContainer" method="_on_menu_button_pressed" binds= ["about"]]
-[connection signal="pressed" from="master_menu/VBoxContainer/donation" to="master_menu/VBoxContainer" method="_on_menu_button_pressed" binds= ["donation"]]
-[connection signal="pressed" from="master_menu/VBoxContainer/quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="master_menu/HBoxContainer/settings" to="master_menu/HBoxContainer" method="_on_menu_button_pressed" binds= ["setting"]]
+[connection signal="pressed" from="master_menu/HBoxContainer/about" to="master_menu/HBoxContainer" method="_on_menu_button_pressed" binds= ["about"]]
+[connection signal="pressed" from="master_menu/HBoxContainer/donation" to="master_menu/HBoxContainer" method="_on_menu_button_pressed" binds= ["donation"]]
+[connection signal="pressed" from="master_menu/HBoxContainer/quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="setting_menu/return" to="." method="_on_return_pressed"]
 [connection signal="pressed" from="setting_menu/return" to="setting_menu/return" method="_on_pressed"]
 [connection signal="pressed" from="setting_menu/control/VBoxContainer/HBox_fix/Button" to="setting_menu/control/VBoxContainer/HBox_fix" method="_on_button_pressed"]

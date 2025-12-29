@@ -183,58 +183,10 @@ tracks/14/keys = {
 tracks/15/type = "value"
 tracks/15/imported = false
 tracks/15/enabled = true
-tracks/15/path = NodePath("open_image_3:modulate")
+tracks/15/path = NodePath("open_image_30:modulate")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-tracks/16/type = "value"
-tracks/16/imported = false
-tracks/16/enabled = true
-tracks/16/path = NodePath("open_image_3:position")
-tracks/16/interp = 1
-tracks/16/loop_wrap = true
-tracks/16/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-430, -322)]
-}
-tracks/17/type = "value"
-tracks/17/imported = false
-tracks/17/enabled = true
-tracks/17/path = NodePath("open_image_3:size")
-tracks/17/interp = 1
-tracks/17/loop_wrap = true
-tracks/17/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(474.66663, 356)]
-}
-tracks/18/type = "value"
-tracks/18/imported = false
-tracks/18/enabled = true
-tracks/18/path = NodePath("version:self_modulate")
-tracks/18/interp = 1
-tracks/18/loop_wrap = true
-tracks/18/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-tracks/19/type = "value"
-tracks/19/imported = false
-tracks/19/enabled = true
-tracks/19/path = NodePath("open_image_30:modulate")
-tracks/19/interp = 1
-tracks/19/loop_wrap = true
-tracks/19/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -458,90 +410,12 @@ tracks/7/keys = {
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_i3o6h"]
-resource_name = "open_animation_4"
-length = 4.5
-step = 0.016666668
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("bei_jin:modulate")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.39215687)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("open_image_3:modulate")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("open_image_3:position")
-tracks/2/interp = 2
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.51782304, 3.5127997, 4.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(-471, -65), Vector2(-471, -65), Vector2(-52, -84), Vector2(-71, -87)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("bei_jin:position")
-tracks/3/interp = 2
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 1.5, 3.5, 4.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(-1920, -1), Vector2(-1750, 0), Vector2(-1556, 0), Vector2(-1586, 0)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("open_image_3:size")
-tracks/4/interp = 2
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.51782304, 3.5127997, 4.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(474.66663, 356), Vector2(474.66663, 356), Vector2(474.66663, 356), Vector2(474.66663, 356)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("version:self_modulate")
-tracks/5/interp = 2
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(3.5, 4.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tbgi4"]
 _data = {
 &"RESET": SubResource("Animation_o6xl0"),
 &"open_animation_1": SubResource("Animation_tefeu"),
 &"open_animation_2": SubResource("Animation_tipki"),
-&"open_animation_3": SubResource("Animation_85g3d"),
-&"open_animation_4": SubResource("Animation_i3o6h")
+&"open_animation_3": SubResource("Animation_85g3d")
 }
 
 [sub_resource type="LabelSettings" id="LabelSettings_tipki"]
@@ -612,6 +486,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_tbgi4")
 metadata/_edit_vertical_guides_ = [333.0, 1920.0]
+metadata/_edit_horizontal_guides_ = [49.0, 137.0]
 
 [node name="Label_open" type="Label" parent="." unique_id=773252181]
 z_index = 40
@@ -700,25 +575,6 @@ rotation = -0.20769419
 texture = ExtResource("3_tefeu")
 expand_mode = 1
 
-[node name="open_image_3" type="TextureRect" parent="." unique_id=974140851]
-modulate = Color(1, 1, 1, 0)
-z_index = 5
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.2482481
-anchor_top = 0.17685185
-anchor_right = 0.76718754
-anchor_bottom = 0.8435185
-offset_left = -906.63635
-offset_top = -513.0
-offset_right = -1428.3335
-offset_bottom = -877.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("4_o6xl0")
-expand_mode = 1
-metadata/_edit_use_anchors_ = true
-
 [node name="open_image_30" type="TextureRect" parent="." unique_id=401811463]
 modulate = Color(1, 1, 1, 0)
 z_index = 30
@@ -746,17 +602,6 @@ action_mode = 0
 button_mask = 7
 shortcut = SubResource("Shortcut_o6xl0")
 flat = true
-
-[node name="version" type="Label" parent="." unique_id=1562934045]
-z_index = 60
-layout_mode = 0
-offset_left = 56.0
-offset_top = 153.0
-offset_right = 283.0
-offset_bottom = 176.0
-theme_override_fonts/font = ExtResource("2_tbgi4")
-theme_override_font_sizes/font_size = 20
-text = "version: v1.0.0.1"
 
 [node name="Open_Ani_Player_3" type="AnimationPlayer" parent="." unique_id=87760314]
 libraries/ = SubResource("AnimationLibrary_jda1q")

@@ -1,15 +1,20 @@
 [gd_scene format=3 uid="uid://bpsjwrdbv7rr0"]
 
 [ext_resource type="Script" uid="uid://ch3fribt8n3xl" path="res://script/menu_bg.gd" id="1_n2i1t"]
-[ext_resource type="Texture2D" uid="uid://woy5c5jtlryg" path="res://assets/image/open_scene/菜单背景.png" id="2_7hjrn"]
 [ext_resource type="Texture2D" uid="uid://i6hashotkyky" path="res://assets/image/open_scene/菜单背景模糊.png" id="3_cut7n"]
+
+[sub_resource type="Gradient" id="Gradient_k5rt7"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_8v0gk"]
+gradient = SubResource("Gradient_k5rt7")
 
 [sub_resource type="Animation" id="Animation_h6mp8"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("white_bg:modulate")
+tracks/0/path = NodePath("bei_jin:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -18,78 +23,17 @@ tracks/0/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
-tracks/1/type = "bezier"
+tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("white_bg:color:r")
+tracks/1/path = NodePath("bei_jin:color")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/2/type = "bezier"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("white_bg:color:g")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.7882353, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/3/type = "bezier"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("white_bg:color:b")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.5921569, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/4/type = "bezier"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("white_bg:color:a")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("menu_bg_blur:modulate")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_dhxob"]
-resource_name = "blur_animation"
-length = 8.0
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("menu_bg_blur:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 2, 4, 6, 8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0.19607843), Color(1, 1, 1, 0.19607842), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0.19607842)]
+"values": [Color(0, 0.49803922, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_ibg1u"]
@@ -98,76 +42,31 @@ length = 2.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("white_bg:modulate")
-tracks/0/interp = 1
+tracks/0/path = NodePath("bei_jin:modulate")
+tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5, 1.5),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 2.5),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 0.7058824), Color(1, 1, 1, 0.8627451), Color(1, 1, 1, 0)]
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
-tracks/1/type = "bezier"
+tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("white_bg:color:r")
+tracks/1/path = NodePath("bei_jin:color")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"handle_modes": PackedInt32Array(0, 2),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.083333336, 0, 0, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-tracks/2/type = "bezier"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("white_bg:color:g")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"handle_modes": PackedInt32Array(0, 2),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0.6784314, -0.083333336, 0.053594768, 0, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-tracks/3/type = "bezier"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("white_bg:color:b")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"handle_modes": PackedInt32Array(0, 2),
-"points": PackedFloat32Array(0.5921569, -0.25, 0, 0.25, 0, 0.5921569, -0.083333336, 0, 0, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-tracks/4/type = "bezier"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("white_bg:color:a")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"handle_modes": PackedInt32Array(0, 2),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.083333336, 0, 0, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("menu_bg_blur:modulate")
-tracks/5/interp = 2
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.53333336, 2.4333334),
+"times": PackedFloat32Array(0, 0.6, 2.5),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0.39215687)]
+"values": [Color(0, 0.49803922, 1, 1), Color(0.5788053, 0.756876, 1, 1), Color(0, 0.49803922, 1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_66g3k"]
 _data = {
 &"RESET": SubResource("Animation_h6mp8"),
-&"blur_animation": SubResource("Animation_dhxob"),
 &"white_bg_animation": SubResource("Animation_ibg1u")
 }
 
@@ -185,26 +84,23 @@ script = ExtResource("1_n2i1t")
 layout_mode = 0
 offset_right = 1924.3387
 offset_bottom = 1082.0
-texture = ExtResource("2_7hjrn")
+texture = SubResource("GradientTexture1D_8v0gk")
 expand_mode = 1
 
-[node name="menu_bg_blur" type="TextureRect" parent="." unique_id=1100568474]
-z_index = 2
-layout_mode = 0
-offset_right = 3844.0
-offset_bottom = 2160.0
-scale = Vector2(0.5, 0.5)
+[node name="white_bg_animation" type="AnimationPlayer" parent="." unique_id=1514116216]
+libraries/ = SubResource("AnimationLibrary_66g3k")
+
+[node name="菜单背景模糊" type="Sprite2D" parent="." unique_id=855769050]
+position = Vector2(963, 540)
+scale = Vector2(0.50138885, 0.50138885)
 texture = ExtResource("3_cut7n")
 
-[node name="white_bg" type="ColorRect" parent="." unique_id=219615264]
-z_index = 8
+[node name="bei_jin" type="ColorRect" parent="." unique_id=948433033]
+z_index = 2
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 0.7882353, 0.5921569, 1)
-
-[node name="white_bg_animation" type="AnimationPlayer" parent="." unique_id=1514116216]
-libraries/ = SubResource("AnimationLibrary_66g3k")
+color = Color(0, 0.49803922, 1, 1)

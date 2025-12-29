@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bdiaogh5yj85b"]
+
+[ext_resource type="Script" uid="uid://bpjosvps7gk0e" path="res://script/version_check.gd" id="1_mfxwt"]
+[ext_resource type="Script" uid="uid://c40qmbq0yxbbx" path="res://script/set_up_info/set_up_info.gd" id="2_ikgoi"]
+
+[node name="Node" type="Node" unique_id=709029188]
+script = ExtResource("1_mfxwt")
+
+[node name="SetUpInfo" type="Node" parent="." unique_id=72377781]
+script = ExtResource("2_ikgoi")
