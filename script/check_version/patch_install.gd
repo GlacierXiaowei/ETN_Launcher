@@ -1,6 +1,7 @@
 extends Node
 class_name PatchInstall
-##full 继承自PatchInstall也不是不行
+#使用new之后 由于会使用httprequest 所以需要add_child才行
+
 
 var full_package : Dictionary 
 var all_patch: Array = []

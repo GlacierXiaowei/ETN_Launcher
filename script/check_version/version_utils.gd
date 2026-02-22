@@ -1,4 +1,5 @@
 extends Node
+##已设置为全局单例
 
 
 func version_to_int(version: String) -> int:

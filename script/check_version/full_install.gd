@@ -1,5 +1,6 @@
 extends PatchInstall
 class_name FullInstall
+#使用new之后 由于会使用httprequest 所以需要add_child才行
 
 
 
@@ -14,7 +15,7 @@ func _init(local: VersionInfo, server: UpdatePolicy) -> void:
 
 	download_path = "user://download/full/"
 	var appdata = OS.get_environment("APPDATA")
-	var game_dir = appdata.path_join("ETN_Farm")
+	var game_dir = appdata.path_join(server.game_name)
 	install_path = game_dir.path_join("patch")
 	DirAccess.make_dir_recursive_absolute(install_path)
 	
