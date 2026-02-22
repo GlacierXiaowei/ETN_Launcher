@@ -8,6 +8,8 @@ func _ready() -> void:
 	print("用户目录: ", user_path)
 	test_full_flow()
 
+
+@onready var label: Label = $MarginContainer/VBoxContainer/Label
 func test_full_flow() -> void:
 	# 步骤1：获取本地版本信息
 	print("\n[步骤1] 获取本地版本信息...")
@@ -57,6 +59,9 @@ func test_patch_install(local, server) -> void:
 	var installer = PatchInstall.new(local, server)
 	installer.install_path = user_path.path_join("patch")
 	add_child(installer)
+	
+	# 连接进度信号
+	installer.download_progress_changed.connect(_on_patch_download_progress)
 	
 	# 设置服务器补丁列表
 	installer.all_patch = server.patches
@@ -108,6 +113,9 @@ func test_full_install(local, server) -> void:
 	var installer = FullInstall.new(local, server)
 	add_child(installer)
 	
+	# 连接进度信号
+	installer.download_progress_changed.connect(_on_full_download_progress)
+	
 	# 下载完整包
 	print("[步骤1] 开始下载完整包...")
 	await installer.begin_download()
@@ -132,3 +140,21 @@ func test_full_install(local, server) -> void:
 	print("========== 全量更新流程结束 ==========")
 	
 	installer.queue_free()
+
+##补丁下载进度回调
+func _on_patch_download_progress(current: int, total: int):
+	var progress = 0.0
+	if total > 0:
+		progress = float(current) / float(total) * 100.0
+	print("[补丁下载进度] %d / %d (%.1f%%)" % [current, total, progress])
+	if label:
+		label.text = "[补丁下载] %d / %d (%.1f%%)" % [current, total, progress]
+
+##完整包下载进度回调
+func _on_full_download_progress(current: int, total: int):
+	var progress = 0.0
+	if total > 0:
+		progress = float(current) / float(total) * 100.0
+	print("[完整包下载进度] %d / %d (%.1f%%)" % [current, total, progress])
+	if label:
+		label.text = "[完整包下载] %d / %d (%.1f%%)" % [current, total, progress]

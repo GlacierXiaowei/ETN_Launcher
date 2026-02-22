@@ -28,3 +28,6 @@ layout_mode = 2
 
 [node name="检查游戏版本" type="Button" parent="MarginContainer/VBoxContainer" unique_id=790202475]
 layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1945377927]
+layout_mode = 2

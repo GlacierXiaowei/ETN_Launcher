@@ -22,6 +22,9 @@ var install_path: String
 var is_download_successful : bool = false
 var is_install_successful : bool = false
 
+#下载进度信号
+signal download_progress_changed(current_bytes: int, total_bytes: int)
+
 
 
 func _init(local: VersionInfo, server: UpdatePolicy) -> void:
@@ -194,6 +197,12 @@ func download_single_file(url: String, file_name: String) -> bool:
 	var http_request = HTTPRequest.new()
 	add_child(http_request)
 	
+	# 创建计时器用于检查进度
+	var timer = Timer.new()
+	timer.wait_time = 0.3
+	timer.autostart = true
+	add_child(timer)
+	
 	var download_success = false
 	var error_message = ""
 	
@@ -202,16 +211,36 @@ func download_single_file(url: String, file_name: String) -> bool:
 	if error != OK:
 		push_error("[PatchInstall] download_single_file: Request failed with error: " + str(error))
 		remove_child(http_request)
+		remove_child(timer)
 		http_request.queue_free()
+		timer.queue_free()
 		return false
 	
-	# 等待请求完成并获取结果
+	# 循环检查进度，直到请求完成
+	while http_request.get_http_client_status() != HTTPClient.STATUS_DISCONNECTED:
+		# 等待计时器触发
+		await timer.timeout
+		
+		# 获取进度
+		var current_bytes = http_request.get_downloaded_bytes()
+		var total_bytes = http_request.get_body_size()
+		
+		# 发送进度信号
+		if total_bytes > 0:
+			download_progress_changed.emit(current_bytes, total_bytes)
+	
+	# 请求已完成，获取最终结果
 	var result = await http_request.request_completed
+	var response_code = result[1]
+	var body = result[3]
+	
+	# 停止计时器
+	timer.stop()
+	remove_child(timer)
+	timer.queue_free()
 	
 	# 处理结果
-	var response_code = result[1]
 	if response_code == 200:
-		var body = result[3]
 		var save_path = download_path.path_join(file_name)
 		var file = FileAccess.open(save_path, FileAccess.WRITE)
 		if file == null:
@@ -221,6 +250,7 @@ func download_single_file(url: String, file_name: String) -> bool:
 			file.store_buffer(body)
 			file.close()
 			download_success = true
+			download_progress_changed.emit(body.size(), body.size())
 			print("[PatchInstall] download_single_file: Downloaded " + file_name)
 	else:
 		error_message = "HTTP error: " + str(response_code)
@@ -234,6 +264,7 @@ func download_single_file(url: String, file_name: String) -> bool:
 		push_error("[PatchInstall] download_single_file: " + error_message)
 	
 	return download_success
+	
 
 ##开始安装补丁
 func begin_install() -> void:
