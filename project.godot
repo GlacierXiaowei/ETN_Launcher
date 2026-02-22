@@ -11,8 +11,20 @@ config_version=5
 [application]
 
 config/name="ETN_Launcher"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="ETN_Launcher"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+VersionUtils="*uid://2k12dqeaqgns"
+
+[file_customization]
+
+folder_colors={
+"res://scene/": "green"
+}
 
 [physics]
 
