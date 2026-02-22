@@ -170,7 +170,7 @@ func get_patch_urls() -> Array:
 					push_error("[PatchInstall] get_patch_urls: URL is empty for patch_id: " + str(patch_id))
 					found = true
 					break
-				var file_name = "Patch_" + str(patch_id) + ".pck"
+				var file_name = "Patch_" + str(patch_id).pad_zeros(3) + ".pck"
 				result.append({"url": url, "file_name": file_name, "patch_id": patch_id})
 				found = true
 				break
@@ -202,7 +202,7 @@ func download_single_file(url: String, file_name: String) -> bool:
 	if error != OK:
 		push_error("[PatchInstall] download_single_file: Request failed with error: " + str(error))
 		remove_child(http_request)
-		http_request.free()
+		http_request.queue_free()
 		return false
 	
 	# 等待请求完成并获取结果
@@ -228,7 +228,7 @@ func download_single_file(url: String, file_name: String) -> bool:
 	
 	# 清理
 	remove_child(http_request)
-	http_request.free()
+	http_request.queue_free()
 	
 	if not download_success:
 		push_error("[PatchInstall] download_single_file: " + error_message)

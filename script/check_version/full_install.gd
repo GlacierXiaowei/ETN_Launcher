@@ -130,7 +130,7 @@ func unzip_file(zip_path: String, dest_path: String) -> Array:
 	if error != OK:
 		push_error("[FullInstall] unzip_file: Failed to open zip file")
 		remove_child(zip_reader)
-		zip_reader.free()
+		zip_reader.queue_free()
 		return extracted_files
 	
 	var files = zip_reader.get_files()
@@ -155,6 +155,6 @@ func unzip_file(zip_path: String, dest_path: String) -> Array:
 	
 	zip_reader.close()
 	remove_child(zip_reader)
-	zip_reader.free()
+	zip_reader.queue_free()
 	
 	return extracted_files

@@ -38,7 +38,7 @@ func get_update_policy(repo: String = "ETN_Farm") -> UpdatePolicy:
 	if error != OK:
 		push_error("[VersionUtils] Failed to request GitHub API: " + api_url)
 		remove_child(http_request)
-		http_request.free()
+		http_request.queue_free()
 		return UpdatePolicy.new()
 	
 	var response = await http_request.request_completed
@@ -47,14 +47,14 @@ func get_update_policy(repo: String = "ETN_Farm") -> UpdatePolicy:
 	if response_code != 200:
 		push_error("[VersionUtils] GitHub API returned code: " + str(response_code))
 		remove_child(http_request)
-		http_request.free()
+		http_request.queue_free()
 		return UpdatePolicy.new()
 	
 	var body = response[3].get_string_from_utf8()
 	var release_data = JSON.parse_string(body)
 	
 	remove_child(http_request)
-	http_request.free()
+	http_request.queue_free()
 	
 	if release_data == null:
 		push_error("[VersionUtils] Failed to parse release data")
@@ -76,22 +76,22 @@ func get_update_policy(repo: String = "ETN_Farm") -> UpdatePolicy:
 	if error != OK:
 		push_error("[VersionUtils] Failed to download: " + download_url)
 		remove_child(download_request)
-		download_request.free()
+		download_request.queue_free()
 		return UpdatePolicy.new()
 	
 	var download_response = await download_request.request_completed
 	var download_response_code = download_response[1]
-	var download_body = download_response[3]
+	var download_body = download_response[3].get_string_from_utf8()
 	
 	remove_child(download_request)
-	download_request.free()
+	download_request.queue_free()
 	
 	if download_response_code != 200:
 		push_error("[VersionUtils] Download failed with code: " + str(download_response_code))
 		return UpdatePolicy.new()
 	
 	# 3. 解析 JSON
-	var parse_result = JSON.parse_string(download_body.get_string_from_utf8())
+	var parse_result = JSON.parse_string(download_body)
 	if parse_result == null:
 		push_error("[VersionUtils] Failed to parse version JSON")
 		return UpdatePolicy.new()
