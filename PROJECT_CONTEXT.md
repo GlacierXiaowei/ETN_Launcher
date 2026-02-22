@@ -1,18 +1,30 @@
-# ETN 启动器 — 项目上下文
+# ETN 启动器 — 项目文档
 
 ---
 
-## 1. 背景与目标
+## 1. 项目概述
 
-- **目标**：构建结构清晰、可维护、具专业感的启动器体系
-- **能力**：热更新、版本校验、完整性校验、启动控制
-- **适用范围**：Windows 平台；Godot 项目结构（EXE + PCK）
-- **设计原则**：不追求过度 DRM，强调秩序、一致性、可测试性
+ETN Launcher 是一个游戏启动器，支持多游戏管理、版本检查、热更新补丁下载与完整性校验。
+
+### 适用范围
+- Windows 平台
+- Godot 项目结构（EXE + PCK）
 
 ---
 
-## 2. 文件结构
+## 2. 安装与运行
 
+### 安装位置
+```
+%LOCALAPPDATA%/ETN/
+```
+
+### Godot 获取安装路径
+```gdscript
+var game_dir = OS.get_environment("LOCALAPPDATA") + "/ETN/"
+```
+
+### 文件结构
 ```
 ETN/
 ├─ ETN.exe                # 主程序（引擎入口）
@@ -25,211 +37,231 @@ ETN/
 └─ launcher.exe           # 启动器
 ```
 
-### 职责分离
+---
 
-| 组件 | 职责 |
-|------|------|
-| ETN.exe | 启动引擎，不承担版本/下载逻辑，不频繁更新 |
-| ETN.pck | 完整初始内容，永不覆盖，作为基础层 |
-| patch_xxx.pck | 只包含需覆盖的资源，路径与主包一致 |
-| launcher.exe | 版本检查、补丁下载、完整性校验、启动决策 |
+## 3. 模块说明
+
+### LauncherCore
+启动器核心流程控制，协调各模块工作。
+
+### VersionCheck
+版本检查服务，负责：
+- 读取本地版本信息
+- 获取服务器 Release JSON
+- 对比版本判断是否需要更新
+
+### PatchDownloader
+补丁下载服务，负责：
+- 下载补丁文件
+- 支持断点续传
+- 下载进度回调
+
+### PatchManager
+补丁管理，负责：
+- 计算需要下载的补丁列表
+- 管理本地补丁文件
+- 应用补丁
+
+### IntegrityVerifier
+完整性校验，负责：
+- SHA-256 哈希计算
+- 文件完整性验证
+
+### WindowsManager
+窗口管理，负责：
+- 窗口生命周期
+- UI 交互
+
+### Utils
+通用工具，负责：
+- 日志记录
+- 文件操作
+- 网络请求封装
 
 ---
 
-## 3. 安装位置
+## 4. API 参考
 
-### 默认路径
-```
-%LOCALAPPDATA%/ETN/
-```
+### VersionCheck
 
-### Godot 获取方式
 ```gdscript
-var game_dir = OS.get_environment("LOCALAPPDATA") + "/ETN/"
+# 获取本地版本信息
+func get_local_version() -> Dictionary
+
+# 获取服务器版本信息
+func get_remote_version(game_id: String) -> Dictionary
+
+# 检查是否需要更新
+func need_update(local: Dictionary, remote: Dictionary) -> bool
 ```
 
-### 自定义路径
-- 首次启动时用户选择
-- 路径写入注册表：`HKEY_CURRENT_USER\Software\ETN\InstallPath`
+### PatchDownloader
+
+```gdscript
+# 下载文件
+func download_file(url: String, save_path: String, progress_callback: Callable) -> int
+
+# 取消下载
+func cancel_download()
+
+# 获取下载进度
+func get_progress() -> float
+```
+
+### PatchManager
+
+```gdscript
+# 计算需要下载的补丁
+func calculate_patches_needed(current_patch: int, target_patches: Array) -> Array
+
+# 应用补丁
+func apply_patch(patch_path: String) -> bool
+
+# 获取已安装补丁列表
+func get_installed_patches() -> Array
+```
+
+### IntegrityVerifier
+
+```gdscript
+# 计算文件哈希
+func calculate_hash(file_path: String) -> String
+
+# 验证文件完整性
+func verify_file(file_path: String, expected_hash: String) -> bool
+```
+
+### Utils
+
+```gdscript
+# 获取安装路径
+func get_install_path() -> String
+
+# 保存安装路径到注册表
+func save_install_path(path: String)
+
+# 日志记录
+func log(level: String, message: String)
+
+# 文件操作
+func ensure_dir(path: String) -> bool
+func delete_file(path: String) -> bool
+```
 
 ---
 
-## 4. 核心模块
+## 5. 数据结构
 
-- **LauncherCore**：启动器核心流程控制
-- **VersionCheck**：版本检查服务
-- **PatchDownloader**：补丁下载服务
-- **PatchManager**：补丁管理与覆盖逻辑
-- **IntegrityVerifier**：完整性校验（SHA-256）
-- **WindowsManager**：窗口管理与生命周期
-- **Utils**：通用工具与日志
-
----
-
-## 5. 多游戏支持
-
-- 每个游戏独立 GitHub 仓库
-- 每个仓库一个 Release JSON 文件
-- Launcher 切换游戏时读取对应的 Release JSON
-
----
-
-## 6. 数据契约
-
-### Release JSON 模板
+### 本地版本信息 (version.json)
 
 ```json
 {
   "game_id": "embodied_now",
   "version": "1.0.3",
   "base_version": "1.0.0",
-  "force_update": false,
-  "force_full_update": false,
-  "install_path": "C:\\Users\\YourUser\\AppData\\Local\\ETN\\embodied_now",
-  "full_package": {
-    "filename": "ETN_v1.0.3_full.zip",
-    "hash": "sha256:abcdef1234567890",
-    "url": "https://github.com/yourorg/embodied_now/releases/download/v1.0.3/ETN_v1.0.3_full.zip",
-    "size": 12345678
-  },
-  "patches": [
-    {
-      "patch_number": 1,
-      "name": "patch_001.pck",
-      "type": "PCK",
-      "hash": "sha256:1111111111111111111",
-      "url": "https://github.com/yourorg/embodied_now/releases/download/v1.0.3/patch_001.pck",
-      "size": 2048000,
-      "applies_from": "1.0.0",
-      "applies_to": "1.0.1"
-    },
-    {
-      "patch_number": 2,
-      "name": "patch_002.pck",
-      "type": "PCK",
-      "hash": "sha256:2222222222222222222",
-      "url": "https://github.com/yourorg/embodied_now/releases/download/v1.0.3/patch_002.pck",
-      "size": 4096000,
-      "applies_from": "1.0.1",
-      "applies_to": "1.0.2"
-    },
-    {
-      "patch_number": 3,
-      "name": "patch_003.pck",
-      "type": "ZIP",
-      "hash": "sha256:3333333333333333333",
-      "url": "https://github.com/yourorg/embodied_now/releases/download/v1.0.3/patch_003.pck",
-      "size": 1024000,
-      "applies_from": "1.0.2",
-      "applies_to": "1.0.3"
-    }
-  ],
-  "release_date": "2026-02-21",
-  "notes": "Minor fixes and patch optimizations."
+  "installed_patch": 3
 }
 ```
 
-### 字段说明
+### 服务器版本信息 (Release JSON)
 
-| 字段 | 说明 |
-|------|------|
-| game_id | 游戏标识，用于 Launcher 切换游戏 |
-| version | 目标版本号 |
-| base_version | 最低基础版本，低于此版本需全量更新 |
-| force_update | 是否强制更新（不可跳过） |
-| force_full_update | 是否强制全量更新（必须下载完整包） |
-| install_path | 游戏安装路径 |
-| full_package | 完整包信息（用于全量更新） |
-| patches | 补丁列表，按 patch_number 升序排列 |
-| release_date | 发布日期 |
-| notes | 更新说明 |
-
-### 补丁字段说明
-
-| 字段 | 说明 |
-|------|------|
-| patch_number | 补丁序号 |
-| name | 补丁文件名 |
-| type | 文件类型（PCK/ZIP） |
-| hash | SHA-256 哈希 |
-| url | 下载链接 |
-| size | 文件大小（字节） |
-| applies_from | 适用起始版本 |
-| applies_to | 适用目标版本 |
+详见 LAUNCHER_CONTEXT.md 中的设计文档。
 
 ---
 
-## 7. 更新流程
+## 6. 更新流程
 
-### 启动器更新
+### 启动器更新流程
 1. 启动 launcher.exe
 2. 检查自身版本
-3. 若需更新 → 下载更新 → 重启
+3. 若需更新 → 下载 → 重启
 
-### 游戏更新
+### 游戏更新流程
 1. 用户选择游戏
 2. 读取本地 version.json
 3. 获取服务器 Release JSON
-4. 判断更新类型：
-   - `force_full_update = true` → 全量更新
-   - `base_version > 当前版本` → 全量更新
-   - 否则 → 补丁更新
-5. 补丁更新：计算需要下载的补丁（当前补丁号 ~ 目标补丁号）
-6. 下载 → 校验哈希 → 写入 patches/
-7. 全部完成后允许启动游戏
+4. 判断更新类型
+5. 执行更新
+6. 启动游戏
+
+### 更新类型判断
+
+| 条件 | 更新类型 |
+|------|----------|
+| force_full_update = true | 全量更新 |
+| base_version > 当前版本 | 全量更新 |
+| 否则 | 补丁更新 |
 
 ---
 
-## 8. 完整性校验
+## 7. 错误处理
 
-- **算法**：SHA-256
-- **校验对象**：ETN.exe, ETN.pck, patch_xxx.pck
-- **异常处理**：
-  - 哈希不匹配 → 提示重新下载
-  - 文件缺失 → 强制更新
-
----
-
-## 9. 非功能性需求
-
-- **性能**：异步操作，避免阻塞 UI
-- **可测试性**：模块化设计，提供 Mock 接口
-- **日志**：统一日志等级，错误可追踪
-- **扩展性**：预留跨平台接口
+| 错误 | 处理方式 |
+|------|----------|
+| 网络连接失败 | 重试 3 次，失败后允许跳过 |
+| 哈希校验失败 | 删除文件，重新下载 |
+| 文件写入失败 | 提示用户，记录日志 |
+| 磁盘空间不足 | 提示用户清理空间 |
 
 ---
 
-## 10. 风险与对策
+## 8. 日志规范
 
-| 风险 | 对策 |
-|------|------|
-| 网络波动 | 断点续传、重试机制 |
-| 哈希校验失败 | 重新下载、备份回滚 |
-| 版本冲突 | 清晰回滚路径、版本标记 |
+### 日志等级
+- DEBUG：调试信息
+- INFO：常规信息
+- WARNING：警告信息
+- ERROR：错误信息
 
----
+### 日志格式
+```
+[时间] [等级] [模块] 消息内容
+```
 
-## 11. 里程碑
-
-### 阶段 1 - MVP
-- 版本检查
-- 简单下载
-- 哈希校验
-- 启动控制
-
-### 阶段 2 - 模块化
-- 接口暴露
-- 单元测试
-- 日志系统
-
-### 阶段 3 - 扩展
-- 跨平台支持
-- 多语言本地化
-- 更多更新策略
+### 日志位置
+```
+%LOCALAPPDATA%/ETN/logs/launcher.log
+```
 
 ---
 
-## 12. 参考
+## 9. 配置说明
 
-- 项目配置：project.godot
-- 现有脚本：script/version_check.gd, script/PatchManager.gd, script/windows_manager.gd
+### 注册表配置
+```
+HKEY_CURRENT_USER\Software\ETN\
+├─ InstallPath    # 游戏安装路径
+└─ Language       # 语言设置
+```
+
+---
+
+## 10. 开发指南
+
+### 环境要求
+- Godot 4.x
+- GDScript
+
+### 目录结构
+```
+ETN_Launcher/
+├─ script/
+│    ├─ version_check.gd
+│    ├─ patch_manager.gd
+│    ├─ integrity_verifier.gd
+│    └─ utils.gd
+├─ scenes/
+│    └─ open/
+│        ├─ main.tscn
+│        └─ ui.tscn
+├─ assets/
+│    └─ ui/
+└─ project.godot
+```
+
+## 11. 版本更新需要修改的文件
+### 所有的version.json 以及哈希
+### 等效版本
+- 补丁包一定要修改GameVersion，修改等效版本，
+- 完整包需要更改等效版本
+- 启动器也别忘了
