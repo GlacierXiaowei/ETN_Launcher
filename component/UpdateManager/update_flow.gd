@@ -44,6 +44,7 @@ func test_patch_download(local, server) -> void:
 func test_patch_install(local, server) -> void:
 	# 安装补丁
 	installer = PatchInstall.new(local, server) as PatchInstall
+	add_child(installer)
 	print("\n[步骤5] 开始安装补丁...")
 	installer.begin_install()
 	
@@ -73,7 +74,9 @@ func test_full_download(local, server) -> void:
 	
 func test_full_install(local : VersionInfo, server : UpdatePolicy) -> void:
 	# 安装完整包
-	installer = PatchInstall.new(local, server)
+	installer = FullInstall.new(local, server) as FullInstall
+	add_child(installer)
+	
 	print("\n[步骤2] 开始安装完整包...")
 	installer.begin_install()
 	await installer.install_finished
