@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bvoi1pypwfbj2"]
+
+[ext_resource type="Script" uid="uid://dh2qevku5b3dq" path="res://component/UpdateManager/update_flow.gd" id="1_fhsw2"]
+
+[node name="UpdateFlow" type="Node" unique_id=911630090]
+script = ExtResource("1_fhsw2")

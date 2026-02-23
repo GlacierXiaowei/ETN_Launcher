@@ -6,23 +6,23 @@
   "force_update": true,
   "force_full_package": false,
   "full_package": {
-    "version": "1.1.0",
-    "url": "https://xxx/full_1.1.0.zip"
+	"version": "1.1.0",
+	"url": "https://xxx/full_1.1.0.zip"
   },
   "patches": [
-    {
-      "patch_id": 13,
-      "from_patch": 12,
-      "to_patch": 13,
-      "url": "https://xxx/patch_13.zip",
-      "notice": "ÐÞ¸´UIÉÁÍËÎÊÌâ"
-    },
-    {
-      "patch_id": 14,
-      "from_patch": 13,
-      "to_patch": 14,
-      "url": "https://xxx/patch_14.zip",
-      "notice": "ÐÂÔöµØÍ¼"
-    }
+	{
+	  "patch_id": 13,
+	  "from_patch": 12,
+	  "to_patch": 13,
+	  "url": "https://xxx/patch_13.zip",
+	  "notice": "ï¿½Þ¸ï¿½UIï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
+	},
+	{
+	  "patch_id": 14,
+	  "from_patch": 13,
+	  "to_patch": 14,
+	  "url": "https://xxx/patch_14.zip",
+	  "notice": "ï¿½ï¿½ï¿½ï¿½ï¿½Í¼"
+	}
   ]
 }

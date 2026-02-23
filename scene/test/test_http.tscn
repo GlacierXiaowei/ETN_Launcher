@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://b5kvcpcd2htex"]
+
+[ext_resource type="Script" uid="uid://8i27ejlmqnyv" path="res://scene/test/test_http.gd" id="1_uvsha"]
+
+[node name="TestHTTP" type="Node" unique_id=1295614196]
+script = ExtResource("1_uvsha")
+
+[node name="Label" type="Label" parent="." unique_id=68182155]
+offset_right = 40.0
+offset_bottom = 23.0

@@ -2,8 +2,7 @@ extends Node
 class_name PatchInstall
 #使用new之后 由于会使用httprequest 所以需要add_child才行
 
-
-var full_package : Dictionary 
+var full_package : Dictionary
 var all_patch: Array = []
 
 var needed_patch: Array = []
@@ -22,9 +21,7 @@ var install_path: String
 var is_download_successful : bool = false
 var is_install_successful : bool = false
 
-#下载进度信号
-signal download_progress_changed(current_bytes: int, total_bytes: int)
-
+signal install_finished
 
 
 func _init(local: VersionInfo, server: UpdatePolicy) -> void:
@@ -98,7 +95,7 @@ func begin_download() -> void:
 	is_download_successful = false
 	
 	# 步骤1：清空下载文件夹
-	if not clear_download_folder():
+	if not VersionUtils.clear_folder(download_path):
 		push_error("[PatchInstall] begin_download: Failed to clear download folder")
 		return
 	
@@ -110,13 +107,8 @@ func begin_download() -> void:
 	
 	# 步骤3：依次下载每个文件
 	for url_info in urls:
-		if not await download_single_file(url_info.url, url_info.file_name):
-			push_error("[PatchInstall] begin_download: Failed to download " + url_info.file_name)
-			return
-	
-	# 所有下载完成
-	is_download_successful = true
-	print("[PatchInstall] begin_download: All patches downloaded successfully")
+		download_single_file_with_shell(url_info.url, url_info.file_name)
+
 
 ##清空下载文件夹
 func clear_download_folder() -> bool:
@@ -197,12 +189,6 @@ func download_single_file(url: String, file_name: String) -> bool:
 	var http_request = HTTPRequest.new()
 	add_child(http_request)
 	
-	# 创建计时器用于检查进度
-	var timer = Timer.new()
-	timer.wait_time = 0.3
-	timer.autostart = true
-	add_child(timer)
-	
 	var download_success = false
 	var error_message = ""
 	
@@ -211,36 +197,16 @@ func download_single_file(url: String, file_name: String) -> bool:
 	if error != OK:
 		push_error("[PatchInstall] download_single_file: Request failed with error: " + str(error))
 		remove_child(http_request)
-		remove_child(timer)
 		http_request.queue_free()
-		timer.queue_free()
 		return false
 	
-	# 循环检查进度，直到请求完成
-	while http_request.get_http_client_status() != HTTPClient.STATUS_DISCONNECTED:
-		# 等待计时器触发
-		await timer.timeout
-		
-		# 获取进度
-		var current_bytes = http_request.get_downloaded_bytes()
-		var total_bytes = http_request.get_body_size()
-		
-		# 发送进度信号
-		if total_bytes > 0:
-			download_progress_changed.emit(current_bytes, total_bytes)
-	
-	# 请求已完成，获取最终结果
+	# 等待请求完成并获取结果
 	var result = await http_request.request_completed
-	var response_code = result[1]
-	var body = result[3]
-	
-	# 停止计时器
-	timer.stop()
-	remove_child(timer)
-	timer.queue_free()
 	
 	# 处理结果
+	var response_code = result[1]
 	if response_code == 200:
+		var body = result[3]
 		var save_path = download_path.path_join(file_name)
 		var file = FileAccess.open(save_path, FileAccess.WRITE)
 		if file == null:
@@ -250,7 +216,6 @@ func download_single_file(url: String, file_name: String) -> bool:
 			file.store_buffer(body)
 			file.close()
 			download_success = true
-			download_progress_changed.emit(body.size(), body.size())
 			print("[PatchInstall] download_single_file: Downloaded " + file_name)
 	else:
 		error_message = "HTTP error: " + str(response_code)
@@ -264,7 +229,18 @@ func download_single_file(url: String, file_name: String) -> bool:
 		push_error("[PatchInstall] download_single_file: " + error_message)
 	
 	return download_success
+
+##使用系统浏览器下载
+func download_single_file_with_shell(url: String, file_name: String) -> bool:
+	if url.is_empty() or file_name.is_empty():
+		push_error("Invalid url or file_name")
+		return false
+
+	print("[PatchInstall] Opening browser to download: ", url)
+	print("[PatchInstall] Please save the file to: ", download_path)
+	OS.shell_open(url)
 	
+	return true
 
 ##开始安装补丁
 func begin_install() -> void:
@@ -272,15 +248,18 @@ func begin_install() -> void:
 	
 	if download_path == "" or download_path.is_empty():
 		push_error("[PatchInstall] begin_install: download_path is empty")
+		install_finished.emit(is_install_successful)
 		return
 	
 	if install_path == "" or install_path.is_empty():
 		push_error("[PatchInstall] begin_install: install_path is empty")
+		install_finished.emit(is_install_successful)
 		return
 	
 	# 检查下载目录是否存在
 	if not DirAccess.dir_exists_absolute(download_path):
 		push_error("[PatchInstall] begin_install: Download directory does not exist: " + download_path)
+		install_finished.emit(is_install_successful)
 		return
 	
 	# 检查安装目录是否存在，如果不存在则创建
@@ -288,16 +267,19 @@ func begin_install() -> void:
 		var d = DirAccess.open("user://")
 		if d == null:
 			push_error("[PatchInstall] begin_install: Failed to open user://")
+			install_finished.emit(is_install_successful)
 			return
 		var err = d.make_dir_recursive(install_path)
 		if err != OK:
 			push_error("[PatchInstall] begin_install: Failed to create install directory")
+			install_finished.emit(is_install_successful)
 			return
 	
 	# 获取下载目录中的所有文件
 	var download_dir = DirAccess.open(download_path)
 	if download_dir == null:
 		push_error("[PatchInstall] begin_install: Failed to open download directory")
+		install_finished.emit(is_install_successful)
 		return
 	
 	var files_to_move = []
@@ -311,6 +293,7 @@ func begin_install() -> void:
 	
 	if files_to_move.size() == 0:
 		push_error("[PatchInstall] begin_install: No files to install")
+		install_finished.emit(is_install_successful)
 		return
 	
 	# 移动每个文件
@@ -320,10 +303,12 @@ func begin_install() -> void:
 		
 		if not move_file(source_path, dest_path):
 			push_error("[PatchInstall] begin_install: Failed to move file: " + f)
+			install_finished.emit(is_install_successful)
 			return
 	
 	is_install_successful = true
 	print("[PatchInstall] begin_install: All patches installed successfully")
+	install_finished.emit(is_install_successful)
 
 ##移动单个文件
 func move_file(source: String, dest: String) -> bool:

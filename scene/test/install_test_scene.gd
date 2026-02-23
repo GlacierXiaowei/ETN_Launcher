@@ -1,19 +1,34 @@
 extends Control
+@export var update_choose_file: Node
+@onready var uptate_type_control: Node = $Component/UptateTypeControl
+@onready var update_flow: Node = $Component/UpdateFlow
+@onready var update_ui_manager: Node = $Component/UpdateUiManager
+
 
 var game_dir = OS.get_environment("APPDATA")
 var user_path = game_dir.path_join("ETN_Farm")
+##最小化修改 初始化 的时候 这些就会赋值 其他的就不用管了
+var _local : VersionInfo
+var _server : UpdatePolicy
+
+signal update_needed_state
 
 func _ready() -> void:
+	await init_check_version()
+	#init_check_version()
+	if _server.force_full_package:
+		update_choose_file.copy_path ="user://download/full/"
+	else:
+		update_choose_file.copy_path ="user://download/patch/"
+	
+
+func init_check_version() -> void:
 	print("========== 开始测试流程 ==========")
 	print("用户目录: ", user_path)
-	test_full_flow()
-
-
-@onready var label: Label = $MarginContainer/VBoxContainer/Label
-func test_full_flow() -> void:
 	# 步骤1：获取本地版本信息
 	print("\n[步骤1] 获取本地版本信息...")
 	var local = VersionUtils.get_version_info(user_path.path_join("version.json"))
+	_local = local
 	print("  - base_version: ", local.base_version)
 	print("  - base_patch_max: ", local.base_patch_max)
 	print("  - equal_version: ", local.equal_version)
@@ -22,6 +37,7 @@ func test_full_flow() -> void:
 	# 步骤2：获取服务器更新策略
 	print("\n[步骤2] 获取服务器更新策略...")
 	var server = await VersionUtils.get_update_policy("ETN_Farm")
+	_server=server
 	if server.target_version == "":
 		print("  [错误] 获取服务器策略失败")
 		return
@@ -39,122 +55,48 @@ func test_full_flow() -> void:
 	print("  - 比较结果: ", result)
 	
 	# 步骤4：根据结果执行操作
+	update_needed_state.emit(result)
 	match result:
 		"UP_TO_DATE":
 			print("\n[结果] 已是最新版本，无需更新")
+			
 		"FULL_UPDATE_REQUIRED":
 			print("\n[结果] 需要全量更新")
-			await test_full_install(local, server)
+			server.force_full_package = true
+			#await test_full_install(local, server)
 		"NORMAL_UPDATE_REQUIRED":
 			print("\n[结果] 需要补丁更新")
-			await test_patch_install(local, server)
+			#await test_patch_install(local, server)
 		_:
 			print("\n[结果] 未知状态: ", result)
 
-##测试补丁安装
-func test_patch_install(local, server) -> void:
-	print("\n========== 开始补丁更新流程 ==========")
-	
-	# 创建补丁安装器
-	var installer = PatchInstall.new(local, server)
-	installer.install_path = user_path.path_join("patch")
-	add_child(installer)
-	
-	# 连接进度信号
-	installer.download_progress_changed.connect(_on_patch_download_progress)
-	
-	# 设置服务器补丁列表
-	installer.all_patch = server.patches
-	print("[步骤1] 已设置 all_patch: ", installer.all_patch.size(), " 个补丁")
-	
-	# 扫描已安装补丁
-	installer.init_installed_patch()
-	print("[步骤2] 已安装补丁: ", installer.installed_patch)
-	
-	# 计算需要下载的补丁
-	installer.init_need_installed_patch()
-	print("[步骤3] 需要下载的补丁: ", installer.need_installed_patch)
-	
-	if installer.need_installed_patch.size() == 0:
-		print("[提示] 没有需要下载的补丁")
-		installer.queue_free()
-		return
-	
-	# 下载补丁
-	print("\n[步骤4] 开始下载补丁...")
-	await installer.begin_download()
-	
-	if not installer.is_download_successful:
-		print("[错误] 补丁下载失败")
-		installer.queue_free()
-		return
-	
-	print("[成功] 补丁下载完成")
-	
-	# 安装补丁
-	print("\n[步骤5] 开始安装补丁...")
-	installer.begin_install()
-	
-	if not installer.is_install_successful:
-		print("[错误] 补丁安装失败")
-		installer.queue_free()
-		return
-	
-	print("[成功] 补丁安装完成！")
-	print("========== 补丁更新流程结束 ==========")
-	
-	installer.queue_free()
 
-##测试完整包安装
-func test_full_install(local, server) -> void:
-	print("\n========== 开始全量更新流程 ==========")
-	
-	# 创建完整包安装器
-	var installer = FullInstall.new(local, server)
-	add_child(installer)
-	
-	# 连接进度信号
-	installer.download_progress_changed.connect(_on_full_download_progress)
-	
-	# 下载完整包
-	print("[步骤1] 开始下载完整包...")
-	await installer.begin_download()
-	
-	if not installer.is_download_successful:
-		print("[错误] 完整包下载失败")
-		installer.queue_free()
-		return
-	
-	print("[成功] 完整包下载完成")
-	
-	# 安装完整包
-	print("\n[步骤2] 开始安装完整包...")
-	installer.begin_install()
-	
-	if not installer.is_install_successful:
-		print("[错误] 完整包安装失败")
-		installer.queue_free()
-		return
-	
-	print("[成功] 完整包安装完成！")
-	print("========== 全量更新流程结束 ==========")
-	
-	installer.queue_free()
+##注意 这个要等待哈
+func _on_正常流程_pressed() -> void:
+	if not _server.force_full_package:
+		update_flow.test_patch_download(_local,_server)
+	else:
+		update_flow.test_full_download(_local,_server)
 
-##补丁下载进度回调
-func _on_patch_download_progress(current: int, total: int):
-	var progress = 0.0
-	if total > 0:
-		progress = float(current) / float(total) * 100.0
-	print("[补丁下载进度] %d / %d (%.1f%%)" % [current, total, progress])
-	if label:
-		label.text = "[补丁下载] %d / %d (%.1f%%)" % [current, total, progress]
 
-##完整包下载进度回调
-func _on_full_download_progress(current: int, total: int):
-	var progress = 0.0
-	if total > 0:
-		progress = float(current) / float(total) * 100.0
-	print("[完整包下载进度] %d / %d (%.1f%%)" % [current, total, progress])
-	if label:
-		label.text = "[完整包下载] %d / %d (%.1f%%)" % [current, total, progress]
+func _on_选择自定义文件_pressed() -> void:
+	var result = await update_choose_file.select_zip_file()
+	
+	if result:
+		print("选择文件成功")
+		await update_choose_file.copy_file_to_install(update_choose_file.selected_path)
+	else:
+		print("选择文件失败")
+
+
+func _on_开始安装_pressed() -> void:
+	if not _server.force_full_package:
+		update_flow.test_patch_install(_local,_server)
+	else:
+		# 检查是否选择了自定义文件
+		if not update_choose_file.selected_path.is_empty():
+			# 复制自定义文件到下载目录
+			
+			update_flow.test_full_install(_local,_server)
+		else:
+			printerr("传递的自定义文件路径错误")

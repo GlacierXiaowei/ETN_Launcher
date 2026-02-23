@@ -5,6 +5,13 @@ extends Node
 const GITHUB_OWNER = "GlacierXiaowei"
 const VERSION_FILE_NAME = "cloud_version.json"
 
+
+
+func _ready() -> void:
+	pass
+
+
+
 func version_to_int(version: String) -> int:
 	var parts = version.split(".")
 	var result = 0
@@ -28,75 +35,38 @@ func int_to_version(num: int, part_count: int = 4) -> String:
 ##从 GitHub 获取服务器更新策略
 ##repo: GitHub 仓库名，如 "ETN_Farm"
 func get_update_policy(repo: String = "ETN_Farm") -> UpdatePolicy:
-	# 1. 使用 GitHub API 获取 latest release 的 tag
+	# 直接下载 latest release 的版本文件（无需 API）
 	var http_request = HTTPRequest.new()
 	add_child(http_request)
 	
-	var api_url = "https://api.github.com/repos/%s/%s/releases/latest" % [GITHUB_OWNER, repo]
-	var error = http_request.request(api_url)
+	# 使用固定链接下载 latest release 资产
+	var download_url = "https://github.com/%s/%s/releases/latest/download/%s" % [GITHUB_OWNER, repo, VERSION_FILE_NAME]
 	
+	var error = http_request.request(download_url)
 	if error != OK:
-		push_error("[VersionUtils] Failed to request GitHub API: " + api_url)
+		push_error("[VersionUtils] Failed to download: " + download_url)
 		remove_child(http_request)
 		http_request.queue_free()
 		return UpdatePolicy.new()
 	
 	var response = await http_request.request_completed
 	var response_code = response[1]
-	
-	if response_code != 200:
-		push_error("[VersionUtils] GitHub API returned code: " + str(response_code))
-		remove_child(http_request)
-		http_request.queue_free()
-		return UpdatePolicy.new()
-	
 	var body = response[3].get_string_from_utf8()
-	var release_data = JSON.parse_string(body)
 	
 	remove_child(http_request)
 	http_request.queue_free()
 	
-	if release_data == null:
-		push_error("[VersionUtils] Failed to parse release data")
+	if response_code != 200:
+		push_error("[VersionUtils] Download failed with code: " + str(response_code))
 		return UpdatePolicy.new()
 	
-	# 获取 tag 名称
-	var tag = release_data.get("tag_name", "")
-	if tag == "":
-		push_error("[VersionUtils] No tag_name in release data")
-		return UpdatePolicy.new()
-	
-	# 2. 下载 JSON 文件
-	var download_url = "https://github.com/%s/%s/releases/download/%s/%s" % [GITHUB_OWNER, repo, tag, VERSION_FILE_NAME]
-	
-	var download_request = HTTPRequest.new()
-	add_child(download_request)
-	
-	error = download_request.request(download_url)
-	if error != OK:
-		push_error("[VersionUtils] Failed to download: " + download_url)
-		remove_child(download_request)
-		download_request.queue_free()
-		return UpdatePolicy.new()
-	
-	var download_response = await download_request.request_completed
-	var download_response_code = download_response[1]
-	var download_body = download_response[3].get_string_from_utf8()
-	
-	remove_child(download_request)
-	download_request.queue_free()
-	
-	if download_response_code != 200:
-		push_error("[VersionUtils] Download failed with code: " + str(download_response_code))
-		return UpdatePolicy.new()
-	
-	# 3. 解析 JSON
-	var parse_result = JSON.parse_string(download_body)
+	# 解析 JSON
+	var parse_result = JSON.parse_string(body)
 	if parse_result == null:
 		push_error("[VersionUtils] Failed to parse version JSON")
 		return UpdatePolicy.new()
 	
-	print("[VersionUtils] Downloaded version file, tag: " + tag)
+	print("[VersionUtils] Downloaded version file from latest release")
 	return UpdatePolicy.new(parse_result)
 
 ##从本地获取版本信息
@@ -130,3 +100,42 @@ func get_version_info(path: String = "") -> VersionInfo:
 	
 	print("[VersionUtils] Loaded version info from: " + path)
 	return VersionInfo.new(json.data)
+
+
+##清空下载文件夹
+func clear_folder(path : String) -> bool:
+	if path == "" or path.is_empty():
+		push_error("[VersionUtils] clear_folder: path is empty")
+		return false
+	
+	# 如果目录不存在，则创建
+	if not DirAccess.dir_exists_absolute(path):
+		var d = DirAccess.open("user://")
+		if d == null:
+			push_error("[VersionUtils] clear_folder: Failed to open user://")
+			return false
+		var err = d.make_dir_recursive(path)
+		if err != OK:
+			push_error("[VersionUtils] clear_folder: Failed to create directory")
+			return false
+		return true
+	
+	# 目录已存在，清空其中所有文件
+	var dir = DirAccess.open(path)
+	if dir == null:
+		push_error("[VersionUtils] clear_folder: Failed to open directory")
+		return false
+	
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	while file_name != "":
+		if file_name != "." and file_name != "..":
+			var full_path = path.path_join(file_name)
+			var err = dir.remove(full_path)
+			if err != OK:
+				push_error("[VersionUtils] clear_folder: Failed to delete file: " + full_path)
+				dir.list_dir_end()
+				return false
+		file_name = dir.get_next()
+	dir.list_dir_end()
+	return true

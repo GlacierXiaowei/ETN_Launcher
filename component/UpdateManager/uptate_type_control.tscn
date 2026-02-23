@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://swmate486yfq"]
+
+[ext_resource type="Script" uid="uid://c0kdno72dnxrq" path="res://component/UpdateManager/uptate_type_control.gd" id="1_yx4gi"]
+
+[node name="UptateTypeControl" type="Node" unique_id=569876676]
+script = ExtResource("1_yx4gi")
