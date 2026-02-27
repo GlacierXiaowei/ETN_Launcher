@@ -6,7 +6,7 @@ extends Control
 @onready var button_container: HBoxContainer = $CenterContainer/VBoxContainer/ButtonContainer
 @onready var primary_button: Button = $CenterContainer/VBoxContainer/ButtonContainer/PrimaryButton
 @onready var secondary_button: Button = $CenterContainer/VBoxContainer/ButtonContainer/SecondaryButton
-@onready var loading_spinner: TextureRect = $LoadingSpinner
+@onready var loading_spinner: VideoStreamPlayer = $LoadingSpinner
 
 var install_component: Node = null
 var is_checking: bool = true

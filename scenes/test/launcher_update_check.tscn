@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" uid="uid://c2y1eler8g12n" path="res://scenes/test/launcher_update_check.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://caxh2pffdam2v" path="res://assets/image/boot_logo/logo_02.png" id="2_2bwp6"]
-[ext_resource type="Texture2D" uid="uid://bs85cw4f7pn8a" path="res://assets/image/app_logo/ETN_Launcher Logo.png" id="3_fowrg"]
+[ext_resource type="Theme" uid="uid://c5wbsyp58wb17" path="res://assets/theme/LG_standard.tres" id="4_2fa5q"]
+[ext_resource type="PackedScene" uid="uid://bypsoyn6vlp5p" path="res://component/small_loding_player.tscn" id="4_o0cpu"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fowrg"]
 
@@ -26,7 +27,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2fa5q"]
 shader = SubResource("Shader_o0cpu")
-shader_parameter/blur_amount = 5.0
+shader_parameter/blur_amount = 4.50000021375
 shader_parameter/brightness = 1.0
 
 [node name="LauncherUpdateCheck" type="Control" unique_id=301886309]
@@ -39,7 +40,6 @@ grow_vertical = 2
 script = ExtResource("1")
 
 [node name="BackGround" type="Control" parent="." unique_id=449924252]
-visible = false
 material = SubResource("ShaderMaterial_fowrg")
 layout_mode = 1
 anchors_preset = 15
@@ -76,6 +76,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="LoadingSpinner" parent="." unique_id=784863350 instance=ExtResource("4_o0cpu")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
+
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=1228643541]
 layout_mode = 1
 anchors_preset = 15
@@ -83,6 +91,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("4_2fa5q")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=1307730913]
 layout_mode = 2
@@ -104,27 +113,12 @@ alignment = 1
 
 [node name="PrimaryButton" type="Button" parent="CenterContainer/VBoxContainer/ButtonContainer" unique_id=1676178134]
 layout_mode = 2
+theme = ExtResource("4_2fa5q")
 text = "请稍候"
 
 [node name="SecondaryButton" type="Button" parent="CenterContainer/VBoxContainer/ButtonContainer" unique_id=934674911]
 layout_mode = 2
 text = "离线进入"
-
-[node name="LoadingSpinner" type="TextureRect" parent="." unique_id=1681921969]
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_fowrg")
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/ButtonContainer/PrimaryButton" to="." method="_on_primary_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/ButtonContainer/SecondaryButton" to="." method="_on_secondary_button_pressed"]

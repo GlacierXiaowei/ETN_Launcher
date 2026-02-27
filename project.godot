@@ -34,7 +34,10 @@ window/size/viewport_height=1080
 [file_customization]
 
 folder_colors={
-"res://scenes/": "green"
+"res://assets/": "pink",
+"res://component/": "orange",
+"res://scenes/": "green",
+"res://script/": "purple"
 }
 
 [physics]

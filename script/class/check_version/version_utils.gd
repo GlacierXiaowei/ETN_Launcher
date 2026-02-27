@@ -10,7 +10,7 @@ var http_proxy = ""
 var https_proxy = ""
 
 # 测试用：使用本地mock文件
-var use_mock_cloud_version : bool = true
+var use_mock_cloud_version : bool = false
 var mock_cloud_version_path : String = "res://data/mock_cloud_version.json"
 
 
@@ -56,7 +56,7 @@ func get_update_policy(repo: String) -> UpdatePolicy:
 	
 	var download_url = "https://github.com/%s/%s/releases/latest/download/%s" % [GITHUB_OWNER, repo, VERSION_FILE_NAME]
 	
-	http_request.timeout = 6
+	http_request.timeout = 4
 	
 	var headers = PackedStringArray([
 		"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
@@ -67,7 +67,7 @@ func get_update_policy(repo: String) -> UpdatePolicy:
 	elif not http_proxy.is_empty():
 		http_request.set_proxy(http_proxy)
 	
-	var max_retries = 5
+	var max_retries = 3
 	var retry_count = 0
 	var last_response_code = 0
 	
