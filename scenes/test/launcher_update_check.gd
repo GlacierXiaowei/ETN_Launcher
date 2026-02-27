@@ -8,12 +8,81 @@ extends Control
 @onready var secondary_button: Button = $CenterContainer/VBoxContainer/ButtonContainer/SecondaryButton
 @onready var loading_spinner: TextureRect = $LoadingSpinner
 
+@onready var center_container: CenterContainer = $CenterContainer
+
+var _glass_card: ColorRect = null
+
 var install_component: Node = null
 var is_checking: bool = true
 var is_force_update: bool = false
 
 func _ready() -> void:
+	_apply_test_theme()
+	_setup_glass_card()
 	_init_install_component()
+	_resync_glass_card_layout()
+	resized.connect(_resync_glass_card_layout)
+
+
+func _apply_test_theme() -> void:
+	# Note: We inject theme + glass at runtime to avoid editing .tscn directly.
+	var factory = load("res://script/ui/theme/etn_theme_factory.gd")
+	if factory:
+		factory.apply_glass_theme(self)
+
+	# 对当前场景的两个按钮做主次区分（即使主题资源不存在，也能有明显层级）。
+	# 主按钮：更亮
+	primary_button.add_theme_color_override("font_color", Color(1, 1, 1, 1))
+	# 次按钮：更低对比
+	secondary_button.add_theme_color_override("font_color", Color(0.85, 0.88, 0.92, 1))
+
+	status_label.add_theme_font_size_override("font_size", 26)
+	update_notes.add_theme_font_size_override("normal_font_size", 16)
+
+
+func _setup_glass_card() -> void:
+	# Create a glass card under CenterContainer (background layer).
+	if _glass_card != null:
+		return
+
+	var factory = load("res://script/ui/theme/etn_theme_factory.gd")
+	if not factory:
+		return
+
+	_glass_card = factory.create_glass_card()
+	_glass_card.anchors_preset = Control.PRESET_FULL_RECT
+	_glass_card.offset_left = 0
+	_glass_card.offset_top = 0
+	_glass_card.offset_right = 0
+	_glass_card.offset_bottom = 0
+
+	center_container.add_child(_glass_card)
+	center_container.move_child(_glass_card, 0)
+
+	# If BackGround exists, enable it to improve glass readability.
+	if has_node("BackGround"):
+		var bg: Control = $BackGround
+		bg.visible = true
+
+
+func _resync_glass_card_layout() -> void:
+	if _glass_card == null:
+		return
+
+	# Layout: keep a stable card size first. We can later make it follow VBoxContainer size.
+	var target_size = Vector2(720, 420)
+	if size.x < 900:
+		target_size.x = max(520, size.x - 120)
+		target_size.y = 420
+
+	_glass_card.custom_minimum_size = target_size
+	_glass_card.size = target_size
+	_glass_card.position = (center_container.size - target_size) * 0.5
+
+	# Important: sync the card pixel size into shader parameters.
+	var mat := _glass_card.material as ShaderMaterial
+	if mat:
+		mat.set_shader_parameter("rect_size_px", _glass_card.size)
 
 func _init_install_component() -> void:
 	button_container.visible = true
