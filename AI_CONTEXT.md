@@ -42,17 +42,17 @@
   "force_update": true,
   "force_full_package": false,
   "full_package": {
-    "version": "1.1.0",
-    "url": "https://xxx/full_1.1.0.zip"
+	"version": "1.1.0",
+	"url": "https://xxx/full_1.1.0.zip"
   },
   "patches": [
-    {
-      "patch_id": 13,
-      "from_patch": 12,
-      "to_patch": 13,
-      "url": "https://xxx/patch_13.zip",
-      "notice": "修复UI闪退问题"
-    }
+	{
+	  "patch_id": 13,
+	  "from_patch": 12,
+	  "to_patch": 13,
+	  "url": "https://xxx/patch_13.zip",
+	  "notice": "修复UI闪退问题"
+	}
   ]
 }
 ```
@@ -100,10 +100,10 @@ var equal_version: String
 var game_name: String
 
 func _init(data: Dictionary = {}):
-    base_version = data.get("base_version", "")
-    base_patch_max = data.get("base_patch_max", 0)
-    equal_version = data.get("equal_version", "")
-    game_name = data.get("game_name", "")
+	base_version = data.get("base_version", "")
+	base_patch_max = data.get("base_patch_max", 0)
+	equal_version = data.get("equal_version", "")
+	game_name = data.get("game_name", "")
 ```
 
 ### 3.2 UpdatePolicy (update_policy.gd)
@@ -121,13 +121,13 @@ var full_package: Dictionary
 var patches: Array
 
 func _init(data: Dictionary = {}):
-    min_supported_version = data.get("min_supported_version", "")
-    target_version = data.get("target_version", "")
-    target_patch = data.get("target_patch", 0)
-    force_update = data.get("force_update", false)
-    force_full_package = data.get("force_full_package", false)
-    full_package = data.get("full_package", {})
-    patches = data.get("patches", [])
+	min_supported_version = data.get("min_supported_version", "")
+	target_version = data.get("target_version", "")
+	target_patch = data.get("target_patch", 0)
+	force_update = data.get("force_update", false)
+	force_full_package = data.get("force_full_package", false)
+	full_package = data.get("full_package", {})
+	patches = data.get("patches", [])
 ```
 
 ### 3.3 UpdateChecker (update_checker.gd)
@@ -137,25 +137,25 @@ class_name UpdateChecker
 extends Node
 
 func check(local: VersionInfo, server: UpdatePolicy) -> String:
-    var base_version: int = VersionUtils.version_to_int(local.base_version)
-    var min_supported_version: int = VersionUtils.version_to_int(server.min_supported_version)
-    var equal_version: int = VersionUtils.version_to_int(local.equal_version)
-    var target_version: int = VersionUtils.version_to_int(server.target_version)
-    
-    if equal_version >= target_version:
-        return "UP_TO_DATE"
-    
-    if base_version < min_supported_version:
-        server.force_full_package = true
-        return "FULL_UPDATE_REQUIRED"
-    
-    if server.force_full_package:
-        return "FULL_UPDATE_REQUIRED"
-    
-    if equal_version < target_version:
-        return "NORMAL_UPDATE_REQUIRED"
-    
-    return "UNKNOWN_STATE"
+	var base_version: int = VersionUtils.version_to_int(local.base_version)
+	var min_supported_version: int = VersionUtils.version_to_int(server.min_supported_version)
+	var equal_version: int = VersionUtils.version_to_int(local.equal_version)
+	var target_version: int = VersionUtils.version_to_int(server.target_version)
+	
+	if equal_version >= target_version:
+		return "UP_TO_DATE"
+	
+	if base_version < min_supported_version:
+		server.force_full_package = true
+		return "FULL_UPDATE_REQUIRED"
+	
+	if server.force_full_package:
+		return "FULL_UPDATE_REQUIRED"
+	
+	if equal_version < target_version:
+		return "NORMAL_UPDATE_REQUIRED"
+	
+	return "UNKNOWN_STATE"
 ```
 
 ### 3.4 VersionUtils (version_utils.gd)
@@ -216,56 +216,56 @@ signal download_progress_changed(current_bytes: int, total_bytes: int)
 
 ```gdscript
 func download_single_file(url: String, file_name: String) -> bool:
-    var http_request = HTTPRequest.new()
-    add_child(http_request)
-    
-    var timer = Timer.new()
-    timer.wait_time = 0.25
-    timer.autostart = true
-    timer.one_shot = false
-    add_child(timer)
-    
-    var download_complete = false
-    var final_code = -1
-    var final_body = PackedByteArray()
-    
-    http_request.request_completed.connect(
-        func(result: int, code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
-            final_code = code
-            final_body = body
-            download_complete = true
-    )
-    
-    var error = http_request.request(url)
-    if error != OK:
-        _remove_http_request(http_request, timer)
-        return false
-    
-    # 轮询进度
-    while not download_complete:
-        var current_bytes = http_request.get_downloaded_bytes()
-        var total_bytes = http_request.get_body_size()
-        if total_bytes > 0:
-            download_progress_changed.emit(current_bytes, total_bytes)
-        await timer.timeout
-    
-    timer.stop()
-    _remove_http_request(http_request, timer)
-    
-    # 处理结果...
-    return download_success
+	var http_request = HTTPRequest.new()
+	add_child(http_request)
+	
+	var timer = Timer.new()
+	timer.wait_time = 0.25
+	timer.autostart = true
+	timer.one_shot = false
+	add_child(timer)
+	
+	var download_complete = false
+	var final_code = -1
+	var final_body = PackedByteArray()
+	
+	http_request.request_completed.connect(
+		func(result: int, code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+			final_code = code
+			final_body = body
+			download_complete = true
+	)
+	
+	var error = http_request.request(url)
+	if error != OK:
+		_remove_http_request(http_request, timer)
+		return false
+	
+	# 轮询进度
+	while not download_complete:
+		var current_bytes = http_request.get_downloaded_bytes()
+		var total_bytes = http_request.get_body_size()
+		if total_bytes > 0:
+			download_progress_changed.emit(current_bytes, total_bytes)
+		await timer.timeout
+	
+	timer.stop()
+	_remove_http_request(http_request, timer)
+	
+	# 处理结果...
+	return download_success
 
 func _remove_http_request(http_request: HTTPRequest, timer: Timer) -> void:
-    if timer:
-        timer.stop()
-        if timer.get_parent() == self:
-            remove_child(timer)
-        timer.queue_free()
-    
-    if http_request:
-        if http_request.get_parent() == self:
-            remove_child(http_request)
-        http_request.queue_free()
+	if timer:
+		timer.stop()
+		if timer.get_parent() == self:
+			remove_child(timer)
+		timer.queue_free()
+	
+	if http_request:
+		if http_request.get_parent() == self:
+			remove_child(http_request)
+		http_request.queue_free()
 ```
 
 ### 4.3 使用方式
@@ -283,8 +283,8 @@ installer.download_progress_changed.connect(_on_download_progress)
 await installer.begin_download()
 
 func _on_download_progress(current: int, total: int):
-    var percent = float(current) / float(total) * 100.0
-    label.text = "下载进度: %.1f%%" % percent
+	var percent = float(current) / float(total) * 100.0
+	label.text = "下载进度: %.1f%%" % percent
 ```
 
 ---
@@ -326,56 +326,56 @@ var user_path = game_dir.path_join("ETN_Farm")
 @onready var label: Label = $MarginContainer/VBoxContainer/Label
 
 func _ready():
-    await test_flow()
+	await test_flow()
 
 func test_flow():
-    # 1. 获取本地版本
-    var local = VersionUtils.get_version_info(user_path.path_join("version.json"))
-    
-    # 2. 获取服务器策略
-    var server = await VersionUtils.get_update_policy("ETN_Farm")
-    
-    # 3. 版本比较
-    var result = UpdateChecker.new().check(local, server)
-    
-    match result:
-        "UP_TO_DATE":
-            print("已是最新版本")
-        "NORMAL_UPDATE_REQUIRED":
-            await do_patch_update(local, server)
-        "FULL_UPDATE_REQUIRED":
-            await do_full_update(local, server)
+	# 1. 获取本地版本
+	var local = VersionUtils.get_version_info(user_path.path_join("version.json"))
+	
+	# 2. 获取服务器策略
+	var server = await VersionUtils.get_update_policy("ETN_Farm")
+	
+	# 3. 版本比较
+	var result = UpdateChecker.new().check(local, server)
+	
+	match result:
+		"UP_TO_DATE":
+			print("已是最新版本")
+		"NORMAL_UPDATE_REQUIRED":
+			await do_patch_update(local, server)
+		"FULL_UPDATE_REQUIRED":
+			await do_full_update(local, server)
 
 func do_patch_update(local, server):
-    var installer = PatchInstall.new(local, server)
-    installer.install_path = user_path.path_join("patch")
-    add_child(installer)
-    installer.download_progress_changed.connect(_on_progress)
-    
-    installer.all_patch = server.patches
-    installer.init_installed_patch()
-    installer.init_need_installed_patch()
-    
-    await installer.begin_download()
-    await installer.begin_install()
-    
-    installer.queue_free()
+	var installer = PatchInstall.new(local, server)
+	installer.install_path = user_path.path_join("patch")
+	add_child(installer)
+	installer.download_progress_changed.connect(_on_progress)
+	
+	installer.all_patch = server.patches
+	installer.init_installed_patch()
+	installer.init_need_installed_patch()
+	
+	await installer.begin_download()
+	await installer.begin_install()
+	
+	installer.queue_free()
 
 func do_full_update(local, server):
-    var installer = FullInstall.new(local, server)
-    add_child(installer)
-    installer.download_progress_changed.connect(_on_progress)
-    
-    await installer.begin_download()
-    await installer.begin_install()
-    
-    installer.queue_free()
+	var installer = FullInstall.new(local, server)
+	add_child(installer)
+	installer.download_progress_changed.connect(_on_progress)
+	
+	await installer.begin_download()
+	await installer.begin_install()
+	
+	installer.queue_free()
 
 func _on_progress(current: int, total: int):
-    if total > 0:
-        var percent = float(current) / float(total) * 100.0
-        label.text = "下载进度: %.1f%%" % percent
-        print("下载进度: %d / %d (%.1f%%)" % [current, total, percent])
+	if total > 0:
+		var percent = float(current) / float(total) * 100.0
+		label.text = "下载进度: %.1f%%" % percent
+		print("下载进度: %d / %d (%.1f%%)" % [current, total, percent])
 ```
 
 ---

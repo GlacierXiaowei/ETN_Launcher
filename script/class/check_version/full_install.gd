@@ -113,16 +113,10 @@ func begin_install() -> void:
 			return
 
 	is_install_successful = true
-	print("[FullInstall] begin_install: Full package installed successfully")
 	install_finished.emit(is_install_successful)
 ##解压 zip 文件
 func unzip_file(zip_path: String, dest_path: String) -> Array:
 	var extracted_files = []
-
-	print("[FullInstall] unzip_file: Starting...")
-	print("[FullInstall] zip_path: ", zip_path)
-	print("[FullInstall] dest_path: ", dest_path)
-	print("[FullInstall] zip file exists: ", FileAccess.file_exists(zip_path))
 
 	if not FileAccess.file_exists(zip_path):
 		push_error("[FullInstall] unzip_file: zip file does not exist: " + zip_path)
@@ -130,28 +124,18 @@ func unzip_file(zip_path: String, dest_path: String) -> Array:
 
 	var zip_reader = ZIPReader.new()
 	var error = zip_reader.open(zip_path)
-	print("[FullInstall] zip open error: ", error)
 	if error != OK:
 		push_error("[FullInstall] unzip_file: Failed to open zip file, error: " + str(error))
 		return extracted_files
 
 	var files = zip_reader.get_files()
-	print("[FullInstall] files in zip: ", files.size())
-	for i in range(files.size()):
-		print("[FullInstall]   file[", i, "]: ", files[i])
 
 	for file in files:
-		# 跳过目录
 		if file.ends_with("/"):
-			print("[FullInstall] skipping directory: ", file)
 			continue
 
-		print("[FullInstall] extracting: ", file)
 		var file_data = zip_reader.read_file(file)
-		print("[FullInstall] file_data size: ", file_data.size())
-		
 		var dest_file_path = dest_path.path_join(file.get_file())
-		print("[FullInstall] dest_file_path: ", dest_file_path)
 
 		var file_out = FileAccess.open(dest_file_path, FileAccess.WRITE)
 		if file_out == null:
@@ -161,9 +145,7 @@ func unzip_file(zip_path: String, dest_path: String) -> Array:
 		file_out.store_buffer(file_data)
 		file_out.close()
 		extracted_files.append(dest_file_path)
-		print("[FullInstall] unzip_file: Extracted " + file.get_file())
 
 	zip_reader.close()
 
-	print("[FullInstall] unzip_file: Finished, extracted ", extracted_files.size(), " files")
 	return extracted_files

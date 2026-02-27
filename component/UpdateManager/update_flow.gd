@@ -32,11 +32,6 @@ func test_patch_download(local, server) -> void:
 	installer.init_need_installed_patch()
 	print("[步骤3] 需要下载的补丁: ", installer.need_installed_patch)
 	
-	if installer.need_installed_patch.size() == 0:
-		print("[提示] 没有需要下载的补丁")
-		installer.queue_free()
-		return
-	
 	# 下载补丁
 	print("\n[步骤4] 开始下载补丁...")
 	await installer.download_finished

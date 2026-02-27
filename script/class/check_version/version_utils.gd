@@ -11,21 +11,13 @@ var https_proxy = ""
 
 
 func _ready() -> void:
-	# 尝试从环境变量获取代理设置
 	http_proxy = OS.get_environment("http_proxy")
 	https_proxy = OS.get_environment("https_proxy")
 	
-	# 也检查 HTTP_PROXY 和 HTTPS_PROXY（大写）
 	if http_proxy.is_empty():
 		http_proxy = OS.get_environment("HTTP_PROXY")
 	if https_proxy.is_empty():
 		https_proxy = OS.get_environment("HTTPS_PROXY")
-	
-	if not https_proxy.is_empty():
-		print("[VersionUtils] Using proxy: ", https_proxy)
-	elif not http_proxy.is_empty():
-		print("[VersionUtils] Using proxy: ", http_proxy)
-
 
 
 func version_to_int(version: String) -> int:
@@ -54,28 +46,22 @@ func get_update_policy(repo: String = "ETN_Farm") -> UpdatePolicy:
 	var http_request = HTTPRequest.new()
 	add_child(http_request)
 	
-	# 使用固定链接下载 latest release 资产
 	var download_url = "https://github.com/%s/%s/releases/latest/download/%s" % [GITHUB_OWNER, repo, VERSION_FILE_NAME]
 	
-	# 设置超时时间（15秒）
-	http_request.timeout = 15
+	http_request.timeout = 2.5
 	
-	# 设置代理
 	if not https_proxy.is_empty():
 		http_request.set_proxy(https_proxy)
 	elif not http_proxy.is_empty():
 		http_request.set_proxy(http_proxy)
 	
-	print("[VersionUtils] Downloading from: ", download_url)
-	
-	var max_retries = 3
+	var max_retries = 5
 	var retry_count = 0
 	var last_error = OK
 	
 	while retry_count < max_retries:
 		if retry_count > 0:
-			print("[VersionUtils] Retry ", retry_count, "/", max_retries, "...")
-			await get_tree().create_timer(2.0).timeout
+			await get_tree().create_timer(1.0).timeout
 		
 		var error = http_request.request(download_url)
 		if error != OK:
@@ -84,7 +70,6 @@ func get_update_policy(repo: String = "ETN_Farm") -> UpdatePolicy:
 			retry_count += 1
 			continue
 		
-		# 等待请求完成
 		var response = await http_request.request_completed
 		var response_code = response[1]
 		
@@ -93,17 +78,13 @@ func get_update_policy(repo: String = "ETN_Farm") -> UpdatePolicy:
 			remove_child(http_request)
 			http_request.queue_free()
 			
-			# 解析 JSON
 			var parse_result = JSON.parse_string(body)
 			if parse_result == null:
 				push_error("[VersionUtils] Failed to parse version JSON")
 				return UpdatePolicy.new()
 			
-			print("[VersionUtils] Downloaded version file from latest release")
 			return UpdatePolicy.new(parse_result)
 		elif response_code == 0:
-			# 超时
-			print("[VersionUtils] Request timeout, retrying...")
 			retry_count += 1
 			continue
 		else:
@@ -120,18 +101,15 @@ func get_update_policy(repo: String = "ETN_Farm") -> UpdatePolicy:
 ##从本地获取版本信息
 ##path: version.json 文件路径，默认使用用户目录下的版本文件
 func get_version_info(path: String = "") -> VersionInfo:
-	# 默认路径
 	if path == "":
 		var appdata = OS.get_environment("APPDATA")
 		var user_path = appdata.path_join("ETN_Farm")
 		path = user_path.path_join("version.json")
 	
-	# 检查文件是否存在
 	if not FileAccess.file_exists(path):
 		push_error("[VersionUtils] version.json not found at: " + path)
 		return VersionInfo.new()
 	
-	# 读取并解析
 	var file = FileAccess.open(path, FileAccess.READ)
 	if file == null:
 		push_error("[VersionUtils] Failed to open: " + path)
@@ -146,7 +124,6 @@ func get_version_info(path: String = "") -> VersionInfo:
 		push_error("[VersionUtils] Failed to parse JSON at: " + path)
 		return VersionInfo.new()
 	
-	print("[VersionUtils] Loaded version info from: " + path)
 	return VersionInfo.new(json.data)
 
 
@@ -156,7 +133,6 @@ func clear_folder(path : String) -> bool:
 		push_error("[VersionUtils] clear_folder: path is empty")
 		return false
 	
-	# 如果目录不存在，则创建
 	if not DirAccess.dir_exists_absolute(path):
 		var d = DirAccess.open("user://")
 		if d == null:
@@ -168,7 +144,6 @@ func clear_folder(path : String) -> bool:
 			return false
 		return true
 	
-	# 目录已存在，清空其中所有文件
 	var dir = DirAccess.open(path)
 	if dir == null:
 		push_error("[VersionUtils] clear_folder: Failed to open directory")

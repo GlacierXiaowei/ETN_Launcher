@@ -146,8 +146,8 @@ ETN/
 {
   "patch_level": 3,
   "files": {
-    "ETN.pck": "hash1",
-    "patch_001.pck": "hash2"
+	"ETN.pck": "hash1",
+	"patch_001.pck": "hash2"
   }
 }
 ```
@@ -267,4 +267,3 @@ ETN/
 此时系统已经具备“发行级结构”。
 
 之后才谈优化与高级功能。
-

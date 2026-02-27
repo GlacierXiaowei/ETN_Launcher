@@ -1,0 +1,238 @@
+[gd_scene format=3 uid="uid://c8yvxg3ulq3a"]
+
+[ext_resource type="Shader" uid="uid://1t5a0ootcfy6" path="res://assets/shaders/background_blur.gdshader" id="1_blur"]
+[ext_resource type="Shader" uid="uid://uttsoq3xy3iv" path="res://assets/shaders/highlight_border.gdshader" id="2_highlight"]
+[ext_resource type="Shader" uid="uid://bdp4pqq40lmj3" path="res://assets/shaders/transition_blur.gdshader" id="3_transition"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_blur"]
+shader = ExtResource("1_blur")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_highlight"]
+shader = ExtResource("2_highlight")
+shader_parameter/border_width = 0.03
+shader_parameter/border_color = Color(1, 1, 1, 1)
+shader_parameter/glow_intensity = 1.2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_transition"]
+shader = ExtResource("3_transition")
+
+[node name="ShaderTestScene" type="Control" unique_id=654904041]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="." unique_id=1453483982]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12, 0.12, 0.14, 1)
+
+[node name="Title" type="Label" parent="." unique_id=1484433406]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 30.0
+offset_right = 200.0
+offset_bottom = 70.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 32
+text = "Shader效果测试"
+horizontal_alignment = 1
+
+[node name="TestContainer" type="HBoxContainer" parent="." unique_id=243081830]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -600.0
+offset_top = -300.0
+offset_right = 600.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="BlurTest" type="VBoxContainer" parent="TestContainer" unique_id=498481313]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TestContainer/BlurTest" unique_id=1016027113]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "背景模糊效果"
+horizontal_alignment = 1
+
+[node name="PosterContainer" type="Control" parent="TestContainer/BlurTest" unique_id=97356951]
+custom_minimum_size = Vector2(300, 400)
+layout_mode = 2
+
+[node name="Poster" type="ColorRect" parent="TestContainer/BlurTest/PosterContainer" unique_id=1310845682]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 300.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2, 0.4, 0.8, 1)
+
+[node name="Pattern" type="Label" parent="TestContainer/BlurTest/PosterContainer/Poster" unique_id=855981032]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 300.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "测试图片
+原图内容"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BlurOverlay" type="ColorRect" parent="TestContainer/BlurTest/PosterContainer" unique_id=2069873868]
+material = SubResource("ShaderMaterial_blur")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 300.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BlurHint" type="Label" parent="TestContainer/BlurTest" unique_id=1680911302]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "上面显示的是模糊后的效果"
+horizontal_alignment = 1
+
+[node name="HighlightTest" type="VBoxContainer" parent="TestContainer" unique_id=96381448]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TestContainer/HighlightTest" unique_id=1764772215]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "选中高亮效果"
+horizontal_alignment = 1
+
+[node name="CardContainer" type="Control" parent="TestContainer/HighlightTest" unique_id=69928731]
+custom_minimum_size = Vector2(300, 400)
+layout_mode = 2
+
+[node name="Card" type="ColorRect" parent="TestContainer/HighlightTest/CardContainer" unique_id=1616001291]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 300.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.3, 0.3, 0.35, 1)
+
+[node name="Content" type="Label" parent="TestContainer/HighlightTest/CardContainer/Card" unique_id=89755910]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 300.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "游戏卡面
+鼠标悬停查看效果"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HighlightOverlay" type="ColorRect" parent="TestContainer/HighlightTest/CardContainer" unique_id=1030780757]
+visible = false
+material = SubResource("ShaderMaterial_highlight")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 300.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="HighlightHint" type="Label" parent="TestContainer/HighlightTest" unique_id=312158006]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "鼠标悬停在卡面上查看高亮"
+horizontal_alignment = 1
+
+[node name="TransitionTest" type="VBoxContainer" parent="TestContainer" unique_id=1382365419]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TestContainer/TransitionTest" unique_id=2030770116]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "过渡模糊效果"
+horizontal_alignment = 1
+
+[node name="DemoButton" type="Button" parent="TestContainer/TransitionTest" unique_id=2022927219]
+layout_mode = 2
+text = "点击测试过渡动画"
+
+[node name="TransitionOverlay" type="ColorRect" parent="." unique_id=1089906134]
+visible = false
+material = SubResource("ShaderMaterial_transition")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="LoadingLabel" type="Label" parent="TransitionOverlay" unique_id=217633199]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -50.0
+offset_right = -30.0
+offset_bottom = -30.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "加载中..."
+horizontal_alignment = 2
+
+[node name="Instructions" type="Label" parent="." unique_id=562854285]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -80.0
+offset_right = 400.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 16
+text = "操作说明：
+1.左侧：查看背景模糊效果 |2.中间：鼠标悬停查看高亮效果 |3.右侧：点击按钮测试过渡动画"
+horizontal_alignment = 1
