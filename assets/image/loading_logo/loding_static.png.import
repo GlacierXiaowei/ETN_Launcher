@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wqqu3chmie1f"
-path="res://.godot/imported/白色ETN抠图.png-c0f7e3565a87b008bce61dbb02239966.ctex"
+uid="uid://frf3m3jj31do"
+path="res://.godot/imported/loding_static.png-21189f12ecce38a9f83b4edd07bb998a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/image/open_scene/白色ETN抠图.png"
-dest_files=["res://.godot/imported/白色ETN抠图.png-c0f7e3565a87b008bce61dbb02239966.ctex"]
+source_file="res://assets/image/loading_logo/loding_static.png"
+dest_files=["res://.godot/imported/loding_static.png-21189f12ecce38a9f83b4edd07bb998a.ctex"]
 
 [params]
 

@@ -23,4 +23,4 @@ func check(local: VersionInfo, server: UpdatePolicy) -> String:
 		return "NORMAL_UPDATE_REQUIRED"
 
 
-	return "UNKNOWN_STATE"
+	return "UNKNOWN"

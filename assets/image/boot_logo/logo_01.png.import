@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bs85cw4f7pn8a"
-path="res://.godot/imported/ETN_Launcher Logo.png-2a239e352c5ffdb53764b65f2932656b.ctex"
+uid="uid://djs8grnb83pxy"
+path="res://.godot/imported/logo_01.png-e780a1039e76fd7945909a89daf0b168.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/image/图标/ETN_Launcher Logo.png"
-dest_files=["res://.godot/imported/ETN_Launcher Logo.png-2a239e352c5ffdb53764b65f2932656b.ctex"]
+source_file="res://assets/image/boot_logo/logo_01.png"
+dest_files=["res://.godot/imported/logo_01.png-e780a1039e76fd7945909a89daf0b168.ctex"]
 
 [params]
 

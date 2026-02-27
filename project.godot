@@ -11,14 +11,20 @@ config_version=5
 [application]
 
 config/name="ETN_Launcher"
+run/main_scene="uid://djepkney5e8ph"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="ETN_Launcher"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://icon.svg"
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/image="uid://frf3m3jj31do"
+config/icon="uid://bs85cw4f7pn8a"
+boot_splash/minimum_display_time=300
 
 [autoload]
 
 VersionUtils="*uid://2k12dqeaqgns"
+SceneManager="*uid://bi3g1pahafani"
+PopupManager="*uid://cc7fw4nxe6bvv"
 
 [display]
 

@@ -2,8 +2,8 @@
 
 [ext_resource type="Shader" uid="uid://1t5a0ootcfy6" path="res://assets/shaders/background_blur.gdshader" id="1_blur"]
 [ext_resource type="Script" uid="uid://cxwsiv3vhrwed" path="res://scenes/test/shader_test_scene.gd" id="1_lw7ei"]
-[ext_resource type="Texture2D" uid="uid://bs85cw4f7pn8a" path="res://assets/image/图标/ETN_Launcher Logo.png" id="1_uxtjr"]
-[ext_resource type="Texture2D" uid="uid://vygi24l05wjw" path="res://assets/image/open_scene/IMG_20250622_185657.jpg" id="2_dbrpw"]
+[ext_resource type="Texture2D" uid="uid://bs85cw4f7pn8a" path="res://assets/image/app_logo/ETN_Launcher Logo.png" id="1_uxtjr"]
+[ext_resource type="Texture2D" uid="uid://vygi24l05wjw" path="res://assets/image/boot_logo/IMG_20250622_185657.jpg" id="2_dbrpw"]
 [ext_resource type="Shader" uid="uid://uttsoq3xy3iv" path="res://assets/shaders/highlight_border.gdshader" id="2_highlight"]
 [ext_resource type="Shader" uid="uid://bdp4pqq40lmj3" path="res://assets/shaders/transition_blur.gdshader" id="3_transition"]
 

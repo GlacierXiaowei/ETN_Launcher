@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cynqakcdn00hd"
-path="res://.godot/imported/图标.png-75a7534ddbd69a349844f20eb7bf7612.ctex"
+uid="uid://cr60mskle8miy"
+path="res://.godot/imported/签名-白色抠图.png-3f924ff65abcea2ec79ffb8e39255a7f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/image/图标/图标.png"
-dest_files=["res://.godot/imported/图标.png-75a7534ddbd69a349844f20eb7bf7612.ctex"]
+source_file="res://assets/image/boot_logo/签名-白色抠图.png"
+dest_files=["res://.godot/imported/签名-白色抠图.png-3f924ff65abcea2ec79ffb8e39255a7f.ctex"]
 
 [params]
 

@@ -1,31 +1,30 @@
-[gd_scene format=3 uid="uid://fkwbkys7yssn"]
+[gd_scene format=3 uid="uid://b1mwgkr4vdlsp"]
 
-[ext_resource type="Script" uid="uid://5fkt7kc544m4" path="res://scenes/test/安装管理器/test/install_test_scene.gd" id="1_sqc7e"]
-[ext_resource type="PackedScene" uid="uid://dc7jy7v5ekhpa" path="res://component/UpdateManager/update_ui_manager.tscn" id="2_fgsfl"]
-[ext_resource type="PackedScene" uid="uid://swmate486yfq" path="res://component/UpdateManager/uptate_type_control.tscn" id="2_gvesk"]
-[ext_resource type="PackedScene" uid="uid://bvoi1pypwfbj2" path="res://component/UpdateManager/update_full.tscn" id="4_fgsfl"]
-[ext_resource type="PackedScene" uid="uid://b74q280ars3yx" path="res://component/UpdateManager/update_choose_file.tscn" id="8_in5ve"]
+[ext_resource type="Script" uid="uid://6dne6qgtxr0w" path="res://component/UpdateManager/install_component.gd" id="1_gx5gp"]
+[ext_resource type="PackedScene" uid="uid://dc7jy7v5ekhpa" path="res://component/UpdateManager/update_ui_manager.tscn" id="2_t1i22"]
+[ext_resource type="PackedScene" uid="uid://swmate486yfq" path="res://component/UpdateManager/uptate_type_control.tscn" id="3_j8eov"]
+[ext_resource type="PackedScene" uid="uid://bvoi1pypwfbj2" path="res://component/UpdateManager/update_full.tscn" id="4_nddjx"]
+[ext_resource type="PackedScene" uid="uid://b74q280ars3yx" path="res://component/UpdateManager/update_choose_file.tscn" id="5_ke0ec"]
 
-[node name="InstallTestScene" type="Control" unique_id=378045110 node_paths=PackedStringArray("update_choose_file")]
+[node name="InstallComponent" type="Control" unique_id=378045110]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_sqc7e")
-update_choose_file = NodePath("Component/UpdateChooseFile")
+script = ExtResource("1_gx5gp")
 
 [node name="Component" type="Node" parent="." unique_id=715367828]
 
-[node name="UpdateUiManager" parent="Component" unique_id=1916792638 instance=ExtResource("2_fgsfl")]
+[node name="UpdateUiManager" parent="Component" unique_id=1916792638 instance=ExtResource("2_t1i22")]
 
-[node name="UptateTypeControl" parent="Component" unique_id=569876676 instance=ExtResource("2_gvesk")]
+[node name="UptateTypeControl" parent="Component" unique_id=569876676 instance=ExtResource("3_j8eov")]
 
-[node name="UpdateFlow" parent="Component" unique_id=911630090 node_paths=PackedStringArray("install_test_scene") instance=ExtResource("4_fgsfl")]
+[node name="UpdateFlow" parent="Component" unique_id=911630090 node_paths=PackedStringArray("install_test_scene") instance=ExtResource("4_nddjx")]
 install_test_scene = NodePath("../..")
 
-[node name="UpdateChooseFile" parent="Component" unique_id=1216761608 instance=ExtResource("8_in5ve")]
+[node name="UpdateChooseFile" parent="Component" unique_id=1216761608 instance=ExtResource("5_ke0ec")]
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1399638644]
 layout_mode = 1
@@ -40,9 +39,10 @@ theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=202175992]
+visible = false
 layout_mode = 2
 
-[node name="正常流程" type="Button" parent="MarginContainer/VBoxContainer" unique_id=790202475]
+[node name="下载" type="Button" parent="MarginContainer/VBoxContainer" unique_id=790202475]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 text = "正常流程"
@@ -67,6 +67,6 @@ custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 text = "开始安装"
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/正常流程" to="." method="_on_正常流程_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/下载" to="." method="_on_下载_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/选择自定义文件" to="." method="_on_选择自定义文件_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/开始安装" to="." method="_on_开始安装_pressed"]

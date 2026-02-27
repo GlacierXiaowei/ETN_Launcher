@@ -42,7 +42,7 @@ func int_to_version(num: int, part_count: int = 4) -> String:
 
 ##从 GitHub 获取服务器更新策略
 ##repo: GitHub 仓库名，如 "ETN_Farm"
-func get_update_policy(repo: String = "ETN_Farm") -> UpdatePolicy:
+func get_update_policy(repo: String) -> UpdatePolicy:
 	var http_request = HTTPRequest.new()
 	add_child(http_request)
 	
