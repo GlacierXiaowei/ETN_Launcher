@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://c8yvxg3ulq3a"]
 
 [ext_resource type="Shader" uid="uid://1t5a0ootcfy6" path="res://assets/shaders/background_blur.gdshader" id="1_blur"]
+[ext_resource type="Script" uid="uid://cxwsiv3vhrwed" path="res://scenes/test/shader_test_scene.gd" id="1_lw7ei"]
 [ext_resource type="Texture2D" uid="uid://bs85cw4f7pn8a" path="res://assets/image/图标/ETN_Launcher Logo.png" id="1_uxtjr"]
+[ext_resource type="Texture2D" uid="uid://vygi24l05wjw" path="res://assets/image/open_scene/IMG_20250622_185657.jpg" id="2_dbrpw"]
 [ext_resource type="Shader" uid="uid://uttsoq3xy3iv" path="res://assets/shaders/highlight_border.gdshader" id="2_highlight"]
 [ext_resource type="Shader" uid="uid://bdp4pqq40lmj3" path="res://assets/shaders/transition_blur.gdshader" id="3_transition"]
 
@@ -10,11 +12,27 @@ shader = ExtResource("1_blur")
 shader_parameter/blur_amount = 2.0
 shader_parameter/brightness = 1.0
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_dbrpw"]
+load_path = "res://.godot/imported/ETN_Launcher Logo.png-2a239e352c5ffdb53764b65f2932656b.ctex"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dbrpw"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 20
+border_width_top = 20
+border_width_right = 20
+border_width_bottom = 20
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 95
+corner_radius_top_right = 95
+corner_radius_bottom_right = 95
+corner_radius_bottom_left = 95
+corner_detail = 20
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_highlight"]
 shader = ExtResource("2_highlight")
-shader_parameter/border_width = 0.03
+shader_parameter/border_width = 0.01
 shader_parameter/border_color = Color(1, 1, 1, 1)
-shader_parameter/glow_intensity = 1.2
+shader_parameter/scale_factor = 0.95
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_transition"]
 shader = ExtResource("3_transition")
@@ -27,8 +45,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_lw7ei")
 
-[node name="Background" type="ColorRect" parent="." unique_id=1453483982]
+[node name="Background" type="TextureRect" parent="." unique_id=555249556]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -37,7 +56,7 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.12, 0.12, 0.14, 1)
+texture = ExtResource("2_dbrpw")
 
 [node name="Title" type="Label" parent="." unique_id=1484433406]
 layout_mode = 1
@@ -94,7 +113,6 @@ grow_vertical = 2
 texture = ExtResource("1_uxtjr")
 
 [node name="Pattern" type="Label" parent="TestContainer/BlurTest/PosterContainer/Poster" unique_id=855981032]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -138,18 +156,29 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(300, 400)
 layout_mode = 2
 
-[node name="Card" type="ColorRect" parent="TestContainer/HighlightTest/CardContainer" unique_id=1616001291]
+[node name="Card" type="TextureRect" parent="TestContainer/HighlightTest/CardContainer" unique_id=1316775195]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 2.0
+anchor_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(300, 400)
+texture = SubResource("CompressedTexture2D_dbrpw")
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="TestContainer/HighlightTest/CardContainer/Card" unique_id=667480788]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 300.0
-offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.3, 0.3, 0.35, 1)
+theme_override_styles/panel = SubResource("StyleBoxFlat_dbrpw")
 
 [node name="Content" type="Label" parent="TestContainer/HighlightTest/CardContainer/Card" unique_id=89755910]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -163,7 +192,7 @@ text = "游戏卡面
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HighlightOverlay" type="ColorRect" parent="TestContainer/HighlightTest/CardContainer" unique_id=1030780757]
+[node name="HighlightOverlay" type="TextureRect" parent="TestContainer/HighlightTest/CardContainer" unique_id=1211155971]
 visible = false
 material = SubResource("ShaderMaterial_highlight")
 layout_mode = 1
@@ -174,7 +203,6 @@ offset_right = 300.0
 offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
 
 [node name="HighlightHint" type="Label" parent="TestContainer/HighlightTest" unique_id=312158006]
 layout_mode = 2

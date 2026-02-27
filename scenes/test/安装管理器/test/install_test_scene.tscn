@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://fkwbkys7yssn"]
 
-[ext_resource type="Script" uid="uid://5fkt7kc544m4" path="res://scene/test/install_test_scene.gd" id="1_sqc7e"]
+[ext_resource type="Script" uid="uid://5fkt7kc544m4" path="res://scenes/test/安装管理器/test/install_test_scene.gd" id="1_sqc7e"]
 [ext_resource type="PackedScene" uid="uid://dc7jy7v5ekhpa" path="res://component/UpdateManager/update_ui_manager.tscn" id="2_fgsfl"]
 [ext_resource type="PackedScene" uid="uid://swmate486yfq" path="res://component/UpdateManager/uptate_type_control.tscn" id="2_gvesk"]
 [ext_resource type="PackedScene" uid="uid://bvoi1pypwfbj2" path="res://component/UpdateManager/update_full.tscn" id="4_fgsfl"]

@@ -28,7 +28,7 @@ window/size/viewport_height=1080
 [file_customization]
 
 folder_colors={
-"res://scene/": "green"
+"res://scenes/": "green"
 }
 
 [physics]
