@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://b1mwgkr4vdlsp"]
+
+[ext_resource type="Script" uid="uid://6dne6qgtxr0w" path="res://component/UpdateManager/install_component.gd" id="1_gx5gp"]
+[ext_resource type="PackedScene" uid="uid://dc7jy7v5ekhpa" path="res://component/UpdateManager/update_ui_manager.tscn" id="2_t1i22"]
+[ext_resource type="PackedScene" uid="uid://swmate486yfq" path="res://component/UpdateManager/uptate_type_control.tscn" id="3_j8eov"]
+[ext_resource type="PackedScene" uid="uid://bvoi1pypwfbj2" path="res://component/UpdateManager/update_full.tscn" id="4_nddjx"]
+[ext_resource type="PackedScene" uid="uid://b74q280ars3yx" path="res://component/UpdateManager/update_choose_file.tscn" id="5_ke0ec"]
+
+[node name="InstallComponent" type="Control" unique_id=378045110]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gx5gp")
+
+[node name="Component" type="Node" parent="." unique_id=715367828]
+
+[node name="UpdateUiManager" parent="Component" unique_id=1916792638 instance=ExtResource("2_t1i22")]
+
+[node name="UptateTypeControl" parent="Component" unique_id=569876676 instance=ExtResource("3_j8eov")]
+
+[node name="UpdateFlow" parent="Component" unique_id=911630090 node_paths=PackedStringArray("install_test_scene") instance=ExtResource("4_nddjx")]
+install_test_scene = NodePath("../..")
+
+[node name="UpdateChooseFile" parent="Component" unique_id=1216761608 instance=ExtResource("5_ke0ec")]
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1399638644]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=202175992]
+visible = false
+layout_mode = 2
+
+[node name="下载" type="Button" parent="MarginContainer/VBoxContainer" unique_id=790202475]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+text = "正常流程"
+
+[node name="全量" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1952587101]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+text = "全量"
+
+[node name="补丁" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1510831741]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+text = "补丁"
+
+[node name="选择自定义文件" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1130837744]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+text = "选择自定义文件"
+
+[node name="开始安装" type="Button" parent="MarginContainer/VBoxContainer" unique_id=475388810]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+text = "开始安装"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/下载" to="." method="_on_下载_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/选择自定义文件" to="." method="_on_选择自定义文件_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/开始安装" to="." method="_on_开始安装_pressed"]

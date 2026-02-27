@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b74q280ars3yx"]
+
+[ext_resource type="Script" uid="uid://cwe4lnsbyqhqa" path="res://component/UpdateManager/update_choose_file.gd" id="1_4bkvl"]
+
+[node name="UpdateChooseFile" type="Node" unique_id=1216761608]
+script = ExtResource("1_4bkvl")

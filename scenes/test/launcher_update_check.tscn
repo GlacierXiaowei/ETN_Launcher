@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://ch2277f8ebge0"]
+
+[ext_resource type="Script" uid="uid://c2y1eler8g12n" path="res://scenes/test/launcher_update_check.gd" id="1"]
+
+[node name="LauncherUpdateCheck" type="Control" unique_id=301886309]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="." unique_id=768287927]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1228643541]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=1307730913]
+layout_mode = 2
+
+[node name="StatusLabel" type="Label" parent="CenterContainer/VBoxContainer" unique_id=715068462]
+layout_mode = 2
+text = "正在检查更新..."
+horizontal_alignment = 1
+
+[node name="UpdateNotes" type="RichTextLabel" parent="CenterContainer/VBoxContainer" unique_id=524264706]
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+
+[node name="ButtonContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1878535263]
+layout_mode = 2
+alignment = 1
+
+[node name="PrimaryButton" type="Button" parent="CenterContainer/VBoxContainer/ButtonContainer" unique_id=1676178134]
+layout_mode = 2
+text = "请稍候"
+
+[node name="SecondaryButton" type="Button" parent="CenterContainer/VBoxContainer/ButtonContainer" unique_id=934674911]
+layout_mode = 2
+text = "离线进入"
+
+[node name="LoadingSpinner" type="TextureRect" parent="." unique_id=1681921969]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/ButtonContainer/PrimaryButton" to="." method="_on_primary_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/ButtonContainer/SecondaryButton" to="." method="_on_secondary_button_pressed"]

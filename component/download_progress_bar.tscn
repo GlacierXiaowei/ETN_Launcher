@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://bttwhid5bcq50"]
+
+[sub_resource type="GDScript" id="GDScript_rvgnp"]
+script/source = "extends Node
+class_name DownloadProgressBar
+
+@export var http_request: HTTPRequest
+
+signal progress_changed(current_bytes: int, total_bytes: int, speed: float)
+
+var last_downloaded_bytes: int = 0
+var timer_interval: float = 1.0
+
+
+func _ready() -> void:
+	if http_request == null:
+		push_error(\"[DownloadProgressBar] http_request is not set!\")
+		return
+	
+	var timer = get_node(\"Timer\")
+	if timer:
+		timer_interval = timer.wait_time
+
+
+func _on_timer_timeout() -> void:
+	if http_request == null:
+		return
+	
+	var current_bytes = http_request.get_downloaded_bytes()
+	var total_bytes = http_request.get_body_size()
+	
+	var downloaded_delta = current_bytes - last_downloaded_bytes
+	var speed = float(downloaded_delta) / timer_interval
+	var speed_mb = speed / 1024.0 / 1024.0
+	
+	last_downloaded_bytes = current_bytes
+	
+	progress_changed.emit(current_bytes, total_bytes, speed_mb)
+"
+
+[node name="DownloadProgressBar" type="Node" unique_id=326767799]
+script = SubResource("GDScript_rvgnp")
+
+[node name="Timer" type="Timer" parent="." unique_id=1039970436]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,0 +1,28 @@
+{
+  "game_name": "ETN_Farm",
+  "min_supported_version": "1.0.0",
+  "target_version": "1.1.0",
+  "target_patch" : 3,
+  "force_update": true,
+  "force_full_package": false,
+  "full_package": {
+	"version": "1.1.0",
+	"url": "https://xxx/full_1.1.0.zip"
+  },
+  "patches": [
+	{
+	  "patch_id": 13,
+	  "from_patch": 12,
+	  "to_patch": 13,
+	  "url": "https://xxx/patch_13.zip",
+	  "notice": "�޸�UI��������"
+	},
+	{
+	  "patch_id": 14,
+	  "from_patch": 13,
+	  "to_patch": 14,
+	  "url": "https://xxx/patch_14.zip",
+	  "notice": "�����ͼ"
+	}
+  ]
+}
