@@ -3,7 +3,7 @@ extends RefCounted
 class_name ETNThemeFactory
 
 # 说明：
-# - 本文件用于在运行时统一应用启动器UI主题，并创建“液态玻璃”卡片底板。
+# - 本文件用于在运行时统一应用启动器UI主题，并创建"液态玻璃"卡片底板。
 # - 由于不直接修改现有 .tscn 文件，本工厂函数返回可直接 add_child() 的节点。
 
 
