@@ -1,0 +1,13 @@
+{
+  "game_name": "ETN_Farm",
+  "min_supported_version": "2.9.9.0",
+  "target_version": "2.9.9.0",
+  "target_patch" : 0,
+  "force_update": true,
+  "force_full_package": true,
+  "full_package": {
+	"version": "2.9.9.0",
+	"url": "https://github.com/GlacierXiaowei/ETN_Farm/releases/download/v1.2.1.0/ETN_Farm.zip"
+  }
+
+}

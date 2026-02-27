@@ -1,4 +1,4 @@
-extends Control
+extends Node
 ##注意 这个export 我把它手动在编辑器里面添加 不知道会不会产生bug 希望不会
 @export var repo_name :String = "ETN_Farm"
 @export var update_choose_file: Node
@@ -8,7 +8,7 @@ extends Control
 
 
 var game_dir = OS.get_environment("APPDATA")
-var user_path = game_dir.path_join(repo_name)
+var user_path : String
 ##最小化修改 初始化 的时候 这些就会赋值 其他的就不用管了
 var _local : VersionInfo
 var _server : UpdatePolicy
@@ -21,6 +21,7 @@ signal update_process_state_signal
 @export var is_force_update : bool = false
 
 func _ready() -> void:
+	user_path = game_dir.path_join(repo_name)
 	await init_check_version()
 	#init_check_version()
 	if _server.force_full_package:

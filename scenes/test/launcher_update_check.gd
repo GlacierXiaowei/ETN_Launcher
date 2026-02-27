@@ -1,6 +1,6 @@
 extends Control
 
-@onready var background: ColorRect = $Background
+#@onready var background: ColorRect = $Background
 @onready var status_label: Label = $CenterContainer/VBoxContainer/StatusLabel
 @onready var update_notes: RichTextLabel = $CenterContainer/VBoxContainer/UpdateNotes
 @onready var button_container: HBoxContainer = $CenterContainer/VBoxContainer/ButtonContainer
@@ -8,7 +8,7 @@ extends Control
 @onready var secondary_button: Button = $CenterContainer/VBoxContainer/ButtonContainer/SecondaryButton
 @onready var loading_spinner: TextureRect = $LoadingSpinner
 
-var install_component: Control = null
+var install_component: Node = null
 var is_checking: bool = true
 var is_force_update: bool = false
 
@@ -16,21 +16,28 @@ func _ready() -> void:
 	_init_install_component()
 
 func _init_install_component() -> void:
-	button_container.visible = false
+	button_container.visible = true
 	loading_spinner.visible = true
 	status_label.text = "正在检查更新..."
 	update_notes.text = ""
 	is_checking = true
+	
+	primary_button.disabled = true
+	_show_buttons("请稍后", "retry", "download")
+	
 	
 	install_component = load("res://component/UpdateManager/install_component.tscn").instantiate()
 	install_component.repo_name = "ETN_Launcher"
 	install_component.update_needed_state_signal.connect(_on_update_check_completed)
 	add_child(install_component)
 
+
 func _on_update_check_completed(result: String) -> void:
 	is_checking = false
 	loading_spinner.visible = false
 	button_container.visible = true
+	
+	primary_button.disabled = false
 	
 	is_force_update = install_component.is_force_update
 	
@@ -39,10 +46,13 @@ func _on_update_check_completed(result: String) -> void:
 			_show_buttons("进入", "", "enter")
 		"FULL_UPDATE_REQUIRED", "NORMAL_UPDATE_REQUIRED":
 			if is_force_update:
+				status_label.text = "需要更新"
 				_show_buttons("下载更新", "", "download")
 			else:
-				_show_buttons("下载更新", "离线进入", "download_skip")
+				status_label.text = "需要注意"
+				_show_buttons("下载更新", "离线进入", "download")
 		"ERROR":
+			status_label.text = "发生错误"
 			_show_buttons("重试", "离线进入", "retry")
 
 func _show_buttons(primary_text: String, secondary_text: String, action: String) -> void:
@@ -78,8 +88,9 @@ func _start_download() -> void:
 	primary_button.disabled = true
 	primary_button.text = "下载中..."
 	secondary_button.disabled = true
-	
+	status_label.text ="请直接运行新客户端"
 	install_component._on_下载_pressed()
+
 
 func _retry_check() -> void:
 	install_component.queue_free()

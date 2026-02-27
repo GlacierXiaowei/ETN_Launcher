@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://hcxt1bdbdwm1"]
+
+[ext_resource type="VideoStream" uid="uid://buggnpvmnwbj5" path="res://assets/video/small_loding.ogv" id="1_4t072"]
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" unique_id=784863350]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("1_4t072")
+autoplay = true
+loop = true

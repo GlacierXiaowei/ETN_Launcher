@@ -9,6 +9,10 @@ const VERSION_FILE_NAME = "cloud_version.json"
 var http_proxy = ""
 var https_proxy = ""
 
+# 测试用：使用本地mock文件
+var use_mock_cloud_version : bool = true
+var mock_cloud_version_path : String = "res://data/mock_cloud_version.json"
+
 
 func _ready() -> void:
 	http_proxy = OS.get_environment("http_proxy")
@@ -43,12 +47,20 @@ func int_to_version(num: int, part_count: int = 4) -> String:
 ##从 GitHub 获取服务器更新策略
 ##repo: GitHub 仓库名，如 "ETN_Farm"
 func get_update_policy(repo: String) -> UpdatePolicy:
+	# 测试模式：从本地文件读取
+	if use_mock_cloud_version:
+		return _get_mock_update_policy(repo)
+	
 	var http_request = HTTPRequest.new()
 	add_child(http_request)
 	
 	var download_url = "https://github.com/%s/%s/releases/latest/download/%s" % [GITHUB_OWNER, repo, VERSION_FILE_NAME]
 	
-	http_request.timeout = 2.5
+	http_request.timeout = 6
+	
+	var headers = PackedStringArray([
+		"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+	])
 	
 	if not https_proxy.is_empty():
 		http_request.set_proxy(https_proxy)
@@ -57,16 +69,15 @@ func get_update_policy(repo: String) -> UpdatePolicy:
 	
 	var max_retries = 5
 	var retry_count = 0
-	var last_error = OK
+	var last_response_code = 0
 	
 	while retry_count < max_retries:
 		if retry_count > 0:
 			await get_tree().create_timer(1.0).timeout
 		
-		var error = http_request.request(download_url)
+		var error = http_request.request(download_url, headers)
 		if error != OK:
 			push_error("[VersionUtils] Failed to request: " + download_url + " error: " + str(error))
-			last_error = error
 			retry_count += 1
 			continue
 		
@@ -89,14 +100,38 @@ func get_update_policy(repo: String) -> UpdatePolicy:
 			continue
 		else:
 			push_error("[VersionUtils] Download failed with code: " + str(response_code))
-			last_error = error
+			last_response_code = response_code
 			retry_count += 1
 			continue
 	
 	remove_child(http_request)
 	http_request.queue_free()
-	push_error("[VersionUtils] All retries failed, last error: " + str(last_error))
+	push_error("[VersionUtils] All retries failed, last response code: " + str(last_response_code))
 	return UpdatePolicy.new()
+
+##从本地文件获取模拟的服务器更新策略（用于测试）
+func _get_mock_update_policy(_repo: String) -> UpdatePolicy:
+	var file_path = mock_cloud_version_path
+	if not FileAccess.file_exists(file_path):
+		push_error("[VersionUtils] Mock file not found: " + file_path)
+		return UpdatePolicy.new()
+	
+	var file = FileAccess.open(file_path, FileAccess.READ)
+	if file == null:
+		push_error("[VersionUtils] Failed to open mock file: " + file_path)
+		return UpdatePolicy.new()
+	
+	var content = file.get_as_text()
+	file.close()
+	
+	var json = JSON.new()
+	var parse_result = json.parse(content)
+	if parse_result != OK:
+		push_error("[VersionUtils] Failed to parse mock JSON")
+		return UpdatePolicy.new()
+	
+	print("[VersionUtils] Using mock cloud version from: " + file_path)
+	return UpdatePolicy.new(json.data)
 
 ##从本地获取版本信息
 ##path: version.json 文件路径，默认使用用户目录下的版本文件
