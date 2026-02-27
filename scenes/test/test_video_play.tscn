@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://hcxt1bdbdwm1"]
 
-[ext_resource type="VideoStream" uid="uid://buggnpvmnwbj5" path="res://assets/video/small_loding.ogv" id="1_4t072"]
+[ext_resource type="VideoStream" uid="uid://dlsj0gdx2gh2x" path="res://assets/video/small_loding.ogv" id="1_4t072"]
 
 [node name="VideoStreamPlayer" type="VideoStreamPlayer" unique_id=784863350]
 anchors_preset = 15
