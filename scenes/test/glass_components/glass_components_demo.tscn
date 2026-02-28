@@ -26,6 +26,14 @@ stretch_mode = 1
 [node name="MediumPopup" parent="." unique_id=14934888 instance=ExtResource("2_to1a0")]
 layout_mode = 0
 anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 600.0
+offset_bottom = 400.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="LargePopup" parent="." unique_id=415219225 instance=ExtResource("5_0ajtr")]
 layout_mode = 0

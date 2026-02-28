@@ -13,9 +13,9 @@ uniform vec4 tint : source_color = vec4(2.117, 2.117, 2.117, 0.12);
 uniform float opacity : hint_range(0.0, 1.0) = 1.0;
 
 // 折射强度（像素单位）。越靠近边缘越强。
-uniform float refraction_strength_px : hint_range(0.0, 64.0) = 14.0;
+uniform float refraction_strength_px : hint_range(0.0, 64.0) = 14;
 uniform float edge_refraction_boost : hint_range(0.0, 4.0) = 4.0;
-uniform float edge_falloff_px : hint_range(1.0, 256.0) = 36;
+uniform float edge_falloff_px : hint_range(1.0, 256.0) = 12;
 
 // 基于 mip 的模糊（textureLod 使用 SCREEN_TEXTURE 的 mip 级别）。
 uniform float blur_lod_center : hint_range(0.0, 10.0) = 2.8;
@@ -41,11 +41,11 @@ uniform float dispersion_strength : hint_range(0.0, 2.0) = 1.4;
 uniform float dispersion_px : hint_range(0.0, 64.0) = 16;
 
 // 内描边。
-uniform float border_width_px : hint_range(0.0, 64.0) = 0;
+uniform float border_width_px : hint_range(0.0, 64.0) = 0.5;
 uniform vec4 border_color : source_color = vec4(1.353, 1.353, 1.353, 0.278);
 
 // 边缘高光（仅在内部）。
-uniform float rim_width_px : hint_range(0.0, 128.0) =3.0;
+uniform float rim_width_px : hint_range(0.0, 128.0) =2.25;
 uniform float rim_intensity : hint_range(0.0, 4.0) = 4.0;
 uniform vec4 rim_color : source_color = vec4(3.294, 3.294, 3.294, 0.55);
 
