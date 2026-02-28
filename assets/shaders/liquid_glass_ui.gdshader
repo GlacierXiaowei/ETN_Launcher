@@ -38,7 +38,7 @@ uniform float refraction_edge_curve : hint_range(0.0, 4.0) = 2.05;
 
 // 色散：当 dispersion_strength > 0 时，启用 3 次采样（R/G/B 分离）。
 uniform float dispersion_strength : hint_range(0.0, 2.0) = 1.4;
-uniform float dispersion_px : hint_range(0.0, 64.0) = 22;
+uniform float dispersion_px : hint_range(0.0, 64.0) = 16;
 
 // 内描边。
 uniform float border_width_px : hint_range(0.0, 64.0) = 0;

@@ -32,30 +32,14 @@ enum SizeVariant { MEDIUM, LARGE }
 		size_variant = v
 		_apply_size()
 
-@export_group("Glass Effect - Border")
-@export var border_width_normal: float =0
-@export var border_width_hover: float =0.5
-@export var border_width_pressed: float =1
-@export var border_width_disabled: float =0
-
-@export_group("Glass Effect - Tint Colors")
-@export var normal_tint: Color = Color(0.92,0.92,0.96,0.50)
-@export var hover_tint: Color = Color(0.96,0.96,1.0,0.60)
-@export var pressed_tint: Color = Color(0.78,0.80,0.85,0.70)
-@export var disabled_tint: Color = Color(0.172, 0.172, 0.172, 0.85)
-
-@export_group("Corner")
+@export_group("Glass Effect")
 @export var corner_radius_px: float =18.0
-
-@export_group("Debug")
-@export var debug_log: bool = false
 
 var _glass_bg: ColorRect
 var _label: Label
 var _hit_button: Button
 var _is_hover := false
 var _is_pressed := false
-
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
@@ -71,7 +55,6 @@ func _ready() -> void:
 	_update_layout()
 	_update_glass_state()
 
-
 func _build_nodes_if_needed() -> void:
 	if _glass_bg == null:
 		_glass_bg = ColorRect.new()
@@ -83,7 +66,7 @@ func _build_nodes_if_needed() -> void:
 		var mat := ShaderMaterial.new()
 		mat.shader = load("res://assets/shaders/liquid_glass_ui.gdshader")
 		if mat.shader == null:
-			push_error("[GlassButton] Failed to load shader: res://assets/shaders/liquid_glass_ui.gdshader")
+			push_error("[GlassButton] Failed to load shader")
 		_glass_bg.material = mat
 
 	if _label == null:
@@ -134,20 +117,8 @@ func _build_nodes_if_needed() -> void:
 	move_child(_label,1)
 	move_child(_hit_button,2)
 
-
 func _apply_type_style() -> void:
-	match button_type:
-		ButtonType.PRIMARY:
-			normal_tint = Color(0.736, 0.781, 0.812, 0.716)
-			hover_tint = Color(0.499, 0.818, 1.162, 0.55)
-			pressed_tint = Color(0.264, 0.556, 0.827, 0.8)
-		ButtonType.SECONDARY:
-			normal_tint = Color(0.779, 0.779, 0.802, 0.722)
-			hover_tint = Color(0.854, 0.729, 0.812, 0.55)
-			pressed_tint = Color(0.633, 0.429, 0.463, 0.8)
-
 	_update_glass_state()
-
 
 func _apply_size() -> void:
 	match size_variant:
@@ -156,11 +127,9 @@ func _apply_size() -> void:
 		SizeVariant.LARGE:
 			custom_minimum_size = Vector2(180,56)
 
-
 func _on_resized() -> void:
 	_update_layout()
 	_update_glass_state()
-
 
 func _update_layout() -> void:
 	if _glass_bg == null:
@@ -179,18 +148,14 @@ func _update_layout() -> void:
 	_hit_button.position = Vector2.ZERO
 	_hit_button.size = s
 
-
 func _get_mat() -> ShaderMaterial:
 	if _glass_bg == null:
 		return null
 	return _glass_bg.material as ShaderMaterial
 
-
 func _update_glass_state() -> void:
 	var mat := _get_mat()
 	if mat == null:
-		if debug_log:
-			push_warning("[GlassButton] No ShaderMaterial on GlassBackground")
 		return
 
 	var s := _glass_bg.size
@@ -203,46 +168,40 @@ func _update_glass_state() -> void:
 
 	mat.set_shader_parameter("rect_size_px", s)
 	mat.set_shader_parameter("corner_radius_px", corner_radius_px)
-	
-	mat.set_shader_parameter("border_color", Color(1.353, 1.353, 1.353, 0.18))
-	#mat.set_shader_parameter("rim_width_px",6.0)
-	#mat.set_shader_parameter("rim_intensity",4.0)
-	#mat.set_shader_parameter("rim_color", Color(3.294,3.294,3.294,0.55))
-	#mat.set_shader_parameter("refraction_strength_px",14.0)
-	#mat.set_shader_parameter("edge_refraction_boost",4.0)
-	#mat.set_shader_parameter("edge_falloff_px",28.0)
-	
+	mat.set_shader_parameter("border_color", Color(1.353,1.353,1.353,0.18))
 	mat.set_shader_parameter("blur_lod_center",4.0)
 	mat.set_shader_parameter("blur_lod_edge",4.75)
 	mat.set_shader_parameter("dispersion_strength",1.4)
 	mat.set_shader_parameter("rim_width_px",0)
-	##调不来这个参数
-	#mat.set_shader_parameter("distortion_k1",-0.15)
-	#mat.set_shader_parameter("distortion_k2",-0.5)
+
+	var tint: Color
+	var border_w: float
 	
-
-	if debug_log:
-		push_warning("[GlassButton] update state size=%s hover=%s pressed=%s disabled=%s" % [str(s), str(_is_hover), str(_is_pressed), str(disabled)])
-
 	if disabled:
-		_apply_glass_params(disabled_tint,0.95, border_width_disabled)
-		return
+		tint = Color(0.172,0.172,0.172,0.85)
+		border_w =0
+	elif _is_pressed:
+		match button_type:
+			ButtonType.PRIMARY:
+				tint = Color(0.264,0.556,0.827,0.8)
+			ButtonType.SECONDARY:
+				tint = Color(0.633,0.429,0.463,0.8)
+		border_w =1.0
+	elif _is_hover:
+		match button_type:
+			ButtonType.PRIMARY:
+				tint = Color(0.499,0.818,1.162,0.55)
+			ButtonType.SECONDARY:
+				tint = Color(0.854,0.729,0.812,0.55)
+		border_w =0.5
+	else:
+		match button_type:
+			ButtonType.PRIMARY:
+				tint = Color(0.736,0.781,0.812,0.716)
+			ButtonType.SECONDARY:
+				tint = Color(0.779,0.779,0.802,0.722)
+		border_w =0
 
-	if _is_pressed:
-		_apply_glass_params(pressed_tint,1.0, border_width_pressed)
-		return
-
-	if _is_hover:
-		_apply_glass_params(hover_tint,1.0, border_width_hover)
-		return
-
-	_apply_glass_params(normal_tint,1.0, border_width_normal)
-
-
-func _apply_glass_params(t: Color, opa: float, border_w: float) -> void:
-	var mat := _get_mat()
-	if mat == null:
-		return
-	mat.set_shader_parameter("tint", t)
-	mat.set_shader_parameter("opacity", opa)
+	mat.set_shader_parameter("tint", tint)
+	mat.set_shader_parameter("opacity",1.0)
 	mat.set_shader_parameter("border_width_px", border_w)
