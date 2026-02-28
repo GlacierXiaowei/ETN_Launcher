@@ -7,7 +7,7 @@ uniform vec2 rect_size_px = vec2(256.0, 256.0);
 uniform float corner_radius_px : hint_range(0.0, 256.0) = 24.0;
 
 // tint.rgb: 玻璃吸收/染色颜色；tint.a: 染色强度 (0..1)。
-uniform vec4 tint : source_color = vec4(1.353, 1.353, 1.353, 0.12);
+uniform vec4 tint : source_color = vec4(2.117, 2.117, 2.117, 0.12);
 
 // 最终玻璃透明度（与 tint.a 解耦）。
 uniform float opacity : hint_range(0.0, 1.0) = 1.0;
@@ -15,11 +15,11 @@ uniform float opacity : hint_range(0.0, 1.0) = 1.0;
 // 折射强度（像素单位）。越靠近边缘越强。
 uniform float refraction_strength_px : hint_range(0.0, 64.0) = 14.0;
 uniform float edge_refraction_boost : hint_range(0.0, 4.0) = 4.0;
-uniform float edge_falloff_px : hint_range(1.0, 256.0) = 28.0;
+uniform float edge_falloff_px : hint_range(1.0, 256.0) = 36;
 
 // 基于 mip 的模糊（textureLod 使用 SCREEN_TEXTURE 的 mip 级别）。
-uniform float blur_lod_center : hint_range(0.0, 10.0) = 2.2;
-uniform float blur_lod_edge : hint_range(0.0, 10.0) = 3.4;
+uniform float blur_lod_center : hint_range(0.0, 10.0) = 2.8;
+uniform float blur_lod_edge : hint_range(0.0, 10.0) = 4.2;
 
 // High-quality blur (Gaussian taps). Used only when blur_quality > 0.
 uniform float blur_strength : hint_range(0.0, 1.0) = 1.0;
@@ -37,15 +37,15 @@ uniform float refraction_isotropy : hint_range(0.0, 1.0) = 0.35;
 uniform float refraction_edge_curve : hint_range(0.0, 4.0) = 2.05;
 
 // 色散：当 dispersion_strength > 0 时，启用 3 次采样（R/G/B 分离）。
-uniform float dispersion_strength : hint_range(0.0, 2.0) = 1.25;
-uniform float dispersion_px : hint_range(0.0, 64.0) = 24;
+uniform float dispersion_strength : hint_range(0.0, 2.0) = 1.4;
+uniform float dispersion_px : hint_range(0.0, 64.0) = 22;
 
 // 内描边。
-uniform float border_width_px : hint_range(0.0, 64.0) = 1.5;
+uniform float border_width_px : hint_range(0.0, 64.0) = 0;
 uniform vec4 border_color : source_color = vec4(1.353, 1.353, 1.353, 0.278);
 
 // 边缘高光（仅在内部）。
-uniform float rim_width_px : hint_range(0.0, 128.0) = 6;
+uniform float rim_width_px : hint_range(0.0, 128.0) =3.0;
 uniform float rim_intensity : hint_range(0.0, 4.0) = 4.0;
 uniform vec4 rim_color : source_color = vec4(3.294, 3.294, 3.294, 0.55);
 
@@ -55,8 +55,8 @@ uniform float rim_curvature : hint_range(0.0, 2.0) = 1.0;
 uniform float rim_f0 : hint_range(0.0, 1.0) = 0.04;
 
 // Radial lens distortion (subtle convex/concave feel).
-uniform float distortion_k1 : hint_range(-0.2, 0.4) = 0.15;
-uniform float distortion_k2 : hint_range(-0.2, 0.4) = 0.10;
+uniform float distortion_k1 : hint_range(-0.4, 0.4) = 0.15;
+uniform float distortion_k2 : hint_range(-0.4, 0.4) = 0.10;
 
 float sd_rounded_rect_px(vec2 p_px, vec2 half_size_px, float radius_px) {
     // 圆角矩形的 SDF（以中心为原点，单位 px）。

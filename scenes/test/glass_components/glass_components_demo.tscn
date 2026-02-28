@@ -1,0 +1,281 @@
+[gd_scene format=3 uid="uid://yp3qm4c7udmm"]
+
+[ext_resource type="Script" uid="uid://dp12aruxr726m" path="res://scenes/test/glass_components/glass_button.gd" id="1_glass_button"]
+[ext_resource type="Script" uid="uid://cr3yb4jpq0wk" path="res://scenes/test/glass_components/glass_panel.gd" id="1_glass_panel"]
+[ext_resource type="Texture2D" uid="uid://d3gtoixr80gem" path="res://assets/image/IMG_20251203_162337.jpg" id="1_oe6lu"]
+[ext_resource type="Shader" uid="uid://ct2hawbu1tjn0" path="res://assets/shaders/liquid_glass_ui.gdshader" id="2_to1a0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_to1a0"]
+shader = ExtResource("2_to1a0")
+shader_parameter/rect_size_px = Vector2(256, 256)
+shader_parameter/corner_radius_px = 24.0
+shader_parameter/tint = Color(2.117, 2.117, 2.117, 0.12)
+shader_parameter/opacity = 1.0
+shader_parameter/refraction_strength_px = 14.0
+shader_parameter/edge_refraction_boost = 4.0
+shader_parameter/edge_falloff_px = 36.0
+shader_parameter/blur_lod_center = 2.8
+shader_parameter/blur_lod_edge = 4.2
+shader_parameter/blur_strength = 1.0
+shader_parameter/blur_radius_px = 21.0
+shader_parameter/blur_quality = 0
+shader_parameter/refraction_isotropy = 0.35
+shader_parameter/refraction_edge_curve = 2.05
+shader_parameter/dispersion_strength = 1.4
+shader_parameter/dispersion_px = 22.0
+shader_parameter/border_width_px = 0.0
+shader_parameter/border_color = Color(1.353, 1.353, 1.353, 0.278)
+shader_parameter/rim_width_px = 3.0
+shader_parameter/rim_intensity = 4.0
+shader_parameter/rim_color = Color(3.294, 3.294, 3.294, 0.55)
+shader_parameter/rim_fresnel_power = 3.2
+shader_parameter/rim_curvature = 1.0
+shader_parameter/rim_f0 = 0.04
+shader_parameter/distortion_k1 = 0.15
+shader_parameter/distortion_k2 = 0.1
+
+[node name="GlassComponentsDemo" type="Control" unique_id=1407026804]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="." unique_id=1456028497]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_oe6lu")
+stretch_mode = 1
+
+[node name="MediumPopup" type="ColorRect" parent="." unique_id=1382653929]
+material = SubResource("ShaderMaterial_to1a0")
+custom_minimum_size = Vector2(600, 400)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -890.0
+offset_top = -299.0
+offset_right = -290.0
+offset_bottom = 101.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_glass_panel")
+corner_radius_px = 24.0
+border_width_px = 1.0
+
+[node name="Margin" type="MarginContainer" parent="MediumPopup" unique_id=749189991]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="VBox" type="VBoxContainer" parent="MediumPopup/Margin" unique_id=136437627]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="MediumPopup/Margin/VBox" unique_id=1541940400]
+layout_mode = 2
+text = "中弹窗 - Medium Popup"
+
+[node name="Content" type="RichTextLabel" parent="MediumPopup/Margin/VBox" unique_id=1371821712]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+bbcode_enabled = true
+text = "这是一个中等大小的弹窗，用于显示较短的内容。"
+
+[node name="Spacer" type="Control" parent="MediumPopup/Margin/VBox" unique_id=1369959695]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ButtonContainer" type="HBoxContainer" parent="MediumPopup/Margin/VBox" unique_id=133288350]
+layout_mode = 2
+alignment = 2
+
+[node name="PrimaryButton" type="Button" parent="MediumPopup/Margin/VBox/ButtonContainer" unique_id=102053589]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+flat = true
+script = ExtResource("1_glass_button")
+button_type = 0
+
+[node name="Spacer" type="Control" parent="MediumPopup/Margin/VBox/ButtonContainer" unique_id=834372428]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SecondaryButton" type="Button" parent="MediumPopup/Margin/VBox/ButtonContainer" unique_id=226429395]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+flat = true
+script = ExtResource("1_glass_button")
+
+[node name="LargePopup" type="ColorRect" parent="." unique_id=2031895242]
+custom_minimum_size = Vector2(800, 600)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 83.0
+offset_top = -447.0
+offset_right = 883.0
+offset_bottom = 153.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_glass_panel")
+corner_radius_px = 28.0
+border_width_px = 1.0
+size_variant = 1
+
+[node name="Margin" type="MarginContainer" parent="LargePopup" unique_id=1149046049]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBox" type="VBoxContainer" parent="LargePopup/Margin" unique_id=1788294081]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Title" type="Label" parent="LargePopup/Margin/VBox" unique_id=537874974]
+layout_mode = 2
+text = "大弹窗 - Large Popup"
+
+[node name="Content" type="RichTextLabel" parent="LargePopup/Margin/VBox" unique_id=480162899]
+custom_minimum_size = Vector2(0, 280)
+layout_mode = 2
+bbcode_enabled = true
+text = "这是一个大弹窗，用于显示更新公告等长内容。
+
+[b]更新内容：[/b]
+• 新增了液态玻璃组件
+• 优化了弹窗动画效果
+• 修复了一些已知问题
+
+这里是更多的内容描述..."
+
+[node name="Spacer" type="Control" parent="LargePopup/Margin/VBox" unique_id=740251246]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ButtonContainer" type="HBoxContainer" parent="LargePopup/Margin/VBox" unique_id=456292436]
+layout_mode = 2
+alignment = 1
+
+[node name="PrimaryButton" type="Button" parent="LargePopup/Margin/VBox/ButtonContainer" unique_id=1281246332]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+flat = true
+script = ExtResource("1_glass_button")
+button_type = 0
+
+[node name="Spacer" type="Control" parent="LargePopup/Margin/VBox/ButtonContainer" unique_id=1315523539]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SecondaryButton" type="Button" parent="LargePopup/Margin/VBox/ButtonContainer" unique_id=77054456]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+flat = true
+script = ExtResource("1_glass_button")
+
+[node name="ButtonSizesLabel" type="Label" parent="." unique_id=52852095]
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 660.0
+offset_right = 100.0
+offset_bottom = 686.0
+grow_horizontal = 2
+text = "=== 按钮尺寸对比 ==="
+
+[node name="ButtonSizesContainer" type="HBoxContainer" parent="." unique_id=990216221]
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = 690.0
+offset_right = 180.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="MediumButton" type="Button" parent="ButtonSizesContainer" unique_id=1256950347]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+flat = true
+script = ExtResource("1_glass_button")
+button_type = 0
+
+[node name="LargeButton" type="Button" parent="ButtonSizesContainer" unique_id=2084893578]
+custom_minimum_size = Vector2(160, 50)
+layout_mode = 2
+flat = true
+script = ExtResource("1_glass_button")
+button_type = 0
+size_variant = 1
+
+[node name="StateDemoLabel" type="Label" parent="." unique_id=1756763845]
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 750.0
+offset_right = 100.0
+offset_bottom = 776.0
+grow_horizontal = 2
+text = "=== 按钮状态演示 ==="
+
+[node name="StateDemoContainer" type="HBoxContainer" parent="." unique_id=1558226955]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 228.0
+offset_top = 770.0
+offset_right = 472.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="NormalButton" type="Button" parent="StateDemoContainer" unique_id=1621287389]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+flat = true
+script = ExtResource("1_glass_button")
+button_type = 0
+
+[node name="DisabledButton" type="Button" parent="StateDemoContainer" unique_id=855421862]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+disabled = true
+flat = true
+script = ExtResource("1_glass_button")
+disabled = true
