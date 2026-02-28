@@ -37,26 +37,26 @@ uniform float refraction_isotropy : hint_range(0.0, 1.0) = 0.35;
 uniform float refraction_edge_curve : hint_range(0.0, 4.0) = 2.05;
 
 // 色散：当 dispersion_strength > 0 时，启用 3 次采样（R/G/B 分离）。
-uniform float dispersion_strength : hint_range(0.0, 1.0) = 0.5;
-uniform float dispersion_px : hint_range(0.0, 8.0) = 1.5;
+uniform float dispersion_strength : hint_range(0.0, 2.0) = 1.25;
+uniform float dispersion_px : hint_range(0.0, 64.0) = 24;
 
 // 内描边。
 uniform float border_width_px : hint_range(0.0, 64.0) = 1.5;
 uniform vec4 border_color : source_color = vec4(1.353, 1.353, 1.353, 0.278);
 
 // 边缘高光（仅在内部）。
-uniform float rim_width_px : hint_range(0.0, 128.0) = 2;
+uniform float rim_width_px : hint_range(0.0, 128.0) = 6;
 uniform float rim_intensity : hint_range(0.0, 4.0) = 4.0;
 uniform vec4 rim_color : source_color = vec4(3.294, 3.294, 3.294, 0.55);
 
 // Fresnel-style edge highlight tuning (approximate in 2D).
-uniform float rim_fresnel_power : hint_range(0.5, 8.0) = 3.5;
+uniform float rim_fresnel_power : hint_range(0.5, 8.0) = 3.2;
 uniform float rim_curvature : hint_range(0.0, 2.0) = 1.0;
 uniform float rim_f0 : hint_range(0.0, 1.0) = 0.04;
 
 // Radial lens distortion (subtle convex/concave feel).
-uniform float distortion_k1 : hint_range(-0.2, 0.2) = 0.045;
-uniform float distortion_k2 : hint_range(-0.2, 0.2) = 0.00;
+uniform float distortion_k1 : hint_range(-0.2, 0.4) = 0.15;
+uniform float distortion_k2 : hint_range(-0.2, 0.4) = 0.10;
 
 float sd_rounded_rect_px(vec2 p_px, vec2 half_size_px, float radius_px) {
     // 圆角矩形的 SDF（以中心为原点，单位 px）。
