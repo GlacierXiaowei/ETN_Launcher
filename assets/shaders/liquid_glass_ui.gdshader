@@ -14,22 +14,23 @@ uniform float opacity : hint_range(0.0, 1.0) = 1.0;
 
 // 折射强度（像素单位）。越靠近边缘越强。
 uniform float refraction_strength_px : hint_range(0.0, 64.0) = 14.0;
-uniform float edge_refraction_boost : hint_range(0.0, 4.0) = 2.0;
+uniform float edge_refraction_boost : hint_range(0.0, 4.0) = 4.0;
 uniform float edge_falloff_px : hint_range(1.0, 256.0) = 28.0;
 
 // 基于 mip 的模糊（textureLod 使用 SCREEN_TEXTURE 的 mip 级别）。
 uniform float blur_lod_center : hint_range(0.0, 10.0) = 2.2;
 uniform float blur_lod_edge : hint_range(0.0, 10.0) = 3.4;
 
-// High-quality blur (Gaussian taps). When > 0, this is used instead of mip LOD.
-uniform float blur_strength : hint_range(0.0, 1.0) = 0.85;
-uniform float blur_radius_px : hint_range(0.0, 64.0) = 16.0;
+// High-quality blur (Gaussian taps). Used only when blur_quality > 0.
+uniform float blur_strength : hint_range(0.0, 1.0) = 1.0;
+uniform float blur_radius_px : hint_range(0.0, 32.0) = 21;
+
 // Blur quality selection.
-// 0: mip LOD (fast, very smooth)
-// 1: isotropic 9 taps
-// 2: isotropic 17 taps
-// 3: isotropic 33 taps (very heavy)
-uniform int blur_quality : hint_range(0, 3) = 1;
+// 0: mip LOD only (your "low quality" path; very smooth and stable)
+// 1: 17 taps (isotropic)
+// 2: 65 taps (very heavy; best quality)
+// 3: 257 taps (extreme; mostly for experiments)
+uniform int blur_quality : hint_range(0, 3) = 0;
 
 // Refraction shaping. Helps avoid prism-like faceting artifacts.
 uniform float refraction_isotropy : hint_range(0.0, 1.0) = 0.35;
@@ -224,6 +225,108 @@ vec4 blur33(vec2 uv, float radius_px) {
     return c;
 }
 
+vec4 blur65(vec2 uv, float radius_px) {
+    vec2 spx = get_screen_pixel_size();
+    float r = max(radius_px, 0.0);
+
+    // 16 directions around the circle.
+    vec2 dirs[16] = vec2[16](
+        vec2(1.0, 0.0), vec2(0.9239, 0.3827), vec2(0.7071, 0.7071), vec2(0.3827, 0.9239),
+        vec2(0.0, 1.0), vec2(-0.3827, 0.9239), vec2(-0.7071, 0.7071), vec2(-0.9239, 0.3827),
+        vec2(-1.0, 0.0), vec2(-0.9239, -0.3827), vec2(-0.7071, -0.7071), vec2(-0.3827, -0.9239),
+        vec2(0.0, -1.0), vec2(0.3827, -0.9239), vec2(0.7071, -0.7071), vec2(0.9239, -0.3827)
+    );
+
+    // Four rings (0.25, 0.5, 0.75, 1.0). Total taps: 1 + 16*4 = 65.
+    float ring_scales[4] = float[4](0.25, 0.50, 0.75, 1.00);
+
+    // Approx Gaussian-ish weights. Must sum to ~1.
+    float w_center = 0.16;
+    float w_r0 = 0.22;
+    float w_r1 = 0.22;
+    float w_r2 = 0.20;
+    float w_r3 = 0.20;
+
+    vec4 c = sample_screen(uv, 0.0) * w_center;
+
+    for (int ring = 0; ring < 4; ring++) {
+        float ws = (ring == 0) ? w_r0 : ((ring == 1) ? w_r1 : ((ring == 2) ? w_r2 : w_r3));
+        float per = ws / 16.0;
+        vec2 o = r * ring_scales[ring] * spx;
+        for (int i = 0; i < 16; i++) {
+            c += sample_screen(uv + dirs[i] * o, 0.0) * per;
+        }
+    }
+
+    return c;
+}
+
+vec4 blur129(vec2 uv, float radius_px) {
+    vec2 spx = get_screen_pixel_size();
+    float r = max(radius_px, 0.0);
+
+    // 129 taps: 1 + 64 directions * 2 rings.
+    float pi2 = 6.28318530718;
+
+    float w_center = 0.20;
+    float w_ring0 = 0.40;
+    float w_ring1 = 0.40;
+
+    vec4 c = sample_screen(uv, 0.0) * w_center;
+
+    float per0 = w_ring0 / 64.0;
+    float per1 = w_ring1 / 64.0;
+
+    vec2 o0 = spx * (r * 0.55);
+    vec2 o1 = spx * (r * 1.00);
+
+    for (int i = 0; i < 64; i++) {
+        float a = pi2 * (float(i) / 64.0);
+        vec2 dir = vec2(cos(a), sin(a));
+        c += sample_screen(uv + dir * o0, 0.0) * per0;
+        c += sample_screen(uv + dir * o1, 0.0) * per1;
+    }
+
+    return c;
+}
+
+vec4 blur257(vec2 uv, float radius_px) {
+    vec2 spx = get_screen_pixel_size();
+    float r = max(radius_px, 0.0);
+
+    // 257 taps: 1 + 64 directions * 4 rings.
+    float pi2 = 6.28318530718;
+
+    float w_center = 0.14;
+    float w_r0 = 0.22;
+    float w_r1 = 0.24;
+    float w_r2 = 0.22;
+    float w_r3 = 0.18;
+
+    vec4 c = sample_screen(uv, 0.0) * w_center;
+
+    float per0 = w_r0 / 64.0;
+    float per1 = w_r1 / 64.0;
+    float per2 = w_r2 / 64.0;
+    float per3 = w_r3 / 64.0;
+
+    vec2 o0 = spx * (r * 0.30);
+    vec2 o1 = spx * (r * 0.55);
+    vec2 o2 = spx * (r * 0.80);
+    vec2 o3 = spx * (r * 1.05);
+
+    for (int i = 0; i < 64; i++) {
+        float a = pi2 * (float(i) / 64.0);
+        vec2 dir = vec2(cos(a), sin(a));
+        c += sample_screen(uv + dir * o0, 0.0) * per0;
+        c += sample_screen(uv + dir * o1, 0.0) * per1;
+        c += sample_screen(uv + dir * o2, 0.0) * per2;
+        c += sample_screen(uv + dir * o3, 0.0) * per3;
+    }
+
+    return c;
+}
+
 // Compute a soft edge normal from SDF derivatives.
 vec2 sd_normal(float sd) {
     vec2 g = vec2(dFdx(sd), dFdy(sd));
@@ -283,26 +386,23 @@ void fragment() {
         vec2 uv_refr = SCREEN_UV + refr_uv_off;
 
         vec4 base_col = vec4(0.0);
-        if (blur_quality == 0) {
-            // Fast path: mip LOD blur only.
+        if (blur_quality == 0 || blur_strength <= 1e-4 || blur_radius_px <= 0.25) {
+            // Low quality path: mip LOD blur only. (This is the one you like.)
             base_col = sample_screen_glass(uv_refr, lod, edge_factor, dir_px);
-        } else if (blur_strength > 1e-4 && blur_radius_px > 0.25) {
-            // Blur only within the glass region.
-            // Make high quality blur stronger, mip LOD less extreme.
-            float edge_bias = 0.78;
-            float blur_amt = blur_strength * mix(1.0, edge_bias, edge_factor);
+        } else {
+            // High quality path should NOT stack on top of mip LOD blur.
+            // Use lod=0 for the sharp sample, then blend in the HQ blur.
+            float blur_amt = clamp(blur_strength * mix(1.0, 0.85, edge_factor), 0.0, 1.0);
 
-            vec4 blur_col = blur9(uv_refr, blur_radius_px);
+            vec4 blur_col = blur17(uv_refr, blur_radius_px);
             if (blur_quality == 2) {
-                blur_col = blur17(uv_refr, blur_radius_px);
-            } else if (blur_quality >= 3) {
-                blur_col = blur33(uv_refr, blur_radius_px);
+                blur_col = blur65(uv_refr, blur_radius_px);
+            } else if (blur_quality == 3) {
+                blur_col = blur257(uv_refr, blur_radius_px);
             }
 
-            vec4 sharp_col = sample_screen_glass(uv_refr, lod, edge_factor, dir_px);
-            base_col = mix(sharp_col, blur_col, clamp(blur_amt, 0.0, 1.0));
-        } else {
-            base_col = sample_screen_glass(uv_refr, lod, edge_factor, dir_px);
+            vec4 sharp_col = sample_screen_glass(uv_refr, 0.0, edge_factor, dir_px);
+            base_col = mix(sharp_col, blur_col, blur_amt);
         }
 
         // Glass tint / absorption.

@@ -20,7 +20,7 @@ This plan evolved during implementation:
 - `LiquidGlassDemo` is now a normal `.tscn` + `.gd` test scene.
 - Demo script no longer forces demo defaults by default; it reads current `ShaderMaterial` uniform values to populate sliders.
 - Shader now uses a Fresnel-like rim highlight (2D approximation), isotropic blur kernels, and refraction shaping to reduce prism/cross artifacts.
-- Blur quality is unified into a single `blur_quality` selector with heavy options (including a very expensive 33-tap mode).
+- Blur quality is unified into a single `blur_quality` selector. `0` uses mip LOD only; higher values use increasingly expensive isotropic multi-tap blurs (17/65/257 taps).
 
 ---
 
