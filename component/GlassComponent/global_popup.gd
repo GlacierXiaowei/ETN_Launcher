@@ -7,6 +7,7 @@ signal popup_opened
 @onready var glass_panel: ColorRect = $PopupContainer/GlassPanel
 @onready var title_label: Label = $PopupContainer/GlassPanel/Margin/VBox/Title
 @onready var content_label: RichTextLabel = $PopupContainer/GlassPanel/Margin/VBox/Content
+@onready var spacer: Control = $PopupContainer/GlassPanel/Margin/VBox/Spacer
 @onready var button_container: HBoxContainer = $PopupContainer/GlassPanel/Margin/VBox/ButtonContainer
 
 var _config: Dictionary = {}
@@ -25,6 +26,17 @@ func setup(config: Dictionary) -> void:
 			glass_panel.custom_minimum_size = Vector2(1000, 800)
 		_:
 			glass_panel.custom_minimum_size = Vector2(600, 400)
+	
+	spacer.custom_minimum_size.y = 48
+	
+	var content_min_y: float = 120.0
+	if size == "large":
+		content_min_y = 520.0
+	content_label.custom_minimum_size.y = content_min_y
+	
+	# 设置 pivot_offset 为尺寸的一半（居中展开）
+	await get_tree().process_frame
+	glass_panel.pivot_offset = glass_panel.custom_minimum_size / 2.0
 	
 	if config.has("title"):
 		title_label.text = config["title"]

@@ -1,3 +1,39 @@
 [gd_resource type="Theme" format=3 uid="uid://c5wbsyp58wb17"]
 
+[ext_resource type="FontFile" uid="uid://d0yb1onj0hs7t" path="res://assets/fonts/MiSans-Normal.otf" id="1_hmg3s"]
+[ext_resource type="FontFile" uid="uid://dxo63jv4vll8v" path="res://assets/fonts/MiSans-Bold.otf" id="2_b4ylu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b4ylu"]
+bg_color = Color(0.25882354, 0.3019608, 0.33333334, 0.34901962)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.25882354, 0.3019608, 0.33333334, 0.34901962)
+border_blend = true
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
 [resource]
+Button/constants/outline_size = 1
+Button/fonts/font = ExtResource("1_hmg3s")
+Label/colors/font_outline_color = Color(0, 0, 0, 0.697)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0.25300002)
+Label/constants/outline_size = 1
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/constants/shadow_outline_size = 1
+Label/font_sizes/font_size = 22
+Label/fonts/font = ExtResource("1_hmg3s")
+RichTextLabel/colors/font_outline_color = Color(0, 0, 0, 0.70600003)
+RichTextLabel/constants/outline_size = 1
+RichTextLabel/font_sizes/bold_font_size = 22
+RichTextLabel/font_sizes/bold_italics_font_size = 22
+RichTextLabel/font_sizes/italics_font_size = 22
+RichTextLabel/font_sizes/mono_font_size = 22
+RichTextLabel/font_sizes/normal_font_size = 20
+RichTextLabel/fonts/bold_font = ExtResource("2_b4ylu")
+RichTextLabel/fonts/normal_font = ExtResource("1_hmg3s")
+RichTextLabel/styles/normal = SubResource("StyleBoxFlat_b4ylu")
