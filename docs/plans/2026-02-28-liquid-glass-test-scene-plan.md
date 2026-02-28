@@ -13,6 +13,17 @@
 
 ---
 
+## Current State (Living Notes)
+
+This plan evolved during implementation:
+
+- `LiquidGlassDemo` is now a normal `.tscn` + `.gd` test scene.
+- Demo script no longer forces demo defaults by default; it reads current `ShaderMaterial` uniform values to populate sliders.
+- Shader now uses a Fresnel-like rim highlight (2D approximation), isotropic blur kernels, and refraction shaping to reduce prism/cross artifacts.
+- Blur quality is unified into a single `blur_quality` selector with heavy options (including a very expensive 33-tap mode).
+
+---
+
 ### Task 1: Restore LauncherUpdateCheck script (no glass injection)
 
 **Files:**

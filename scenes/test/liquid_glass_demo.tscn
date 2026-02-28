@@ -10,15 +10,14 @@ shader_parameter/rect_size_px = Vector2(256, 256)
 shader_parameter/corner_radius_px = 24.0
 shader_parameter/tint = Color(1.353, 1.353, 1.353, 0.12)
 shader_parameter/opacity = 1.0
-shader_parameter/refraction_strength_px = 16.0
-shader_parameter/edge_refraction_boost = 1.4
+shader_parameter/refraction_strength_px = 14.0
+shader_parameter/edge_refraction_boost = 2.0
 shader_parameter/edge_falloff_px = 28.0
-shader_parameter/blur_lod_center = 5.0
-shader_parameter/blur_lod_edge = 6.0
-shader_parameter/blur_strength = 0.7
-shader_parameter/blur_radius_px = 13.0
-shader_parameter/blur_quality = 2
-shader_parameter/blur_mode = 3
+shader_parameter/blur_lod_center = 2.2
+shader_parameter/blur_lod_edge = 3.4
+shader_parameter/blur_strength = 1.0
+shader_parameter/blur_radius_px = 16.0
+shader_parameter/blur_quality = 0
 shader_parameter/refraction_isotropy = 0.35
 shader_parameter/refraction_edge_curve = 2.05
 shader_parameter/dispersion_strength = 0.5
@@ -42,7 +41,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1")
-auto_rescale_card = false
 
 [node name="Background" type="TextureRect" parent="." unique_id=626697256]
 layout_mode = 1
@@ -119,6 +117,7 @@ theme_override_constants/separation = 14
 
 [node name="Title" type="Label" parent="Main/DemoArea/Center/Card/Content/Margin/VBox" unique_id=296252239]
 layout_mode = 2
+theme_override_font_sizes/font_size = 64
 text = "Liquid Glass"
 
 [node name="Body" type="RichTextLabel" parent="Main/DemoArea/Center/Card/Content/Margin/VBox" unique_id=2060077408]

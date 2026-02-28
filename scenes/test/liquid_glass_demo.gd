@@ -19,8 +19,11 @@ var _is_syncing_ui := false
 @export var apply_demo_defaults := false
 
 @export var auto_rescale_card := true
-@export_range(0.2, 1.0, 0.01) var card_scale_x := 0.70
-@export_range(0.2, 1.0, 0.01) var card_scale_y := 0.58
+
+# Design-time reference. If you keep aspect ratio while resizing the window,
+# the card stays the same relative size across 1080p/2k/4k.
+@export var design_resolution := Vector2(1920, 1080)
+@export var design_card_size := Vector2(760, 460)
 
 
 func _ready() -> void:
@@ -95,11 +98,15 @@ func _resync_card_size() -> void:
 	if not auto_rescale_card:
 		return
 	var v: Vector2 = get_viewport_rect().size
-	# Keep a stable visual proportion across resolutions.
-	var target := Vector2(v.x * card_scale_x, v.y * card_scale_y)
-	target.x = clamp(target.x, 680.0, 1100.0)
-	target.y = clamp(target.y, 420.0, 760.0)
-	card.custom_minimum_size = target
+	var base := design_resolution
+	if base.x <= 0.0 or base.y <= 0.0:
+		base = Vector2(1920, 1080)
+
+	# Uniform scaling factor (keeps proportions consistent).
+	var s = min(v.x / base.x, v.y / base.y)
+	s = max(s, 0.01)
+
+	card.custom_minimum_size = design_card_size * s
 
 
 func _index_controls() -> void:

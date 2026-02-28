@@ -14,24 +14,22 @@ uniform float opacity : hint_range(0.0, 1.0) = 1.0;
 
 // 折射强度（像素单位）。越靠近边缘越强。
 uniform float refraction_strength_px : hint_range(0.0, 64.0) = 14.0;
-uniform float edge_refraction_boost : hint_range(0.0, 4.0) = 1.4;
+uniform float edge_refraction_boost : hint_range(0.0, 4.0) = 2.0;
 uniform float edge_falloff_px : hint_range(1.0, 256.0) = 28.0;
 
 // 基于 mip 的模糊（textureLod 使用 SCREEN_TEXTURE 的 mip 级别）。
-uniform float blur_lod_center : hint_range(0.0, 10.0) = 5.0;
-uniform float blur_lod_edge : hint_range(0.0, 10.0) = 6;
+uniform float blur_lod_center : hint_range(0.0, 10.0) = 2.2;
+uniform float blur_lod_edge : hint_range(0.0, 10.0) = 3.4;
 
 // High-quality blur (Gaussian taps). When > 0, this is used instead of mip LOD.
-uniform float blur_strength : hint_range(0.0, 1.0) = 0.7;
-uniform float blur_radius_px : hint_range(0.0, 32.0) = 13.0;
-uniform int blur_quality : hint_range(0, 2) = 1; // 0=off, 1=9 taps, 2=17 taps
-
-// Blur mode selection.
+uniform float blur_strength : hint_range(0.0, 1.0) = 0.85;
+uniform float blur_radius_px : hint_range(0.0, 64.0) = 16.0;
+// Blur quality selection.
 // 0: mip LOD (fast, very smooth)
-// 1: anisotropic average (legacy gauss9_dir-based, may show cross artifacts under strong refraction)
-// 2: isotropic 9 taps (default)
-// 3: isotropic 17 taps (higher quality)
-uniform int blur_mode : hint_range(0, 3) = 2;
+// 1: isotropic 9 taps
+// 2: isotropic 17 taps
+// 3: isotropic 33 taps (very heavy)
+uniform int blur_quality : hint_range(0, 3) = 1;
 
 // Refraction shaping. Helps avoid prism-like faceting artifacts.
 uniform float refraction_isotropy : hint_range(0.0, 1.0) = 0.35;
@@ -198,18 +196,32 @@ vec4 gauss9_separable(vec2 uv, float radius_px) {
     return blur9(uv, radius_px);
 }
 
-vec4 blur_sample(vec2 uv, float radius_px) {
-    if (blur_mode == 0) {
-        // This path is handled by caller via sample_screen_glass with mip LOD.
-        return sample_screen(uv, 6.0);
+vec4 blur33(vec2 uv, float radius_px) {
+    vec2 spx = get_screen_pixel_size();
+    float r = max(radius_px, 0.0);
+
+    // 33 taps: center + 16 at r + 16 at r*0.5 (8 directions + mirrored).
+    vec2 d0 = vec2(1.0, 0.0);
+    vec2 d1 = vec2(0.0, 1.0);
+    vec2 d2 = vec2(0.7071, 0.7071);
+    vec2 d3 = vec2(-0.7071, 0.7071);
+    vec2 d4 = normalize(vec2(0.9239, 0.3827));
+    vec2 d5 = normalize(vec2(-0.9239, 0.3827));
+    vec2 d6 = normalize(vec2(0.3827, 0.9239));
+    vec2 d7 = normalize(vec2(-0.3827, 0.9239));
+
+    vec2 dirs[8] = vec2[8](d0, d1, d2, d3, d4, d5, d6, d7);
+
+    vec4 c = sample_screen(uv, 0.0) * 0.12;
+    for (int i = 0; i < 8; i++) {
+        vec2 o = dirs[i] * r * spx;
+        vec2 p = dirs[i] * (r * 0.5) * spx;
+        c += sample_screen(uv + o, 0.0) * 0.03;
+        c += sample_screen(uv - o, 0.0) * 0.03;
+        c += sample_screen(uv + p, 0.0) * 0.04;
+        c += sample_screen(uv - p, 0.0) * 0.04;
     }
-    if (blur_mode == 1) {
-        return gauss9_separable(uv, radius_px);
-    }
-    if (blur_mode == 3) {
-        return blur17(uv, radius_px);
-    }
-    return blur9(uv, radius_px);
+    return c;
 }
 
 // Compute a soft edge normal from SDF derivatives.
@@ -271,16 +283,22 @@ void fragment() {
         vec2 uv_refr = SCREEN_UV + refr_uv_off;
 
         vec4 base_col = vec4(0.0);
-        if (blur_mode == 0) {
+        if (blur_quality == 0) {
             // Fast path: mip LOD blur only.
             base_col = sample_screen_glass(uv_refr, lod, edge_factor, dir_px);
-        } else if (blur_quality > 0 && blur_strength > 1e-4 && blur_radius_px > 0.25) {
-            // Blur only within the glass region; slightly stronger in the center.
-            float blur_amt = blur_strength * mix(1.0, 0.65, edge_factor);
-            vec4 blur_col = (blur_quality >= 2) ? blur17(uv_refr, blur_radius_px) : blur9(uv_refr, blur_radius_px);
-            if (blur_mode != 2 && blur_mode != 3) {
-                blur_col = blur_sample(uv_refr, blur_radius_px);
+        } else if (blur_strength > 1e-4 && blur_radius_px > 0.25) {
+            // Blur only within the glass region.
+            // Make high quality blur stronger, mip LOD less extreme.
+            float edge_bias = 0.78;
+            float blur_amt = blur_strength * mix(1.0, edge_bias, edge_factor);
+
+            vec4 blur_col = blur9(uv_refr, blur_radius_px);
+            if (blur_quality == 2) {
+                blur_col = blur17(uv_refr, blur_radius_px);
+            } else if (blur_quality >= 3) {
+                blur_col = blur33(uv_refr, blur_radius_px);
             }
+
             vec4 sharp_col = sample_screen_glass(uv_refr, lod, edge_factor, dir_px);
             base_col = mix(sharp_col, blur_col, clamp(blur_amt, 0.0, 1.0));
         } else {
