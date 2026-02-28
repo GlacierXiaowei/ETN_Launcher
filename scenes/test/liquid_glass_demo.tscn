@@ -1,0 +1,336 @@
+[gd_scene format=3 uid="uid://cfu502rf8ucyb"]
+
+[ext_resource type="Script" uid="uid://8h5j8sjwgq4m" path="res://scenes/test/liquid_glass_demo.gd" id="1"]
+[ext_resource type="Shader" uid="uid://ct2hawbu1tjn0" path="res://assets/shaders/liquid_glass_ui.gdshader" id="2"]
+[ext_resource type="Texture2D" uid="uid://b2cwgcpd7084v" path="res://assets/image/V4无水印.png" id="2_3p51i"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_glass"]
+shader = ExtResource("2")
+shader_parameter/rect_size_px = Vector2(256, 256)
+shader_parameter/corner_radius_px = 24.0
+shader_parameter/tint = Color(2.844, 2.844, 2.844, 0.12)
+shader_parameter/opacity = 1.0
+shader_parameter/refraction_strength_px = 20.00000095
+shader_parameter/edge_refraction_boost = 1.4
+shader_parameter/edge_falloff_px = 64.0
+shader_parameter/blur_lod_center = 5.0
+shader_parameter/blur_lod_edge = 6.0
+shader_parameter/blur_strength = 0.7
+shader_parameter/blur_radius_px = 13.0
+shader_parameter/dispersion_strength = 0.5
+shader_parameter/dispersion_px = 1.5
+shader_parameter/border_width_px = 1.5
+shader_parameter/border_color = Color(1.353, 1.353, 1.353, 0.278)
+shader_parameter/rim_width_px = 4.0
+shader_parameter/rim_intensity = 4.0
+shader_parameter/rim_color = Color(3.294, 3.294, 3.294, 0.55)
+shader_parameter/rim_fresnel_power = 3.5
+shader_parameter/rim_curvature = 0.85
+shader_parameter/distortion_k1 = 0.045
+shader_parameter/distortion_k2 = 0.0
+
+[node name="LiquidGlassDemo" type="Control" unique_id=1182188415]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Background" type="TextureRect" parent="." unique_id=626697256]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_3p51i")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Main" type="HBoxContainer" parent="." unique_id=1497869219]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 18
+
+[node name="DemoArea" type="Control" parent="Main" unique_id=1051131161]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Center" type="CenterContainer" parent="Main/DemoArea" unique_id=1951548073]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Card" type="Control" parent="Main/DemoArea/Center" unique_id=656377920]
+custom_minimum_size = Vector2(760, 460)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="GlassPanel" type="ColorRect" parent="Main/DemoArea/Center/Card" unique_id=1765352839]
+material = SubResource("ShaderMaterial_glass")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Content" type="Control" parent="Main/DemoArea/Center/Card" unique_id=2113357614]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Main/DemoArea/Center/Card/Content" unique_id=1779563103]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="Main/DemoArea/Center/Card/Content/Margin" unique_id=516012468]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="Main/DemoArea/Center/Card/Content/Margin/VBox" unique_id=296252239]
+layout_mode = 2
+text = "Liquid Glass"
+
+[node name="Body" type="RichTextLabel" parent="Main/DemoArea/Center/Card/Content/Margin/VBox" unique_id=2060077408]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+bbcode_enabled = true
+text = "[b]Approach A[/b]
+
+- Background texture can be empty
+- Tune shader params on the right
+- Glass panel sits behind content"
+fit_content = true
+
+[node name="ButtonRow" type="HBoxContainer" parent="Main/DemoArea/Center/Card/Content/Margin/VBox" unique_id=2138080011]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="PrimaryButton" type="Button" parent="Main/DemoArea/Center/Card/Content/Margin/VBox/ButtonRow" unique_id=317824723]
+layout_mode = 2
+text = "Primary"
+
+[node name="SecondaryButton" type="Button" parent="Main/DemoArea/Center/Card/Content/Margin/VBox/ButtonRow" unique_id=1393596581]
+layout_mode = 2
+text = "Secondary"
+
+[node name="ControlsPanel" type="Control" parent="Main" unique_id=264609797]
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Panel" type="PanelContainer" parent="Main/ControlsPanel" unique_id=1925126873]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Main/ControlsPanel/Panel" unique_id=1771407888]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="VBox" type="VBoxContainer" parent="Main/ControlsPanel/Panel/Margin" unique_id=959445029]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Header" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox" unique_id=1746178541]
+layout_mode = 2
+text = "Shader Params"
+
+[node name="Reset" type="Button" parent="Main/ControlsPanel/Panel/Margin/VBox" unique_id=332125610]
+layout_mode = 2
+text = "Reset Defaults"
+
+[node name="Scroll" type="ScrollContainer" parent="Main/ControlsPanel/Panel/Margin/VBox" unique_id=1086454116]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Grid" type="GridContainer" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll" unique_id=882933439]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 3
+
+[node name="OpacityName" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1704121187]
+layout_mode = 2
+text = "opacity"
+
+[node name="Opacity" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=522060105]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+metadata/param = "opacity"
+
+[node name="OpacityValue" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1312426094]
+layout_mode = 2
+text = "0.16"
+
+[node name="CornerRadiusName" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=508199974]
+layout_mode = 2
+text = "corner_radius_px"
+
+[node name="CornerRadius" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1430060613]
+layout_mode = 2
+max_value = 256.0
+metadata/param = "corner_radius_px"
+
+[node name="CornerRadiusValue" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1456311020]
+layout_mode = 2
+text = "22"
+
+[node name="RefractionName" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1033833503]
+layout_mode = 2
+text = "refraction_strength_px"
+
+[node name="Refraction" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=314038788]
+layout_mode = 2
+max_value = 64.0
+step = 0.1
+metadata/param = "refraction_strength_px"
+
+[node name="RefractionValue" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=316849054]
+layout_mode = 2
+text = "9.0"
+
+[node name="EdgeBoostName" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=572267264]
+layout_mode = 2
+text = "edge_refraction_boost"
+
+[node name="EdgeBoost" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=171643734]
+layout_mode = 2
+max_value = 4.0
+step = 0.01
+metadata/param = "edge_refraction_boost"
+
+[node name="EdgeBoostValue" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=2017515039]
+layout_mode = 2
+text = "1.15"
+
+[node name="EdgeFalloffName" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1176336644]
+layout_mode = 2
+text = "edge_falloff_px"
+
+[node name="EdgeFalloff" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=316730375]
+layout_mode = 2
+min_value = 1.0
+max_value = 256.0
+value = 1.0
+metadata/param = "edge_falloff_px"
+
+[node name="EdgeFalloffValue" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1457477784]
+layout_mode = 2
+text = "72"
+
+[node name="BlurCenterName" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1587442765]
+layout_mode = 2
+text = "blur_lod_center"
+
+[node name="BlurCenter" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=667004060]
+layout_mode = 2
+max_value = 10.0
+step = 0.1
+metadata/param = "blur_lod_center"
+
+[node name="BlurCenterValue" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1302006617]
+layout_mode = 2
+text = "0.0"
+
+[node name="BlurEdgeName" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1914468107]
+layout_mode = 2
+text = "blur_lod_edge"
+
+[node name="BlurEdge" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1469623875]
+layout_mode = 2
+max_value = 10.0
+step = 0.1
+metadata/param = "blur_lod_edge"
+
+[node name="BlurEdgeValue" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=289851154]
+layout_mode = 2
+text = "3.2"
+
+[node name="RimWidthName" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1467260853]
+layout_mode = 2
+text = "rim_width_px"
+
+[node name="RimWidth" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=470015028]
+layout_mode = 2
+max_value = 128.0
+metadata/param = "rim_width_px"
+
+[node name="RimWidthValue" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=414958270]
+layout_mode = 2
+text = "14"
+
+[node name="RimIntensityName" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=870499962]
+layout_mode = 2
+text = "rim_intensity"
+
+[node name="RimIntensity" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1837397076]
+layout_mode = 2
+max_value = 4.0
+step = 0.05
+metadata/param = "rim_intensity"
+
+[node name="RimIntensityValue" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=441584417]
+layout_mode = 2
+text = "1.0"
+
+[node name="BorderWidthName" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1600175499]
+layout_mode = 2
+text = "border_width_px"
+
+[node name="BorderWidth" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=209561111]
+layout_mode = 2
+max_value = 16.0
+step = 0.25
+metadata/param = "border_width_px"
+
+[node name="BorderWidthValue" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1839847520]
+layout_mode = 2
+text = "1.0"
+
+[node name="DispersionName" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=740422648]
+layout_mode = 2
+text = "dispersion_strength"
+
+[node name="Dispersion" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1044046213]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+metadata/param = "dispersion_strength"
+
+[node name="DispersionValue" type="Label" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1138145805]
+layout_mode = 2
+text = "0.0"
+
+[connection signal="pressed" from="Main/ControlsPanel/Panel/Margin/VBox/Reset" to="." method="_on_reset_pressed"]
