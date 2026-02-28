@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://8h5j8sjwgq4m" path="res://scenes/test/liquid_glass_demo.gd" id="1"]
 [ext_resource type="Shader" uid="uid://ct2hawbu1tjn0" path="res://assets/shaders/liquid_glass_ui.gdshader" id="2"]
-[ext_resource type="Texture2D" uid="uid://b2cwgcpd7084v" path="res://assets/image/V4无水印.png" id="2_3p51i"]
+[ext_resource type="Texture2D" uid="uid://d3gtoixr80gem" path="res://assets/image/IMG_20251203_162337.jpg" id="2_3p51i"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_glass"]
 shader = ExtResource("2")
@@ -10,22 +10,24 @@ shader_parameter/rect_size_px = Vector2(256, 256)
 shader_parameter/corner_radius_px = 24.0
 shader_parameter/tint = Color(2.844, 2.844, 2.844, 0.12)
 shader_parameter/opacity = 1.0
-shader_parameter/refraction_strength_px = 20.00000095
+shader_parameter/refraction_strength_px = 16.0
 shader_parameter/edge_refraction_boost = 1.4
-shader_parameter/edge_falloff_px = 64.0
+shader_parameter/edge_falloff_px = 28.0
 shader_parameter/blur_lod_center = 5.0
 shader_parameter/blur_lod_edge = 6.0
 shader_parameter/blur_strength = 0.7
 shader_parameter/blur_radius_px = 13.0
+shader_parameter/blur_quality = 2
 shader_parameter/dispersion_strength = 0.5
 shader_parameter/dispersion_px = 1.5
 shader_parameter/border_width_px = 1.5
 shader_parameter/border_color = Color(1.353, 1.353, 1.353, 0.278)
-shader_parameter/rim_width_px = 4.0
+shader_parameter/rim_width_px = 2.0
 shader_parameter/rim_intensity = 4.0
 shader_parameter/rim_color = Color(3.294, 3.294, 3.294, 0.55)
 shader_parameter/rim_fresnel_power = 3.5
-shader_parameter/rim_curvature = 0.85
+shader_parameter/rim_curvature = 1.0
+shader_parameter/rim_f0 = 0.04
 shader_parameter/distortion_k1 = 0.045
 shader_parameter/distortion_k2 = 0.0
 
@@ -185,7 +187,9 @@ layout_mode = 2
 text = "opacity"
 
 [node name="Opacity" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=522060105]
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 max_value = 1.0
 step = 0.01
 metadata/param = "opacity"
@@ -199,7 +203,9 @@ layout_mode = 2
 text = "corner_radius_px"
 
 [node name="CornerRadius" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1430060613]
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 max_value = 256.0
 metadata/param = "corner_radius_px"
 
@@ -212,7 +218,9 @@ layout_mode = 2
 text = "refraction_strength_px"
 
 [node name="Refraction" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=314038788]
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 max_value = 64.0
 step = 0.1
 metadata/param = "refraction_strength_px"
@@ -226,7 +234,9 @@ layout_mode = 2
 text = "edge_refraction_boost"
 
 [node name="EdgeBoost" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=171643734]
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 max_value = 4.0
 step = 0.01
 metadata/param = "edge_refraction_boost"
@@ -240,7 +250,9 @@ layout_mode = 2
 text = "edge_falloff_px"
 
 [node name="EdgeFalloff" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=316730375]
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 min_value = 1.0
 max_value = 256.0
 value = 1.0
@@ -255,7 +267,9 @@ layout_mode = 2
 text = "blur_lod_center"
 
 [node name="BlurCenter" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=667004060]
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 max_value = 10.0
 step = 0.1
 metadata/param = "blur_lod_center"
@@ -269,7 +283,9 @@ layout_mode = 2
 text = "blur_lod_edge"
 
 [node name="BlurEdge" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1469623875]
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 max_value = 10.0
 step = 0.1
 metadata/param = "blur_lod_edge"
@@ -283,7 +299,9 @@ layout_mode = 2
 text = "rim_width_px"
 
 [node name="RimWidth" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=470015028]
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 max_value = 128.0
 metadata/param = "rim_width_px"
 
@@ -296,7 +314,9 @@ layout_mode = 2
 text = "rim_intensity"
 
 [node name="RimIntensity" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1837397076]
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 max_value = 4.0
 step = 0.05
 metadata/param = "rim_intensity"
@@ -310,7 +330,9 @@ layout_mode = 2
 text = "border_width_px"
 
 [node name="BorderWidth" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=209561111]
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 max_value = 16.0
 step = 0.25
 metadata/param = "border_width_px"
@@ -324,7 +346,9 @@ layout_mode = 2
 text = "dispersion_strength"
 
 [node name="Dispersion" type="HSlider" parent="Main/ControlsPanel/Panel/Margin/VBox/Scroll/Grid" unique_id=1044046213]
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 max_value = 1.0
 step = 0.01
 metadata/param = "dispersion_strength"

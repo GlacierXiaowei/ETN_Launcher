@@ -13,9 +13,9 @@ uniform vec4 tint : source_color = vec4(2.844, 2.844, 2.844, 0.12);
 uniform float opacity : hint_range(0.0, 1.0) = 1.0;
 
 // 折射强度（像素单位）。越靠近边缘越强。
-uniform float refraction_strength_px : hint_range(0.0, 64.0) = 20.0;
+uniform float refraction_strength_px : hint_range(0.0, 64.0) = 16.0;
 uniform float edge_refraction_boost : hint_range(0.0, 4.0) = 1.4;
-uniform float edge_falloff_px : hint_range(1.0, 256.0) = 64.0;
+uniform float edge_falloff_px : hint_range(1.0, 256.0) = 28.0;
 
 // 基于 mip 的模糊（textureLod 使用 SCREEN_TEXTURE 的 mip 级别）。
 uniform float blur_lod_center : hint_range(0.0, 10.0) = 5.0;
@@ -24,6 +24,7 @@ uniform float blur_lod_edge : hint_range(0.0, 10.0) = 6;
 // High-quality blur (Gaussian taps). When > 0, this is used instead of mip LOD.
 uniform float blur_strength : hint_range(0.0, 1.0) = 0.7;
 uniform float blur_radius_px : hint_range(0.0, 32.0) = 13.0;
+uniform int blur_quality : hint_range(0, 2) = 1; // 0=off, 1=9 taps, 2=17 taps
 
 // 色散：当 dispersion_strength > 0 时，启用 3 次采样（R/G/B 分离）。
 uniform float dispersion_strength : hint_range(0.0, 1.0) = 0.5;
@@ -34,13 +35,14 @@ uniform float border_width_px : hint_range(0.0, 64.0) = 1.5;
 uniform vec4 border_color : source_color = vec4(1.353, 1.353, 1.353, 0.278);
 
 // 边缘高光（仅在内部）。
-uniform float rim_width_px : hint_range(0.0, 128.0) = 4;
+uniform float rim_width_px : hint_range(0.0, 128.0) = 2;
 uniform float rim_intensity : hint_range(0.0, 4.0) = 4.0;
 uniform vec4 rim_color : source_color = vec4(3.294, 3.294, 3.294, 0.55);
 
 // Fresnel-style edge highlight tuning (approximate in 2D).
 uniform float rim_fresnel_power : hint_range(0.5, 8.0) = 3.5;
-uniform float rim_curvature : hint_range(0.0, 2.0) = 0.85;
+uniform float rim_curvature : hint_range(0.0, 2.0) = 1.0;
+uniform float rim_f0 : hint_range(0.0, 1.0) = 0.04;
 
 // Radial lens distortion (subtle convex/concave feel).
 uniform float distortion_k1 : hint_range(-0.2, 0.2) = 0.045;
@@ -94,6 +96,65 @@ vec4 sample_screen(vec2 uv, float lod) {
     return textureLod(SCREEN_TEXTURE, clamp_screen_uv(uv), clamp(lod, 0.0, 10.0));
 }
 
+// Isotropic blur kernels (avoid cross/X artifacts).
+// radius_px is in pixel units.
+vec4 blur9(vec2 uv, float radius_px) {
+    vec2 spx = get_screen_pixel_size();
+    float r = max(radius_px, 0.0);
+
+    // 9 taps: center + 8 around (approx Gaussian weights).
+    vec2 o1 = vec2(1.0, 0.0) * r * spx;
+    vec2 o2 = vec2(0.0, 1.0) * r * spx;
+    vec2 o3 = vec2(0.7071, 0.7071) * r * spx;
+    vec2 o4 = vec2(-0.7071, 0.7071) * r * spx;
+
+    vec4 c = sample_screen(uv, 0.0) * 0.22;
+    c += sample_screen(uv + o1, 0.0) * 0.10;
+    c += sample_screen(uv - o1, 0.0) * 0.10;
+    c += sample_screen(uv + o2, 0.0) * 0.10;
+    c += sample_screen(uv - o2, 0.0) * 0.10;
+    c += sample_screen(uv + o3, 0.0) * 0.095;
+    c += sample_screen(uv - o3, 0.0) * 0.095;
+    c += sample_screen(uv + o4, 0.0) * 0.095;
+    c += sample_screen(uv - o4, 0.0) * 0.095;
+    return c;
+}
+
+vec4 blur17(vec2 uv, float radius_px) {
+    vec2 spx = get_screen_pixel_size();
+    float r = max(radius_px, 0.0);
+
+    // 17 taps: center + 8 (radius) + 8 (radius*0.5)
+    vec2 o1 = vec2(1.0, 0.0) * r * spx;
+    vec2 o2 = vec2(0.0, 1.0) * r * spx;
+    vec2 o3 = vec2(0.7071, 0.7071) * r * spx;
+    vec2 o4 = vec2(-0.7071, 0.7071) * r * spx;
+    vec2 p1 = o1 * 0.5;
+    vec2 p2 = o2 * 0.5;
+    vec2 p3 = o3 * 0.5;
+    vec2 p4 = o4 * 0.5;
+
+    vec4 c = sample_screen(uv, 0.0) * 0.16;
+    c += sample_screen(uv + p1, 0.0) * 0.08;
+    c += sample_screen(uv - p1, 0.0) * 0.08;
+    c += sample_screen(uv + p2, 0.0) * 0.08;
+    c += sample_screen(uv - p2, 0.0) * 0.08;
+    c += sample_screen(uv + p3, 0.0) * 0.07;
+    c += sample_screen(uv - p3, 0.0) * 0.07;
+    c += sample_screen(uv + p4, 0.0) * 0.07;
+    c += sample_screen(uv - p4, 0.0) * 0.07;
+
+    c += sample_screen(uv + o1, 0.0) * 0.045;
+    c += sample_screen(uv - o1, 0.0) * 0.045;
+    c += sample_screen(uv + o2, 0.0) * 0.045;
+    c += sample_screen(uv - o2, 0.0) * 0.045;
+    c += sample_screen(uv + o3, 0.0) * 0.04;
+    c += sample_screen(uv - o3, 0.0) * 0.04;
+    c += sample_screen(uv + o4, 0.0) * 0.04;
+    c += sample_screen(uv - o4, 0.0) * 0.04;
+    return c;
+}
+
 // 9-tap Gaussian blur along a direction in UV space.
 // dir_uv is the UV offset for 1 pixel step along the blur axis.
 vec4 gauss9_dir(vec2 uv, vec2 dir_uv, float radius_px) {
@@ -121,12 +182,9 @@ vec4 gauss9_dir(vec2 uv, vec2 dir_uv, float radius_px) {
 }
 
 vec4 gauss9_separable(vec2 uv, float radius_px) {
-    // Two-axis blur. True separable blur needs an intermediate texture; here we
-    // approximate by averaging horizontal and vertical 9-tap results.
-    vec2 spx = get_screen_pixel_size();
-    vec4 h = gauss9_dir(uv, vec2(spx.x, 0.0), radius_px);
-    vec4 v = gauss9_dir(uv, vec2(0.0, spx.y), radius_px);
-    return (h + v) * 0.5;
+    // Back-compat entrypoint.
+    // We prefer isotropic kernels to avoid X-shaped artifacts.
+    return blur9(uv, radius_px);
 }
 
 // Compute a soft edge normal from SDF derivatives.
@@ -142,8 +200,8 @@ void fragment() {
 
     float sd = sd_rounded_rect_px(p_px, half_size_px, corner_radius_px);
 
-    // 抗锯齿宽度（像素单位）；小尺寸下也尽量稳定。
-    float aa = max(fwidth(sd), 0.75);
+    // AA: scale with derivatives to keep corners smooth at higher resolutions.
+    float aa = max(fwidth(sd) * 1.35, 1.0);
 
     // mask: 内部 1，外部 0。
     float mask = 1.0 - smoothstep(0.0, aa, sd);
@@ -165,11 +223,14 @@ void fragment() {
         // Pseudo normal from SDF gradient for Fresnel + refraction direction.
         vec2 n2 = sd_normal(sd);
         vec3 N = normalize(vec3(n2 * rim_curvature, 1.0));
-        float fresnel = pow(1.0 - clamp(N.z, 0.0, 1.0), rim_fresnel_power);
+        float ndv = clamp(N.z, 0.0, 1.0);
+        // Schlick-like Fresnel in 2D: stable baseline via rim_f0.
+        float fresnel = rim_f0 + (1.0 - rim_f0) * pow(1.0 - ndv, rim_fresnel_power);
 
         // Refraction direction: mix center push with edge normal for a lens-like feel.
-        vec2 dir_center = normalize(p_px + vec2(1e-4));
-        vec2 dir_px = normalize(mix(dir_center, n2, 0.65));
+        float plen = max(length(p_px), 1e-4);
+        vec2 dir_center = p_px / plen;
+        vec2 dir_px = normalize(mix(dir_center, n2, 0.70));
 
         float refr_px = refraction_strength_px * (0.35 + 0.65 * edge_factor) * radial;
         refr_px *= (1.0 + edge_refraction_boost * edge_factor);
@@ -180,10 +241,10 @@ void fragment() {
         vec2 uv_refr = SCREEN_UV + refr_uv_off;
 
         vec4 base_col = vec4(0.0);
-        if (blur_strength > 1e-4 && blur_radius_px > 0.25) {
+        if (blur_quality > 0 && blur_strength > 1e-4 && blur_radius_px > 0.25) {
             // Blur only within the glass region; slightly stronger in the center.
             float blur_amt = blur_strength * mix(1.0, 0.65, edge_factor);
-            vec4 blur_col = gauss9_separable(uv_refr, blur_radius_px);
+            vec4 blur_col = (blur_quality >= 2) ? blur17(uv_refr, blur_radius_px) : blur9(uv_refr, blur_radius_px);
             vec4 sharp_col = sample_screen_glass(uv_refr, lod, edge_factor, dir_px);
             base_col = mix(sharp_col, blur_col, clamp(blur_amt, 0.0, 1.0));
         } else {
@@ -209,8 +270,8 @@ void fragment() {
 
         // Subtle extra chromatic dispersion near the edge (fresnel-driven).
         if (dispersion_strength > 1e-5) {
-            float ca = clamp(dispersion_strength * edge_factor * (0.35 + 0.65 * fresnel), 0.0, 1.0);
-            vec2 ca_off = n2 * (dispersion_px * ca) * get_screen_pixel_size();
+            float ca = clamp(dispersion_strength * pow(edge_factor, 0.85) * (0.20 + 0.80 * fresnel), 0.0, 1.0);
+            vec2 ca_off = n2 * (dispersion_px * (0.5 + 0.5 * edge_factor)) * ca * get_screen_pixel_size();
             float lod_ca = max(lod, 0.0);
             float r = sample_screen(uv_refr + ca_off, lod_ca).r;
             float g = sample_screen(uv_refr, lod_ca).g;

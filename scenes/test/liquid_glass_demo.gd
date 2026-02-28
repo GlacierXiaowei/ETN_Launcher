@@ -6,6 +6,7 @@ extends Control
 
 @onready var background: TextureRect = $Background
 @onready var glass_panel: ColorRect = $Main/DemoArea/Center/Card/GlassPanel
+@onready var card: Control = $Main/DemoArea/Center/Card
 @onready var primary_button: Button = $Main/DemoArea/Center/Card/Content/Margin/VBox/ButtonRow/PrimaryButton
 @onready var secondary_button: Button = $Main/DemoArea/Center/Card/Content/Margin/VBox/ButtonRow/SecondaryButton
 
@@ -14,6 +15,8 @@ extends Control
 var _param_to_slider: Dictionary = {}
 var _param_to_value_label: Dictionary = {}
 var _is_syncing_ui := false
+
+@export var apply_demo_defaults := false
 
 
 func _ready() -> void:
@@ -25,11 +28,15 @@ func _ready() -> void:
 	secondary_button.add_theme_color_override("font_color", Color(0.85, 0.88, 0.92, 1))
 
 	_ensure_glass_material()
-	_apply_default_glass_params(_get_glass_material())
+	if apply_demo_defaults:
+		_apply_default_glass_params(_get_glass_material())
+	_resync_card_size()
 	_sync_rect_size_to_shader()
 	glass_panel.resized.connect(_sync_rect_size_to_shader)
+	get_viewport().size_changed.connect(_resync_card_size)
 
 	_index_controls()
+	_configure_sliders_from_shader_hints()
 	_sync_sliders_from_material()
 
 
@@ -76,6 +83,17 @@ func _sync_rect_size_to_shader() -> void:
 	if mat == null:
 		return
 	mat.set_shader_parameter("rect_size_px", glass_panel.size)
+
+
+func _resync_card_size() -> void:
+	if card == null:
+		return
+	var v: Vector2 = get_viewport_rect().size
+	# Keep a stable visual proportion across resolutions.
+	var target := Vector2(v.x * 0.70, v.y * 0.58)
+	target.x = clamp(target.x, 680.0, 1100.0)
+	target.y = clamp(target.y, 420.0, 760.0)
+	card.custom_minimum_size = target
 
 
 func _index_controls() -> void:
@@ -125,6 +143,47 @@ func _sync_sliders_from_material() -> void:
 	_is_syncing_ui = false
 
 
+func _configure_sliders_from_shader_hints() -> void:
+	var mat := _get_glass_material()
+	if mat == null:
+		return
+	if mat.shader == null:
+		return
+	if not mat.shader.has_method("get_shader_uniform_list"):
+		return
+
+	var list: Array = mat.shader.get_shader_uniform_list()
+	var by_name: Dictionary = {}
+	for u in list:
+		if typeof(u) == TYPE_DICTIONARY and u.has("name"):
+			by_name[str(u["name"])] = u
+
+	for param in _param_to_slider.keys():
+		var slider: HSlider = _param_to_slider[param]
+		var u: Dictionary = by_name.get(param, {})
+		if u.is_empty():
+			continue
+		if not u.has("hint") or not u.has("hint_string"):
+			continue
+
+		# Shader hint_range typically encodes as "min,max,step" (step may be omitted).
+		var hs := str(u["hint_string"])
+		if hs.is_empty():
+			continue
+		var parts := hs.split(",")
+		if parts.size() < 2:
+			continue
+
+		var min_v := float(parts[0])
+		var max_v := float(parts[1])
+		slider.min_value = min_v
+		slider.max_value = max_v
+		if parts.size() >= 3:
+			var step_v := float(parts[2])
+			if step_v > 0.0:
+				slider.step = step_v
+
+
 func _on_param_slider_changed(param: String, value: float) -> void:
 	if _is_syncing_ui:
 		_update_value_label(param, value)
@@ -150,6 +209,6 @@ func _update_value_label(param: String, value: float) -> void:
 
 
 func _on_reset_pressed() -> void:
-	_apply_default_glass_params(_get_glass_material())
+	# Don't mutate material params by default. Just re-read current values.
 	_sync_rect_size_to_shader()
 	_sync_sliders_from_material()
