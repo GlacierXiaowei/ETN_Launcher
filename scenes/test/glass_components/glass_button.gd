@@ -138,11 +138,11 @@ func _build_nodes_if_needed() -> void:
 func _apply_type_style() -> void:
 	match button_type:
 		ButtonType.PRIMARY:
-			normal_tint = Color(0.638, 0.696, 0.735, 0.716)
+			normal_tint = Color(0.736, 0.781, 0.812, 0.716)
 			hover_tint = Color(0.499, 0.818, 1.162, 0.55)
 			pressed_tint = Color(0.264, 0.556, 0.827, 0.8)
 		ButtonType.SECONDARY:
-			normal_tint = Color(0.644, 0.644, 0.675, 0.722)
+			normal_tint = Color(0.779, 0.779, 0.802, 0.722)
 			hover_tint = Color(0.854, 0.729, 0.812, 0.55)
 			pressed_tint = Color(0.633, 0.429, 0.463, 0.8)
 
@@ -212,8 +212,8 @@ func _update_glass_state() -> void:
 	#mat.set_shader_parameter("edge_refraction_boost",4.0)
 	#mat.set_shader_parameter("edge_falloff_px",28.0)
 	
-	mat.set_shader_parameter("blur_lod_center",4.5)
-	mat.set_shader_parameter("blur_lod_edge",5.0)
+	mat.set_shader_parameter("blur_lod_center",4.0)
+	mat.set_shader_parameter("blur_lod_edge",4.75)
 	mat.set_shader_parameter("dispersion_strength",1.4)
 	mat.set_shader_parameter("rim_width_px",0)
 	##调不来这个参数
