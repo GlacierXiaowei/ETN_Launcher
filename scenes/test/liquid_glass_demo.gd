@@ -18,6 +18,10 @@ var _is_syncing_ui := false
 
 @export var apply_demo_defaults := false
 
+@export var auto_rescale_card := true
+@export_range(0.2, 1.0, 0.01) var card_scale_x := 0.70
+@export_range(0.2, 1.0, 0.01) var card_scale_y := 0.58
+
 
 func _ready() -> void:
 	# Give the demo usable typography/button styling without relying on a pre-authored Theme resource.
@@ -88,9 +92,11 @@ func _sync_rect_size_to_shader() -> void:
 func _resync_card_size() -> void:
 	if card == null:
 		return
+	if not auto_rescale_card:
+		return
 	var v: Vector2 = get_viewport_rect().size
 	# Keep a stable visual proportion across resolutions.
-	var target := Vector2(v.x * 0.70, v.y * 0.58)
+	var target := Vector2(v.x * card_scale_x, v.y * card_scale_y)
 	target.x = clamp(target.x, 680.0, 1100.0)
 	target.y = clamp(target.y, 420.0, 760.0)
 	card.custom_minimum_size = target

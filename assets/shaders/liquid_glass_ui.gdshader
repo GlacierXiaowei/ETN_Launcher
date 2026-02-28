@@ -7,13 +7,13 @@ uniform vec2 rect_size_px = vec2(256.0, 256.0);
 uniform float corner_radius_px : hint_range(0.0, 256.0) = 24.0;
 
 // tint.rgb: 玻璃吸收/染色颜色；tint.a: 染色强度 (0..1)。
-uniform vec4 tint : source_color = vec4(2.844, 2.844, 2.844, 0.12);
+uniform vec4 tint : source_color = vec4(1.353, 1.353, 1.353, 0.12);
 
 // 最终玻璃透明度（与 tint.a 解耦）。
 uniform float opacity : hint_range(0.0, 1.0) = 1.0;
 
 // 折射强度（像素单位）。越靠近边缘越强。
-uniform float refraction_strength_px : hint_range(0.0, 64.0) = 16.0;
+uniform float refraction_strength_px : hint_range(0.0, 64.0) = 14.0;
 uniform float edge_refraction_boost : hint_range(0.0, 4.0) = 1.4;
 uniform float edge_falloff_px : hint_range(1.0, 256.0) = 28.0;
 
@@ -25,6 +25,17 @@ uniform float blur_lod_edge : hint_range(0.0, 10.0) = 6;
 uniform float blur_strength : hint_range(0.0, 1.0) = 0.7;
 uniform float blur_radius_px : hint_range(0.0, 32.0) = 13.0;
 uniform int blur_quality : hint_range(0, 2) = 1; // 0=off, 1=9 taps, 2=17 taps
+
+// Blur mode selection.
+// 0: mip LOD (fast, very smooth)
+// 1: anisotropic average (legacy gauss9_dir-based, may show cross artifacts under strong refraction)
+// 2: isotropic 9 taps (default)
+// 3: isotropic 17 taps (higher quality)
+uniform int blur_mode : hint_range(0, 3) = 2;
+
+// Refraction shaping. Helps avoid prism-like faceting artifacts.
+uniform float refraction_isotropy : hint_range(0.0, 1.0) = 0.35;
+uniform float refraction_edge_curve : hint_range(0.0, 4.0) = 2.05;
 
 // 色散：当 dispersion_strength > 0 时，启用 3 次采样（R/G/B 分离）。
 uniform float dispersion_strength : hint_range(0.0, 1.0) = 0.5;
@@ -187,6 +198,20 @@ vec4 gauss9_separable(vec2 uv, float radius_px) {
     return blur9(uv, radius_px);
 }
 
+vec4 blur_sample(vec2 uv, float radius_px) {
+    if (blur_mode == 0) {
+        // This path is handled by caller via sample_screen_glass with mip LOD.
+        return sample_screen(uv, 6.0);
+    }
+    if (blur_mode == 1) {
+        return gauss9_separable(uv, radius_px);
+    }
+    if (blur_mode == 3) {
+        return blur17(uv, radius_px);
+    }
+    return blur9(uv, radius_px);
+}
+
 // Compute a soft edge normal from SDF derivatives.
 vec2 sd_normal(float sd) {
     vec2 g = vec2(dFdx(sd), dFdy(sd));
@@ -232,19 +257,30 @@ void fragment() {
         vec2 dir_center = p_px / plen;
         vec2 dir_px = normalize(mix(dir_center, n2, 0.70));
 
-        float refr_px = refraction_strength_px * (0.35 + 0.65 * edge_factor) * radial;
-        refr_px *= (1.0 + edge_refraction_boost * edge_factor);
-        vec2 refr_uv_off = dir_px * refr_px * get_screen_pixel_size();
+        // Refraction profile: stronger near edge, smoother in center.
+        float edge_profile = pow(edge_factor, max(refraction_edge_curve, 0.001));
+        float refr_px = refraction_strength_px * mix(0.20, 1.00, edge_profile) * radial;
+        refr_px *= (1.0 + edge_refraction_boost * edge_profile);
 
-        // Base sampling: either high-quality Gaussian blur or mip LOD.
+        // Reduce prism-like faceting by blending refraction direction toward radial.
+        vec2 dir_smooth = normalize(mix(dir_center, dir_px, clamp(refraction_isotropy, 0.0, 1.0)));
+        vec2 refr_uv_off = dir_smooth * refr_px * get_screen_pixel_size();
+
+        // Base sampling: either high-quality blur or mip LOD.
         float lod = mix(blur_lod_center, blur_lod_edge, edge_factor);
         vec2 uv_refr = SCREEN_UV + refr_uv_off;
 
         vec4 base_col = vec4(0.0);
-        if (blur_quality > 0 && blur_strength > 1e-4 && blur_radius_px > 0.25) {
+        if (blur_mode == 0) {
+            // Fast path: mip LOD blur only.
+            base_col = sample_screen_glass(uv_refr, lod, edge_factor, dir_px);
+        } else if (blur_quality > 0 && blur_strength > 1e-4 && blur_radius_px > 0.25) {
             // Blur only within the glass region; slightly stronger in the center.
             float blur_amt = blur_strength * mix(1.0, 0.65, edge_factor);
             vec4 blur_col = (blur_quality >= 2) ? blur17(uv_refr, blur_radius_px) : blur9(uv_refr, blur_radius_px);
+            if (blur_mode != 2 && blur_mode != 3) {
+                blur_col = blur_sample(uv_refr, blur_radius_px);
+            }
             vec4 sharp_col = sample_screen_glass(uv_refr, lod, edge_factor, dir_px);
             base_col = mix(sharp_col, blur_col, clamp(blur_amt, 0.0, 1.0));
         } else {
