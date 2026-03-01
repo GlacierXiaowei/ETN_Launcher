@@ -37,6 +37,8 @@ shader_parameter/scale_factor = 0.95
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_transition"]
 shader = ExtResource("3_transition")
 shader_parameter/blur_amount = 0.0
+shader_parameter/rect_size_px = Vector2(1920, 1080)
+shader_parameter/corner_radius_px = 0.0
 
 [node name="ShaderTestScene" type="Control" unique_id=654904041]
 layout_mode = 3

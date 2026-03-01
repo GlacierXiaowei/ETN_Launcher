@@ -3,6 +3,66 @@
 ##目标
 提供易用的快捷方法，完善API文档，整合到主项目。
 
+---
+
+## Phase4 交接信息（Handoff）
+
+### Phase4完成内容
+
+**弹窗视觉与交互安全（默认开启，无需额外配置）**
+
+- DimBackground（背景压暗 + 输入吸收）
+  - 由 `GlobalPopup` 在运行时创建 `ColorRect` 覆盖全屏
+  - `mouse_filter = STOP`，吸收鼠标/键盘输入，防止点击穿透
+  - 打开时淡入，关闭时淡出
+
+- BlurOverlay（关闭模糊动画 + 圆角裁剪）
+  - 由 `GlobalPopup` 在关闭流程中创建/显示 `ColorRect` 覆盖 panel 区域
+  - 材质使用 `res://assets/shaders/transition_blur.gdshader`
+  - shader 新增参数：
+    - `rect_size_px`：必须由脚本设置为 overlay 的像素尺寸（用于圆角 mask 的正确计算）
+    - `corner_radius_px`：圆角半径（px）
+  - `GlobalPopup` 在 `glass_panel.resized` 时同步 overlay 的 `size/position` 及 `rect_size_px`
+
+### 调用方式与文档一致性
+
+- 弹窗的业务调用方式仍然保持 Phase2/Phase3 的 `PopupManager.show_popup(config)` 不变
+- Phase4效果无需在 config 中显式开启：只要走 `PopupManager.show_popup`，打开/关闭都会自动带 Dim + BlurClose
+
+示例（与 Phase3一致）：
+
+```gdscript
+PopupManager.show_popup({
+  "size": "large",
+  "title": "更新公告",
+  "content_type": "richtext",
+  "content": "[b]v1.2.0[/b]\n- ...",
+  "buttons": [
+    {"text": "立即更新", "type": "primary", "metadata": "update_now"},
+    {"text": "稍后", "type": "secondary", "metadata": "later"}
+  ]
+})
+```
+
+### 关键可调参数位置（给Phase5/后续阶段用）
+
+- **关闭模糊强度 / 动画时长**：`res://component/GlassComponent/global_popup.gd`
+  - `CLOSE_BLUR_PEAK`：关闭时 blur 峰值（默认 6.0）
+  - `CLOSE_T_BLUR_IN`：模糊上升时间（默认 0.18s）
+  - `CLOSE_T_MAIN`：主关闭段（模糊回落 + 缩放/淡出）（默认 0.25s）
+
+- **布局居中（避免左上角回归）**：`res://component/GlassComponent/global_popup.gd`
+  - `GlobalPopup.setup()` 使用 offsets 控制尺寸与居中（anchor=0.5），不要在运行时直接写 `glass_panel.position`
+
+- **弹窗圆角半径**：`res://component/GlassComponent/global_popup.gd`
+  - `DEFAULT_CORNER_RADIUS_PX`：同时用于 GlassPanel 与 BlurOverlay 的圆角（默认 24px）
+
+### 测试场景
+
+- Phase4弹窗测试：`res://scenes/test/test_popup_phase4.tscn`
+- Shader过渡测试：`res://scenes/test/shader_test_scene.tscn`
+  - 注意：`transition_blur.gdshader` 现在依赖 `rect_size_px`，该场景脚本会在运行时同步该参数
+
 ##快捷方法实现
 
 ###PopupManager添加的方法：

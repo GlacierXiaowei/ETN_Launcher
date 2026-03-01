@@ -10,14 +10,28 @@ signal popup_opened
 @onready var content_label: RichTextLabel = $PopupContainer/GlassPanel/Margin/VBox/Content
 @onready var spacer: Control = $PopupContainer/GlassPanel/Margin/VBox/Spacer
 @onready var button_container: HBoxContainer = $PopupContainer/GlassPanel/Margin/VBox/ButtonContainer
+@onready var popup_container: Control = $PopupContainer
+
+const DEFAULT_CORNER_RADIUS_PX := 24.0
+const DIM_ALPHA := 0.5
+
+const CLOSE_BLUR_PEAK := 4.0
+const CLOSE_T_BLUR_IN := 0.15
+const CLOSE_T_MAIN := 0.4
 
 var _config: Dictionary = {}
 var _buttons: Array[GlassButton] = []
 var _is_opening := false
 var _is_closing := false
 
+var _dim_background: ColorRect = null
+var _blur_overlay: ColorRect = null
+
 func setup(config: Dictionary) -> void:
 	_config = config
+	
+	_create_dim_background()
+	_create_blur_overlay()
 	
 	var size := "medium"
 	if config.has("size"):
@@ -28,6 +42,11 @@ func setup(config: Dictionary) -> void:
 			glass_panel.custom_minimum_size = Vector2(1000, 800)
 		_:
 			glass_panel.custom_minimum_size = Vector2(600, 400)
+
+	# Keep the popup centered by updating offsets (scene anchors are centered).
+	# NOTE: Avoid setting `position` directly; it will break anchor-based centering.
+	var target_size := glass_panel.custom_minimum_size
+	_apply_glass_panel_centered_layout(target_size)
 	
 	spacer.custom_minimum_size.y = 48
 	
@@ -36,9 +55,12 @@ func setup(config: Dictionary) -> void:
 		content_min_y = 520.0
 	content_label.custom_minimum_size.y = content_min_y
 	
-	# 设置 pivot_offset 为尺寸的一半（居中展开）
+	# Ensure layout is applied before using size-dependent shader params.
 	await get_tree().process_frame
-	glass_panel.pivot_offset = glass_panel.custom_minimum_size / 2.0
+	# Re-apply centering after first layout pass (prevents top-left placement).
+	_apply_glass_panel_centered_layout(target_size)
+	glass_panel.pivot_offset = glass_panel.size / 2.0
+	_sync_glass_panel_shader_params()
 	
 	if config.has("title"):
 		title_label.text = config["title"]
@@ -56,6 +78,47 @@ func setup(config: Dictionary) -> void:
 			content_label.text = config["content"]
 	
 	_build_buttons(config.get("buttons", []))
+	
+	glass_panel.resized.connect(_on_glass_panel_resized)
+	_update_blur_overlay_size()
+
+
+func _on_glass_panel_resized() -> void:
+	_sync_glass_panel_shader_params()
+	_update_blur_overlay_size()
+
+
+func _apply_glass_panel_centered_layout(target_size: Vector2) -> void:
+	glass_panel.anchor_left = 0.5
+	glass_panel.anchor_top = 0.5
+	glass_panel.anchor_right = 0.5
+	glass_panel.anchor_bottom = 0.5
+	glass_panel.offset_left = -target_size.x * 0.5
+	glass_panel.offset_right = target_size.x * 0.5
+	glass_panel.offset_top = -target_size.y * 0.5
+	glass_panel.offset_bottom = target_size.y * 0.5
+
+
+func _sync_glass_panel_shader_params() -> void:
+	var mat := glass_panel.material as ShaderMaterial
+	if mat == null:
+		return
+	# liquid_glass_ui.gdshader expects rect_size_px for correct rounded corners and distortion.
+	mat.set_shader_parameter("rect_size_px", glass_panel.size)
+	# Force a sane default corner radius to keep visuals consistent across sizes.
+	# This also fixes "large" feeling like it has no rounded corners.
+	mat.set_shader_parameter("corner_radius_px", DEFAULT_CORNER_RADIUS_PX)
+
+
+func _get_glass_panel_corner_radius_px() -> float:
+	var corner_px := DEFAULT_CORNER_RADIUS_PX
+	var mat := glass_panel.material as ShaderMaterial
+	if mat == null:
+		return corner_px
+	var v = mat.get_shader_parameter("corner_radius_px")
+	if typeof(v) == TYPE_INT or typeof(v) == TYPE_FLOAT:
+		corner_px = float(v)
+	return corner_px
 
 func _build_buttons(buttons: Array) -> void:
 	for btn in _buttons:
@@ -137,15 +200,25 @@ func open() -> void:
 	visible = true
 	_is_opening = true
 	_is_closing = false
+	glass_panel.scale = Vector2(1.0, 1.0)
+	
+	if _dim_background != null:
+		_dim_background.visible = true
+		_dim_background.modulate.a = 0.0
 	
 	var tween := create_tween()
 	tween.set_parallel(true)
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_OUT)
 	
 	glass_panel.scale = Vector2(0.8, 0.8)
 	glass_panel.modulate.a = 0.0
 	
-	tween.tween_property(glass_panel, "scale", Vector2(1.0, 1.0), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(glass_panel, "scale", Vector2(1.0, 1.0), 0.3).set_trans(Tween.TRANS_BACK)
 	tween.tween_property(glass_panel, "modulate:a", 1.0, 0.25)
+	
+	if _dim_background != null:
+		tween.tween_property(_dim_background, "modulate:a", DIM_ALPHA, 0.25)
 	
 	await tween.finished
 	_is_opening = false
@@ -198,9 +271,87 @@ func close() -> void:
 	if _is_opening:
 		await get_tree().create_timer(0.1).timeout
 	
-	var tween := create_tween()
-	tween.tween_property(glass_panel, "modulate:a", 0.0, 0.2)
+	_do_blur_close_animation()
+
+
+func _create_dim_background() -> void:
+	if _dim_background != null:
+		return
 	
+	_dim_background = ColorRect.new()
+	_dim_background.name = "DimBackground"
+	_dim_background.color = Color(0, 0, 0, DIM_ALPHA)
+	_dim_background.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_dim_background.mouse_filter = Control.MOUSE_FILTER_STOP
+	_dim_background.visible = false
+	add_child(_dim_background)
+	move_child(_dim_background, 0)
+
+
+func _create_blur_overlay() -> void:
+	if _blur_overlay != null:
+		return
+	
+	_blur_overlay = ColorRect.new()
+	_blur_overlay.name = "BlurOverlay"
+	_blur_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	_blur_overlay.visible = false
+	_blur_overlay.color = Color(1, 1, 1, 1)
+	
+	var blur_mat := ShaderMaterial.new()
+	blur_mat.shader = load("res://assets/shaders/transition_blur.gdshader")
+	blur_mat.set_shader_parameter("blur_amount", 0.0)
+	blur_mat.set_shader_parameter("corner_radius_px", _get_glass_panel_corner_radius_px())
+	blur_mat.set_shader_parameter("rect_size_px", glass_panel.size)
+	_blur_overlay.material = blur_mat
+	
+	popup_container.add_child(_blur_overlay)
+	popup_container.move_child(_blur_overlay, popup_container.get_child_count() - 1)
+
+
+func _update_blur_overlay_size() -> void:
+	if _blur_overlay == null:
+		return
+	_blur_overlay.size = glass_panel.size
+	_blur_overlay.position = glass_panel.position
+	var mat := _blur_overlay.material as ShaderMaterial
+	if mat != null:
+		mat.set_shader_parameter("rect_size_px", _blur_overlay.size)
+		mat.set_shader_parameter("corner_radius_px", _get_glass_panel_corner_radius_px())
+
+
+func _do_blur_close_animation() -> void:
+	_update_blur_overlay_size()
+	
+	_blur_overlay.visible = true
+	_blur_overlay.modulate.a = 1.0
+	
+	var blur_mat = _blur_overlay.material as ShaderMaterial
+
+	# Close animation as the inverse of open:
+	# - Blur in quickly, then blur out while fading/scaling down.
+	# Total duration >= 0.4s.
+	var t_blur_in := CLOSE_T_BLUR_IN
+	var t_main := CLOSE_T_MAIN
+	var blur_peak := CLOSE_BLUR_PEAK
+
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(blur_mat, "shader_parameter/blur_amount", blur_peak, t_blur_in)
 	await tween.finished
+
+	tween = create_tween()
+	tween.set_parallel(true)
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(blur_mat, "shader_parameter/blur_amount", 0.0, t_main)
+	tween.tween_property(glass_panel, "scale", Vector2(0.8, 0.8), t_main)
+	tween.tween_property(glass_panel, "modulate:a", 0.0, t_main)
+	tween.tween_property(_blur_overlay, "modulate:a", 0.0, t_main)
+	if _dim_background != null:
+		tween.tween_property(_dim_background, "modulate:a", 0.0, t_main)
+	await tween.finished
+
 	closed.emit()
 	queue_free()

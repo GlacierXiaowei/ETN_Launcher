@@ -15,7 +15,7 @@ uniform float opacity : hint_range(0.0, 1.0) = 1.0;
 // 折射强度（像素单位）。越靠近边缘越强。
 uniform float refraction_strength_px : hint_range(0.0, 64.0) = 14;
 uniform float edge_refraction_boost : hint_range(0.0, 4.0) = 4.0;
-uniform float edge_falloff_px : hint_range(1.0, 256.0) = 12;
+uniform float edge_falloff_px : hint_range(1.0, 256.0) =16;
 
 // 基于 mip 的模糊（textureLod 使用 SCREEN_TEXTURE 的 mip 级别）。
 uniform float blur_lod_center : hint_range(0.0, 10.0) = 2.8;
