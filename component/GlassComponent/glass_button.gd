@@ -36,7 +36,7 @@ enum SizeVariant { MEDIUM, LARGE }
 @export_group("Glass Effect")
 @export var corner_radius_px: float =18.0
 @export_group("Auto Size")
-@export var auto_size: bool = false
+@export var auto_size: bool = true
 @export var horizontal_padding: float = 32.0
 @export var vertical_padding: float = 12.0
 

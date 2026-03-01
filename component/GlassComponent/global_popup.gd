@@ -1,7 +1,8 @@
 extends CanvasLayer
 class_name GlobalPopup
 
-signal popup_closed(metadata: String)
+signal button_pressed(metadata: String)
+signal closed
 signal popup_opened
 
 @onready var glass_panel: ColorRect = $PopupContainer/GlassPanel
@@ -13,6 +14,7 @@ signal popup_opened
 var _config: Dictionary = {}
 var _buttons: Array[GlassButton] = []
 var _is_opening := false
+var _is_closing := false
 
 func setup(config: Dictionary) -> void:
 	_config = config
@@ -113,10 +115,6 @@ func _build_buttons(buttons: Array) -> void:
 			if btn_config.has("min_height"):
 				min_size.y = btn_config["min_height"]
 			btn.custom_minimum_size = min_size
-		
-		# 设置自动尺寸（如果配置了）
-		if btn_config.get("auto_size", false):
-			btn.auto_size = true
 	
 	# 设置居中对齐
 	button_container.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -126,17 +124,19 @@ func _build_buttons(buttons: Array) -> void:
 var _last_pressed_btn: GlassButton = null
 
 func _on_button_pressed(metadata: String) -> void:
-	popup_closed.emit(metadata)
-	
-	if _last_pressed_btn != null and _last_pressed_btn.get_meta("stay_open", false):
-		_last_pressed_btn = null
-		return
+	var stay_open := false
+	if _last_pressed_btn != null:
+		stay_open = _last_pressed_btn.get_meta("stay_open", false) as bool
+	button_pressed.emit(metadata)
 	_last_pressed_btn = null
-	close(metadata)
+	if stay_open:
+		return
+	close()
 
 func open() -> void:
 	visible = true
 	_is_opening = true
+	_is_closing = false
 	
 	var tween := create_tween()
 	tween.set_parallel(true)
@@ -190,7 +190,11 @@ func update_with_fade(new_config: Dictionary) -> void:
 	tween = create_tween()
 	tween.tween_property(content_container, "modulate:a", 1.0, 0.15)
 
-func close(metadata: String = "") -> void:
+
+func close() -> void:
+	if _is_closing:
+		return
+	_is_closing = true
 	if _is_opening:
 		await get_tree().create_timer(0.1).timeout
 	
@@ -198,5 +202,5 @@ func close(metadata: String = "") -> void:
 	tween.tween_property(glass_panel, "modulate:a", 0.0, 0.2)
 	
 	await tween.finished
-	popup_closed.emit(metadata)
+	closed.emit()
 	queue_free()

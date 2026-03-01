@@ -6,8 +6,16 @@ signal popup_closed
 
 var _current_popup: GlobalPopup = null
 var _popup_scene: PackedScene = load("res://component/GlassComponent/global_popup.tscn")
+var _debug := false
+
+func _dbg(msg: String) -> void:
+	if not _debug:
+		return
+	print("[PopupManager] " + msg)
 
 func show_popup(config: Dictionary) -> void:
+	_debug = config.get("debug", false) as bool
+	_dbg("show_popup: start")
 	if _current_popup != null:
 		var clear_on_new: bool = config.get("clear_on_new", true)
 		if clear_on_new:
@@ -16,15 +24,33 @@ func show_popup(config: Dictionary) -> void:
 			return
 	
 	_current_popup = _popup_scene.instantiate()
+	var popup := _current_popup
 	get_tree().root.add_child(_current_popup)
 	
 	_current_popup.setup(config)
-	_current_popup.popup_closed.connect(_on_popup_closed)
+	_current_popup.button_pressed.connect(func(metadata: String) -> void:
+		_on_popup_button_pressed(popup, metadata)
+	)
+	_current_popup.closed.connect(func() -> void:
+		_on_popup_closed(popup)
+	)
 	_current_popup.open()
 	popup_opened.emit()
 
-func _on_popup_closed(metadata: String) -> void:
+
+func _on_popup_button_pressed(popup: GlobalPopup, metadata: String) -> void:
+	if popup != _current_popup:
+		_dbg("button_pressed ignored (stale popup): " + metadata)
+		return
+	_dbg("button_pressed: " + metadata)
 	popup_button_pressed.emit(metadata)
+
+
+func _on_popup_closed(popup: GlobalPopup) -> void:
+	if popup != _current_popup:
+		_dbg("closed ignored (stale popup)")
+		return
+	_dbg("closed")
 	popup_closed.emit()
 	_current_popup = null
 
@@ -33,7 +59,7 @@ func close_popup() -> void:
 		_current_popup.close()
 
 func is_popup_open() -> bool:
-	return _current_popup != null
+	return _current_popup != null and is_instance_valid(_current_popup)
 
 func show_confirm(title: String, content: String, on_ok: Callable, on_cancel: Callable = Callable()) -> void:
 	var config := {
@@ -90,8 +116,9 @@ func update_popup(config: Dictionary) -> bool:
 
 func close_and_show_new(config: Dictionary) -> void:
 	if _current_popup != null:
-		_current_popup.close()
-		await popup_closed
+		var popup := _current_popup
+		popup.close()
+		await popup.closed
 	
 	show_popup(config)
 
