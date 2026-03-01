@@ -6,16 +6,8 @@ signal popup_closed
 
 var _current_popup: GlobalPopup = null
 var _popup_scene: PackedScene = load("res://component/GlassComponent/global_popup.tscn")
-var _debug := false
-
-func _dbg(msg: String) -> void:
-	if not _debug:
-		return
-	print("[PopupManager] " + msg)
 
 func show_popup(config: Dictionary) -> void:
-	_debug = config.get("debug", false) as bool
-	_dbg("show_popup: start")
 	if _current_popup != null:
 		var clear_on_new: bool = config.get("clear_on_new", true)
 		if clear_on_new:
@@ -40,17 +32,13 @@ func show_popup(config: Dictionary) -> void:
 
 func _on_popup_button_pressed(popup: GlobalPopup, metadata: String) -> void:
 	if popup != _current_popup:
-		_dbg("button_pressed ignored (stale popup): " + metadata)
 		return
-	_dbg("button_pressed: " + metadata)
 	popup_button_pressed.emit(metadata)
 
 
 func _on_popup_closed(popup: GlobalPopup) -> void:
 	if popup != _current_popup:
-		_dbg("closed ignored (stale popup)")
 		return
-	_dbg("closed")
 	popup_closed.emit()
 	_current_popup = null
 

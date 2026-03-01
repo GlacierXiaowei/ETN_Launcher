@@ -8,6 +8,25 @@
 - GlassComponent场景使用 `liquid_glass_ui.gdshader`作为面板材质
 - medium_popup.tscn和 large_popup.tscn已完成基础改造（Phase1-3）
 
+## Phase3交付内容（进入Phase4前置上下文）
+
+### Phase3已实现
+- 弹窗内容更新：`PopupManager.update_popup(config)`，支持不关闭弹窗更新标题/内容/按钮。
+- 内容切换动画：当 `config["transition_animation"] == true` 时，使用淡入淡出更新（GlobalPopup.update_with_fade）。
+- 关闭后新开：`PopupManager.close_and_show_new(config)`，通过等待被关闭弹窗实例的 `closed` 信号避免竞态。
+- 回调语义拆分（关键）：
+  - GlobalPopup:
+    - `button_pressed(metadata)`：任意按钮按下必触发，业务回调永远能拿到 metadata。
+    - `closed`：关闭动画结束后触发，用于生命周期控制。
+  - PopupManager:
+    - `popup_button_pressed(metadata)`：业务回调。
+    - `popup_closed`：关闭完成事件。
+- 按钮文本自适应默认开启：GlassButton 根据文本自动扩展最小尺寸，避免长文本被裁切。
+
+### Phase3测试场景
+- `res://scenes/test/test_popup_phase3.tscn`
+- 用例覆盖：更新不关闭、淡入淡出更新、关闭后新开、has_open_popup检查。
+
 ##需要实现的内容
 
 ###1.关闭动画Shader集成
