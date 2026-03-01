@@ -12,6 +12,7 @@ enum SizeVariant { MEDIUM, LARGE }
 		text = v
 		if _label != null:
 			_label.text = v
+		_auto_resize()
 
 @export_group("State")
 @export var disabled: bool = false:
@@ -34,6 +35,10 @@ enum SizeVariant { MEDIUM, LARGE }
 
 @export_group("Glass Effect")
 @export var corner_radius_px: float =18.0
+@export_group("Auto Size")
+@export var auto_size: bool = false
+@export var horizontal_padding: float = 32.0
+@export var vertical_padding: float = 12.0
 
 var _glass_bg: ColorRect
 var _label: Label
@@ -54,6 +59,7 @@ func _ready() -> void:
 	await get_tree().process_frame
 	_update_layout()
 	_update_glass_state()
+	_auto_resize()
 
 func _build_nodes_if_needed() -> void:
 	if _glass_bg == null:
@@ -121,11 +127,36 @@ func _apply_type_style() -> void:
 	_update_glass_state()
 
 func _apply_size() -> void:
+	if auto_size:
+		return
 	match size_variant:
 		SizeVariant.MEDIUM:
 			custom_minimum_size = Vector2(140,48)
 		SizeVariant.LARGE:
 			custom_minimum_size = Vector2(180,56)
+
+func _auto_resize() -> void:
+	if not auto_size or _label == null:
+		return
+	
+	var font = _label.get_theme_default_font()
+	if font == null:
+		return
+	
+	var text_size = font.get_string_size(_label.text)
+	var new_size = Vector2(
+		text_size.x + horizontal_padding * 2,
+		text_size.y + vertical_padding * 2
+	)
+	
+	if new_size.x < custom_minimum_size.x:
+		new_size.x = custom_minimum_size.x
+	if new_size.y < custom_minimum_size.y:
+		new_size.y = custom_minimum_size.y
+	
+	custom_minimum_size = new_size
+	_update_layout()
+	_update_glass_state()
 
 func _on_resized() -> void:
 	_update_layout()

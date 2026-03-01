@@ -76,3 +76,24 @@ func show_alert(title: String, content: String, on_ok: Callable = Callable()) ->
 		popup_button_pressed.connect(callback)
 	
 	show_popup(config)
+
+func update_popup(config: Dictionary) -> bool:
+	if _current_popup == null or not is_instance_valid(_current_popup):
+		return false
+	
+	var use_fade := config.get("transition_animation", false) as bool
+	if use_fade:
+		_current_popup.update_with_fade(config)
+	else:
+		_current_popup.update(config)
+	return true
+
+func close_and_show_new(config: Dictionary) -> void:
+	if _current_popup != null:
+		_current_popup.close()
+		await popup_closed
+	
+	show_popup(config)
+
+func has_open_popup() -> bool:
+	return _current_popup != null and is_instance_valid(_current_popup)

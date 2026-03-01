@@ -95,7 +95,10 @@ func _build_buttons(buttons: Array) -> void:
 		btn.size_variant = size_variant
 		
 		var btn_metadata := btn_config.get("metadata", "") as String
+		var btn_stay_open := btn_config.get("stay_open", false) as bool
+		btn.set_meta("stay_open", btn_stay_open)
 		btn.pressed.connect(func() -> void:
+			_last_pressed_btn = btn
 			_on_button_pressed(btn_metadata)
 		)
 		
@@ -110,13 +113,25 @@ func _build_buttons(buttons: Array) -> void:
 			if btn_config.has("min_height"):
 				min_size.y = btn_config["min_height"]
 			btn.custom_minimum_size = min_size
+		
+		# 设置自动尺寸（如果配置了）
+		if btn_config.get("auto_size", false):
+			btn.auto_size = true
 	
 	# 设置居中对齐
 	button_container.alignment = BoxContainer.ALIGNMENT_CENTER
 	# 设置按钮间距
 	button_container.add_theme_constant_override("separation", 36)
 
+var _last_pressed_btn: GlassButton = null
+
 func _on_button_pressed(metadata: String) -> void:
+	popup_closed.emit(metadata)
+	
+	if _last_pressed_btn != null and _last_pressed_btn.get_meta("stay_open", false):
+		_last_pressed_btn = null
+		return
+	_last_pressed_btn = null
 	close(metadata)
 
 func open() -> void:
@@ -135,6 +150,45 @@ func open() -> void:
 	await tween.finished
 	_is_opening = false
 	popup_opened.emit()
+
+func set_title(title: String) -> void:
+	title_label.text = title
+
+func set_content(text: String, type: String = "label") -> void:
+	if type == "richtext":
+		content_label.bbcode_enabled = true
+		content_label.text = text
+	else:
+		content_label.bbcode_enabled = false
+		content_label.text = text
+
+func set_buttons(buttons: Array) -> void:
+	_build_buttons(buttons)
+
+func update(config: Dictionary) -> void:
+	_config = config
+	
+	if config.has("title"):
+		set_title(config["title"])
+	
+	if config.has("content"):
+		var content_type := config.get("content_type", "label") as String
+		set_content(config["content"], content_type)
+	
+	if config.has("buttons"):
+		set_buttons(config["buttons"])
+
+func update_with_fade(new_config: Dictionary) -> void:
+	var content_container := $PopupContainer/GlassPanel/Margin/VBox
+	
+	var tween := create_tween()
+	tween.tween_property(content_container, "modulate:a", 0.0, 0.15)
+	await tween.finished
+	
+	update(new_config)
+	
+	tween = create_tween()
+	tween.tween_property(content_container, "modulate:a", 1.0, 0.15)
 
 func close(metadata: String = "") -> void:
 	if _is_opening:
