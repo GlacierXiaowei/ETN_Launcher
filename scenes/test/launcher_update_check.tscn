@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://caxh2pffdam2v" path="res://assets/image/boot_logo/logo_02.png" id="2_2bwp6"]
 [ext_resource type="Theme" uid="uid://c5wbsyp58wb17" path="res://assets/theme/LG_standard.tres" id="4_2fa5q"]
 [ext_resource type="PackedScene" uid="uid://bypsoyn6vlp5p" path="res://component/small_loding_player.tscn" id="4_o0cpu"]
+[ext_resource type="PackedScene" uid="uid://c8yvxg3ulq3a" path="res://scenes/card/game_card.tscn" id="5_2fa5q"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fowrg"]
 
@@ -119,6 +120,10 @@ text = "请稍候"
 [node name="SecondaryButton" type="Button" parent="CenterContainer/VBoxContainer/ButtonContainer" unique_id=934674911]
 layout_mode = 2
 text = "离线进入"
+
+[node name="GameCard" parent="." unique_id=1449577529 instance=ExtResource("5_2fa5q")]
+visible = false
+layout_mode = 1
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/ButtonContainer/PrimaryButton" to="." method="_on_primary_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/ButtonContainer/SecondaryButton" to="." method="_on_secondary_button_pressed"]

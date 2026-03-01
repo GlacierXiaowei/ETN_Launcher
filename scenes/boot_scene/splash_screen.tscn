@@ -30,7 +30,6 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 2
 
 [node name="InstallComponent" parent="." unique_id=378045110 instance=ExtResource("2_ekg85")]
-layout_mode = 1
 repo_name = "ETN_Launcher"
 
 [connection signal="update_needed_state_signal" from="InstallComponent" to="." method="_on_install_component_update_needed_state_signal"]

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c5vqkwqeocm0n"]
 
 [ext_resource type="Script" uid="uid://cqremwtokdwkc" path="res://scenes/test/game_card/test_phase_1.gd" id="1_script"]
-[ext_resource type="PackedScene" uid="uid://c8yvxg3ulq3a" path="res://scenes/card/game_card.tscn" id="2_gamecard"]
+[ext_resource type="PackedScene" uid="uid://c8yvxg3ulq3a" path="res://scenes/card/game_card.tscn" id="2_js6ot"]
 
 [node name="TestPhase1" type="Control" unique_id=828974235]
 layout_mode = 3
@@ -21,13 +21,6 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.1, 0.1, 0.15, 1)
 
-[node name="GameCard" parent="." unique_id=648622024 instance=ExtResource("2_gamecard")]
-layout_mode = 1
-offset_left = -345.6
-offset_top = -194.4
-offset_right = 345.6
-offset_bottom = 194.4
-
 [node name="StatusLabel" type="Label" parent="." unique_id=1651211125]
 layout_mode = 1
 anchors_preset = 5
@@ -41,3 +34,6 @@ grow_horizontal = 2
 theme_override_font_sizes/font_size = 24
 text = "Phase 1: 基础结构测试 - 请将鼠标悬停在卡片上"
 horizontal_alignment = 1
+
+[node name="GameCard" parent="." unique_id=1449577529 instance=ExtResource("2_js6ot")]
+layout_mode = 1

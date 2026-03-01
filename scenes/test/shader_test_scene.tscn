@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://c8yvxg3ulq3a"]
+[gd_scene format=3 uid="uid://cvx2ljou4u71b"]
 
 [ext_resource type="Shader" uid="uid://1t5a0ootcfy6" path="res://assets/shaders/background_blur.gdshader" id="1_blur"]
 [ext_resource type="Script" uid="uid://cxwsiv3vhrwed" path="res://scenes/test/shader_test_scene.gd" id="1_lw7ei"]

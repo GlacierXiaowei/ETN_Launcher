@@ -2,7 +2,7 @@
 
 [ext_resource type="Shader" uid="uid://by5cf8rcjgiox" path="res://assets/shaders/fake_3d.gdshader" id="1_fake3d"]
 [ext_resource type="Texture2D" uid="uid://7e8k25vqanoy" path="res://assets/image/poster/game1_poster .png" id="2_poster"]
-[ext_resource type="Script" uid="uid://uk7jtelrgkfh" path="res://scenes/card/components/card_visual_component.gd" id="3_visual"]
+[ext_resource type="Script" uid="uid://uk7jtelrgkfh" path="res://component/Card/card_visual_component.gd" id="3_visual"]
 [ext_resource type="Script" uid="uid://bs04euwgvuj6t" path="res://scenes/card/game_card.gd" id="4_main"]
 
 [sub_resource type="StyleBoxEmpty" id="empty_style"]
@@ -62,7 +62,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_poster")
 expand_mode = 1
-stretch_mode = 5
+stretch_mode = 6
 
 [node name="CardVisualComponent" type="Node" parent="." unique_id=1602200362]
 script = ExtResource("3_visual")
