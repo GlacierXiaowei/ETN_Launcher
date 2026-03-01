@@ -3,7 +3,7 @@ class_name GlassButton
 
 signal pressed
 
-enum ButtonType { PRIMARY, SECONDARY }
+enum ButtonType { PRIMARY, SECONDARY, THIRD }
 enum SizeVariant { MEDIUM, LARGE }
 
 @export_group("Content")
@@ -182,24 +182,30 @@ func _update_glass_state() -> void:
 		border_w =0
 	elif _is_pressed:
 		match button_type:
-			ButtonType.PRIMARY:
-				tint = Color(0.264,0.556,0.827,0.8)
 			ButtonType.SECONDARY:
+				tint = Color(0.264,0.556,0.827,0.8)
+			ButtonType.THIRD:
 				tint = Color(0.633,0.429,0.463,0.8)
+			ButtonType.PRIMARY:
+				tint = Color(0.463,0.729,0.5,0.8)
 		border_w =1.0
 	elif _is_hover:
 		match button_type:
-			ButtonType.PRIMARY:
-				tint = Color(0.499,0.818,1.162,0.55)
 			ButtonType.SECONDARY:
+				tint = Color(0.499,0.818,1.162,0.55)
+			ButtonType.THIRD:
 				tint = Color(0.854,0.729,0.812,0.55)
+			ButtonType.PRIMARY:
+				tint = Color(0.729,0.854,0.749,0.55)
 		border_w =0.5
 	else:
 		match button_type:
-			ButtonType.PRIMARY:
-				tint = Color(0.736,0.781,0.812,0.716)
 			ButtonType.SECONDARY:
+				tint = Color(0.736,0.781,0.812,0.716)
+			ButtonType.THIRD:
 				tint = Color(0.779,0.779,0.802,0.722)
+			ButtonType.PRIMARY:
+				tint = Color(0.729,0.779,0.729,0.722)
 		border_w =0
 
 	mat.set_shader_parameter("tint", tint)

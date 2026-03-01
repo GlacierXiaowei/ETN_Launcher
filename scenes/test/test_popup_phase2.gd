@@ -22,7 +22,7 @@ func _on_single_pressed() -> void:
 	_add_status("测试1: 单按钮弹窗")
 	PopupManager.show_popup({
 		"title": "单按钮测试",
-		"content": "这是一个单按钮弹窗，验证居中/右对齐效果",
+		"content": "这是一个单按钮弹窗，居中显示",
 		"buttons": [
 			{"text": "确定", "type": "primary", "metadata": "single_ok"}
 		]
@@ -32,21 +32,21 @@ func _on_two_pressed() -> void:
 	_add_status("测试2: 双按钮弹窗")
 	PopupManager.show_popup({
 		"title": "双按钮测试",
-		"content": "这是一个双按钮弹窗（取消在左，确定在右）",
+		"content": "这是双按钮弹窗\nprimary在左，secondary在右",
 		"buttons": [
-			{"text": "取消", "type": "secondary", "metadata": "cancel"},
-			{"text": "确定", "type": "primary", "metadata": "confirm"}
+			{"text": "确定", "type": "primary", "metadata": "confirm"},
+			{"text": "取消", "type": "secondary", "metadata": "cancel"}
 		]
 	})
 
 func _on_three_pressed() -> void:
-	_add_status("测试3: 三按钮弹窗（验证右对齐）")
+	_add_status("测试3: 三按钮弹窗（居中对齐）")
 	PopupManager.show_popup({
 		"title": "三按钮测试",
-		"content": "这是一个三按钮弹窗，全部右对齐",
+		"content": "这是三按钮弹窗\nprimary -> secondary -> third 从左到右",
 		"buttons": [
-			{"text": "选项A", "type": "secondary", "metadata": "option_a"},
-			{"text": "选项B", "type": "secondary", "metadata": "option_b"},
+			{"text": "取消", "type": "secondary", "metadata": "cancel"},
+			{"text": "不确定", "type": "third", "metadata": "maybe"},
 			{"text": "确定", "type": "primary", "metadata": "confirm"}
 		]
 	})

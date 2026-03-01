@@ -8,3 +8,4 @@
 # Worktrees (local isolation)
 .worktrees/
 worktrees/
+nul

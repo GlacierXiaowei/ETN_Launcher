@@ -68,22 +68,33 @@ func _build_buttons(buttons: Array) -> void:
 		}
 		buttons = [default_btn]
 	
+	# 按类型排序：primary -> secondary -> third（从左到右）
+	var type_order := {"primary": 0, "secondary": 1, "third": 2}
+	buttons.sort_custom(func(a, b):
+		var order_a := type_order.get(a.get("type", "secondary"), 1) as int
+		var order_b := type_order.get(b.get("type", "secondary"), 1) as int
+		return order_a < order_b
+	)
+	
 	for btn_config in buttons:
 		var btn := GlassButton.new()
 		btn.text = btn_config.get("text", "Button")
 		
-		var btn_type: String = btn_config.get("type", "secondary")
-		if btn_type == "primary":
-			btn.button_type = GlassButton.ButtonType.PRIMARY
-		else:
-			btn.button_type = GlassButton.ButtonType.SECONDARY
+		var btn_type := btn_config.get("type", "secondary") as String
+		match btn_type:
+			"primary":
+				btn.button_type = GlassButton.ButtonType.PRIMARY
+			"third":
+				btn.button_type = GlassButton.ButtonType.THIRD
+			_:
+				btn.button_type = GlassButton.ButtonType.SECONDARY
 		
 		var size_variant: GlassButton.SizeVariant = GlassButton.SizeVariant.MEDIUM
 		if glass_panel.custom_minimum_size.x >= 800:
 			size_variant = GlassButton.SizeVariant.LARGE
 		btn.size_variant = size_variant
 		
-		var btn_metadata: String = btn_config.get("metadata", "")
+		var btn_metadata := btn_config.get("metadata", "") as String
 		btn.pressed.connect(func() -> void:
 			_on_button_pressed(btn_metadata)
 		)
@@ -100,8 +111,10 @@ func _build_buttons(buttons: Array) -> void:
 				min_size.y = btn_config["min_height"]
 			btn.custom_minimum_size = min_size
 	
-	# 全部使用右对齐
-	button_container.alignment = BoxContainer.ALIGNMENT_END
+	# 设置居中对齐
+	button_container.alignment = BoxContainer.ALIGNMENT_CENTER
+	# 设置按钮间距
+	button_container.add_theme_constant_override("separation", 36)
 
 func _on_button_pressed(metadata: String) -> void:
 	close(metadata)

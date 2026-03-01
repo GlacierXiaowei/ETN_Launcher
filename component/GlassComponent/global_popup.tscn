@@ -35,7 +35,7 @@ shader_parameter/distortion_k1 = 0.15
 shader_parameter/distortion_k2 = 0.1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a1usi"]
-bg_color = Color(0.26007625, 0.30323896, 0.33200306, 0.34901962)
+bg_color = Color(0.3137255, 0.3647059, 0.4, 0.2784314)
 border_width_left = 4
 border_width_right = 4
 border_color = Color(0.25882354, 0.3019608, 0.33333334, 0.34901962)
@@ -121,4 +121,4 @@ size_flags_vertical = 3
 
 [node name="ButtonContainer" type="HBoxContainer" parent="PopupContainer/GlassPanel/Margin/VBox" unique_id=1237315127]
 layout_mode = 2
-alignment = 2
+alignment = 1
