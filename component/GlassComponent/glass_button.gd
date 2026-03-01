@@ -139,13 +139,24 @@ func _auto_resize() -> void:
 	if not auto_size or _label == null:
 		return
 	
-	var font = _label.get_theme_default_font()
+	var font: Font = _label.get_theme_font("font")
+	if font == null:
+		font = _label.get_theme_default_font()
 	if font == null:
 		return
+	var font_size := 16
+	if _label.has_theme_font_size_override("font_size"):
+		font_size = _label.get_theme_font_size("font_size")
+	else:
+		font_size = _label.get_theme_font_size("font_size")
 	
-	var text_size = font.get_string_size(_label.text)
+	var text_size := font.get_string_size(_label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
+	# Some fonts have tighter glyph bounds; add a small extra padding for long strings.
+	var extra_pad := 0.0
+	if text_size.x >= 200.0:
+		extra_pad = 4.0
 	var new_size = Vector2(
-		text_size.x + horizontal_padding * 2,
+		text_size.x + (horizontal_padding + extra_pad) * 2,
 		text_size.y + vertical_padding * 2
 	)
 	

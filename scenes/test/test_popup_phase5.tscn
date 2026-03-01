@@ -25,56 +25,21 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -909.0
-offset_top = -494.0
-offset_right = -69.0
-offset_bottom = 26.0
+offset_left = -520.0
+offset_top = -180.0
+offset_right = 520.0
+offset_bottom = 180.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 16
 
 [node name="Title" type="Label" parent="VBox" unique_id=865877268]
 layout_mode = 2
-text = "弹窗 Phase5 测试 - Loading Lock + 快捷 API"
+text = "弹窗 Phase5 测试 - 请在弹窗内点击按钮进行测试"
 
-[node name="HBox1" type="HBoxContainer" parent="VBox" unique_id=492978112]
+[node name="Hint" type="Label" parent="VBox" unique_id=1531932731]
 layout_mode = 2
-
-[node name="BtnConfirmX3" type="Button" parent="VBox/HBox1" unique_id=709704649]
-custom_minimum_size = Vector2(200, 50)
-layout_mode = 2
-text = "Confirm x3"
-
-[node name="BtnAlertX3" type="Button" parent="VBox/HBox1" unique_id=29081150]
-custom_minimum_size = Vector2(200, 50)
-layout_mode = 2
-text = "Alert x3"
-
-[node name="HBox2" type="HBoxContainer" parent="VBox" unique_id=121712256]
-layout_mode = 2
-
-[node name="BtnPopupToLoading" type="Button" parent="VBox/HBox2" unique_id=1128331045]
-custom_minimum_size = Vector2(200, 50)
-layout_mode = 2
-text = "Popup -> Loading"
-
-[node name="BtnHideLoadingRestore" type="Button" parent="VBox/HBox2" unique_id=1451098751]
-custom_minimum_size = Vector2(200, 50)
-layout_mode = 2
-text = "hide_loading(快照)"
-
-[node name="HBox3" type="HBoxContainer" parent="VBox" unique_id=341862963]
-layout_mode = 2
-
-[node name="BtnShowLoadingNoPopup" type="Button" parent="VBox/HBox3" unique_id=1038993698]
-custom_minimum_size = Vector2(200, 50)
-layout_mode = 2
-text = "No popup -> show_loading"
-
-[node name="BtnHideLoadingRestoreConfig" type="Button" parent="VBox/HBox3" unique_id=246443267]
-custom_minimum_size = Vector2(200, 50)
-layout_mode = 2
-text = "hide_loading(restore_config)"
+text = "启动后会自动弹出一个测试菜单弹窗（避免背景遮罩吸收输入导致点不到场景按钮）。"
 
 [node name="StatusLabel" type="Label" parent="VBox" unique_id=1933218596]
 layout_mode = 2

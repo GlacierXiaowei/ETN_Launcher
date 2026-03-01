@@ -69,18 +69,13 @@ func show_confirm(title: String, content: String, on_ok: Callable, on_cancel: Ca
 		return
 	if not on_ok.is_valid() and not on_cancel.is_valid():
 		return
-	
-	var wrapper: Callable
-	wrapper = func(m: String) -> void:
-		if not is_instance_valid(popup):
-			return
-		if popup.button_pressed.is_connected(wrapper):
-			popup.button_pressed.disconnect(wrapper)
+
+	popup.button_pressed.connect(func(m: String) -> void:
 		if m == "confirm" and on_ok.is_valid():
 			on_ok.call()
 		elif m == "cancel" and on_cancel.is_valid():
 			on_cancel.call()
-	popup.button_pressed.connect(wrapper)
+	, Object.CONNECT_ONE_SHOT)
 
 func show_alert(title: String, content: String, on_ok: Callable = Callable()) -> void:
 	var config := {
@@ -98,16 +93,11 @@ func show_alert(title: String, content: String, on_ok: Callable = Callable()) ->
 		return
 	if not on_ok.is_valid():
 		return
-	
-	var wrapper: Callable
-	wrapper = func(m: String) -> void:
-		if not is_instance_valid(popup):
-			return
-		if popup.button_pressed.is_connected(wrapper):
-			popup.button_pressed.disconnect(wrapper)
+
+	popup.button_pressed.connect(func(m: String) -> void:
 		if m == "ok":
 			on_ok.call()
-	popup.button_pressed.connect(wrapper)
+	, Object.CONNECT_ONE_SHOT)
 
 func update_popup(config: Dictionary) -> bool:
 	if _current_popup == null or not is_instance_valid(_current_popup):
@@ -133,22 +123,31 @@ func has_open_popup() -> bool:
 
 
 func show_loading(title: String = "请稍候", label_text: String = "请稍候...", use_fade: bool = true) -> void:
+	print("[PopupManager] show_loading: 开始执行，_loading_active=", _loading_active, ", has_open_popup()=", has_open_popup())
+	if _loading_active:
+		print("[PopupManager] show_loading: _loading_active 为 true，直接返回")
+		return
 	if has_open_popup():
+		print("[PopupManager] show_loading: 有弹窗，保存快照并进入 loading 状态")
 		_loading_active = true
 		_loading_snapshot = _current_popup.get_state_snapshot()
 		if use_fade:
-			await _current_popup.apply_loading_state_with_fade("请稍候...", label_text)
+			print("[PopupManager] show_loading: 使用淡入淡出动画")
+			_current_popup.apply_loading_state_with_fade("请稍候...", label_text)
 		else:
+			print("[PopupManager] show_loading: 不使用淡入淡出动画")
 			_current_popup.apply_loading_state("请稍候...", label_text)
+		print("[PopupManager] show_loading: 有弹窗分支完成")
 		return
 	
+	print("[PopupManager] show_loading: 无弹窗，创建新等待弹窗")
 	_loading_active = true
 	_loading_snapshot = {}
 	show_popup({
 		"size": "medium",
 		"title": title,
-		"content_type": "label",
-		"content": label_text,
+		"content_type": "richtext",
+		"content": "",
 		"buttons": [
 			{
 				"text": "请稍候...",
@@ -159,6 +158,7 @@ func show_loading(title: String = "请稍候", label_text: String = "请稍候..
 			}
 		]
 	})
+	print("[PopupManager] show_loading: 无弹窗分支完成")
 
 
 func hide_loading(restore_config: Dictionary = {}, use_fade: bool = true) -> void:

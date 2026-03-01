@@ -8,4 +8,5 @@
 # Worktrees (local isolation)
 .worktrees/
 worktrees/
+godot_ui_components-main/
 nul

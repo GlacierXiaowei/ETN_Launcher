@@ -29,6 +29,14 @@ var _blur_overlay: ColorRect = null
 
 func setup(config: Dictionary) -> void:
 	_config = config
+	if not _config.has("content_type"):
+		_config["content_type"] = "richtext"
+	if not _config.has("content"):
+		_config["content"] = ""
+	if not _config.has("title"):
+		_config["title"] = ""
+	if not _config.has("buttons"):
+		_config["buttons"] = []
 	
 	_create_dim_background()
 	_create_blur_overlay()
@@ -276,6 +284,7 @@ func apply_loading_state(wait_button_text: String = "请稍候...", label_text: 
 	if ct != "richtext":
 		if label_text != "":
 			set_content(label_text, "label")
+	# Ensure the special loading button never triggers close() even if metadata is misrouted.
 	set_buttons([
 		{
 			"text": wait_button_text,
