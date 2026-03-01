@@ -1,126 +1,16 @@
-# Game Card Component - Phase 2: 漂浮、阴影与 3D 倾斜
+# Game Card Component - Phase 2: 漂浮、阴影与3D倾斜
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** 实现 Oscillator 物理漂浮系统、动态阴影偏移、鼠标悬停"拾起"效果（漂浮增强 + 缩放 + 平滑过渡）。
-
----
-
-## Phase 1 交接文档
-
-### ✅ Phase 1 完成清单
-
-#### 1. Shader 资源
-| 文件 | 状态 |
-|------|------|
-| `assets/shaders/fake_3d.gdshader` | ✅ 已存在 |
-| `assets/shaders/dissolve.gdshader` | ✅ 已创建 |
-
-#### 2. 组件脚本
-| 文件 | 状态 |
-|------|------|
-| `scenes/card/components/card_visual_component.gd` | ✅ 已创建 |
-| `scenes/card/components/card_input_handler.gd` | ✅ 已创建 |
-
-#### 3. GameCard 主场景
-| 文件 | 状态 |
-|------|------|
-| `scenes/card/game_card.gd` | ✅ 已创建 |
-| `scenes/card/game_card.tscn` | ✅ 已创建 |
-
-#### 4. 测试场景
-| 文件 | 状态 |
-|------|------|
-| `scenes/test/game_card/test_phase_1.gd` | ✅ 已创建 |
-| `scenes/test/game_card/test_phase_1.tscn` | ✅ 已创建 |
-
-### 🔧 Phase 1 核心功能
-
-| 功能 | 实现方式 |
-|------|----------|
-| 鼠标悬停检测 | `mouse_entered` / `mouse_exited` 信号 |
-| 点击检测 | `pressed` 信号 |
-| 3D 倾斜 | `fake_3d.gdshader` + `_on_gui_input()` |
-| 悬停缩放 | Tween + `TRANS_ELASTIC` |
-| 信号系统 | 5 个自定义信号 |
-| 调试输出 | 完整 `print()` 日志 |
-
-### 📐 Phase 1 最终参数配置（已调整）
-
-```gdscript
-# 卡片尺寸
-card_scale = 0.4                # 卡片尺寸（视口 40%）
-
-# 倾斜角度
-angle_x_max = 8.0°              # X 轴最大倾斜（已降低）
-angle_y_max = 8.0°              # Y 轴最大倾斜（已降低）
-
-# 悬停动画
-hover_scale = 1.075             # 悬停放大倍数（7.5%）
-hover_duration = 0.4s           # 悬停动画时长
-recover_duration = 0.75s        # 恢复动画时长
-tilt_reset_duration = 0.3s      # 倾斜复位时长
-```
-
-### ⚠️ 重要注意事项
-
-#### 1. UID 冲突问题
-- 已修复 `game_card.tscn` 和 `shader_test_scene.tscn` 的 UID 冲突
-- `game_card.tscn` UID 改为 `uid://c8yvxg3ulq3a`
-
-#### 2. 信号连接
-- 依赖场景文件的 `[connection]`，脚本中不重复连接
-- 4 个信号：`gui_input`, `mouse_entered`, `mouse_exited`, `pressed`
-
-#### 3. 角度单位
-- 使用弧度制（`deg_to_rad()` 转换）
-- `_ready()` 中转换：`angle_x_max = deg_to_rad(angle_x_max)`
-
-#### 4. 场景操作 ⚠️ 重要
-
-**问题**：`game_card.tscn` 中有硬编码尺寸，会覆盖脚本的 `card_scale` 设置
-
-**硬编码值**（第 22-34 行）：
-```ini
-custom_minimum_size = Vector2(1152, 648)  # 硬编码
-offset_left = -576.0                       # 硬编码
-pivot_offset = Vector2(576, 324)           # 硬编码
-```
-
-**解决方案**：
-1. 在 Godot 中打开 `scenes/card/game_card.tscn`
-2. 选中根节点 `GameCard`
-3. 右键重置以下属性为默认值：
-   - `Custom Minimum Size`
-   - `Offset Left/Top/Right/Bottom`
-   - `Pivot Offset`
-4. 保存场景
-
-**原因**：只有 `card_scale = 0.6` 时计算结果 (1920×0.6=1152) 与硬编码值一致，其他值会冲突
-
-#### 5. 缩放中心问题
-- 脚本中已正确设置：`pivot_offset = custom_minimum_size / 2.0`
-- 但场景文件的硬编码 `pivot_offset` 会覆盖脚本设置
-- 必须先重置场景文件中的硬编码值
-
-### 📋 Phase 2 待实现功能
-
-| 功能 | 阶段 |
-|------|------|
-| 阴影组件 (CardShadowComponent) | Phase 2/3 |
-| 动态阴影偏移 | Phase 2/3 |
-| Oscillator 物理漂浮系统 | Phase 2 |
-| CardAnimationComponent | Phase 2 |
-
----
+**Goal:** 实现Oscillator物理漂浮系统、动态阴影偏移、鼠标悬停"拾起"效果（漂浮增强+缩放+平滑过渡）。
 
 **Architecture:** 
 - 新增 CardAnimationComponent: 统一管理所有动画（漂浮、缩放、旋转）
-- 使用简谐振子 (Oscillator) 实现自然的物理漂浮
-- 所有状态变化使用 Tween 实现平滑过渡，避免突兀
+- 使用简谐振子(Oscillator)实现自然的物理漂浮
+- 所有状态变化使用Tween实现平滑过渡，避免突兀
 - 以卡片中心为锚点进行所有变换
 
-**Tech Stack:** Godot 4.x, GDScript, Tween 动画，物理模拟
+**Tech Stack:** Godot 4.x, GDScript, Tween动画, 物理模拟
 
 ---
 
@@ -195,7 +85,7 @@ var _base_position: Vector2
 var _current_float_amplitude: Vector2
 var _is_floating_enabled: bool = true
 
-# Tween 引用
+# Tween引用
 var _tween_scale: Tween
 var _tween_float: Tween
 var _tween_tilt: Tween
@@ -365,7 +255,7 @@ func update_shadow_position() -> void:
 	var normalized_distance = clamp(abs(distance_from_center) / viewport_center_x, 0.0, 1.0)
 	var target_offset_x = -sign(distance_from_center) * max_shadow_offset * normalized_distance
 	
-	# 使用 Tween 平滑过渡
+	# 使用Tween平滑过渡
 	if _tween_shadow and _tween_shadow.is_running():
 		_tween_shadow.kill()
 	
@@ -386,7 +276,7 @@ func set_shadow_alpha(alpha: float, duration: float = 0.3) -> void:
 ## Task 4: 更新 GameCard 主脚本
 
 **Files:**
-- Modify: `scenes/card/game_card.gd`
+- Modify: `scenes/main_menu/game_card.gd`
 
 **Step 1: 添加新组件引用和参数**
 
@@ -470,7 +360,7 @@ func _gui_input(event: InputEvent) -> void:
 ## Task 5: 更新场景文件
 
 **Files:**
-- Modify: `scenes/card/game_card.tscn`
+- Modify: `scenes/main_menu/game_card.tscn`
 
 **Step 1: 添加新组件节点**
 
@@ -493,10 +383,10 @@ card = NodePath("..")
 
 ---
 
-## Task 6: 创建 Phase 2 测试场景
+## Task 6: 创建Phase 2测试场景
 
 **Files:**
-- Create: `scenes/test/game_card/test_phase_2.gd`
+- Create: `scenes/test/game_card/test_phase2.gd`
 
 **Step 1: 编写测试脚本**
 
@@ -509,8 +399,8 @@ func _ready() -> void:
 	print("=== Phase 2 测试 ===")
 	print("测试内容：")
 	print("1. 卡面空闲时自然上下漂浮（±8-12px）")
-	print("2. 鼠标移入：漂浮幅度增大至±15-20px，同时放大到 1.08 倍")
-	print("3. 鼠标移动：卡面产生 3D 倾斜跟随（±15 度）")
+	print("2. 鼠标移入：漂浮幅度增大至±15-20px，同时放大到1.08倍")
+	print("3. 鼠标移动：卡面产生3D倾斜跟随（±15度）")
 	print("4. 鼠标移出：恢复原始大小和漂浮幅度，倾斜归零")
 	print("5. 阴影随卡面位置动态偏移")
 	print("6. 所有动画都有平滑过渡，无卡顿")
@@ -524,7 +414,7 @@ func _input(event: InputEvent) -> void:
 
 **Step 2: 创建测试场景文件**
 
-复制 Phase 1 的测试场景，将脚本替换为 `test_phase_2.gd`，Label 文本改为 "Phase 2: 漂浮与动画测试"
+复制Phase 1的测试场景，将脚本替换为 `test_phase2.gd`，Label文本改为 "Phase 2: 漂浮与动画测试"
 
 ---
 
@@ -532,15 +422,15 @@ func _input(event: InputEvent) -> void:
 
 1. ✅ 空闲时卡面自然上下漂浮（±8-12px）
 2. ✅ 鼠标悬停时漂浮幅度平滑增大至±15-20px
-3. ✅ 鼠标悬停时卡面弹性放大到 1.08 倍
-4. ✅ 3D 倾斜跟随鼠标位置，角度范围±15 度
+3. ✅ 鼠标悬停时卡面弹性放大到1.08倍
+4. ✅ 3D倾斜跟随鼠标位置，角度范围±15度
 5. ✅ 从边缘进入时有平滑过渡动画（Tween）
 6. ✅ 鼠标离开时恢复动画流畅自然
-7. ✅ 阴影随卡面水平位置偏移（Balatro 风格）
+7. ✅ 阴影随卡面水平位置偏移（Balatro风格）
 8. ✅ 所有变换以中心点为锚点
-9. ✅ 组件化结构清晰，动画逻辑封装在 CardAnimationComponent 中
+9. ✅ 组件化结构清晰，动画逻辑封装在CardAnimationComponent中
 
 ---
 
 *Plan version: 2.0*
-*Phase: 2/5 - 漂浮、阴影与 3D 倾斜*
+*Phase: 2/5 - 漂浮、阴影与3D倾斜*

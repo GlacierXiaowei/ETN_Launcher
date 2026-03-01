@@ -7,7 +7,9 @@ signal card_confirmed()
 signal card_hover_started()
 signal card_hover_ended()
 
-@export var card_scale: float = 0.6
+@export var card_scale: float = 0.5
+@export var angle_x_max: float = 8.0
+@export var angle_y_max: float = 8.0
 @export var poster_texture: Texture2D
 
 @onready var visual_component: CardVisualComponent = $CardVisualComponent
@@ -17,18 +19,15 @@ signal card_hover_ended()
 var _is_selected: bool = false
 var _tween_hover: Tween
 var _tween_rot: Tween
+var _current_rot_x: float = 0.0
+var _current_rot_y: float = 0.0
 
 func _ready() -> void:
 	print("[GameCard] _ready() - 初始化完成")
+	angle_x_max = deg_to_rad(angle_x_max)
+	angle_y_max = deg_to_rad(angle_y_max)
 	_update_card_size()
 	_setup_texture()
-	_connect_signals()
-
-func _connect_signals() -> void:
-	mouse_entered.connect(_on_mouse_entered)
-	mouse_exited.connect(_on_mouse_exited)
-	gui_input.connect(_on_gui_input)
-	pressed.connect(_on_pressed)
 
 func _update_card_size() -> void:
 	var viewport_size = get_viewport_rect().size
@@ -55,7 +54,7 @@ func _on_mouse_entered() -> void:
 	if _tween_hover and _tween_hover.is_running():
 		_tween_hover.kill()
 	_tween_hover = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
-	_tween_hover.tween_property(self, "scale", Vector2(1.05, 1.05), 0.3)
+	_tween_hover.tween_property(self, "scale", Vector2(1.075, 1.075), 0.4)
 
 func _on_mouse_exited() -> void:
 	print("[GameCard] 鼠标离开 - 发射 card_deselected")
@@ -65,7 +64,7 @@ func _on_mouse_exited() -> void:
 	if _tween_hover and _tween_hover.is_running():
 		_tween_hover.kill()
 	_tween_hover = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
-	_tween_hover.tween_property(self, "scale", Vector2.ONE, 0.3)
+	_tween_hover.tween_property(self, "scale", Vector2.ONE, 0.75)
 	
 	if _tween_rot and _tween_rot.is_running():
 		_tween_rot.kill()
@@ -73,6 +72,8 @@ func _on_mouse_exited() -> void:
 	if card_texture_rect and card_texture_rect.material:
 		_tween_rot.tween_property(card_texture_rect.material, "shader_parameter/x_rot", 0.0, 0.3)
 		_tween_rot.tween_property(card_texture_rect.material, "shader_parameter/y_rot", 0.0, 0.3)
+	_current_rot_x = 0.0
+	_current_rot_y = 0.0
 
 func _on_gui_input(event: InputEvent) -> void:
 	if not event is InputEventMouseMotion:
@@ -82,12 +83,15 @@ func _on_gui_input(event: InputEvent) -> void:
 	var lerp_val_x: float = remap(mouse_pos.x, 0.0, size.x, 0.0, 1.0)
 	var lerp_val_y: float = remap(mouse_pos.y, 0.0, size.y, 0.0, 1.0)
 	
-	var rot_x: float = lerp_angle(-5.0, 5.0, lerp_val_x)
-	var rot_y: float = lerp_angle(5.0, -5.0, lerp_val_y)
+	var target_rot_x: float = lerp_angle(-angle_x_max, angle_x_max, lerp_val_x)
+	var target_rot_y: float = lerp_angle(angle_y_max, -angle_y_max, lerp_val_y)
+	
+	_current_rot_x = target_rot_x
+	_current_rot_y = target_rot_y
 	
 	if card_texture_rect and card_texture_rect.material:
-		card_texture_rect.material.set_shader_parameter("x_rot", rad_to_deg(rot_y))
-		card_texture_rect.material.set_shader_parameter("y_rot", rad_to_deg(rot_x))
+		card_texture_rect.material.set_shader_parameter("x_rot", rad_to_deg(_current_rot_y))
+		card_texture_rect.material.set_shader_parameter("y_rot", rad_to_deg(_current_rot_x))
 
 func _on_pressed() -> void:
 	print("[GameCard] 卡片被点击 - 发射 card_confirmed")
