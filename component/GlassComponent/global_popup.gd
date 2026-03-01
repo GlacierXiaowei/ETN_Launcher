@@ -90,11 +90,18 @@ func _build_buttons(buttons: Array) -> void:
 		
 		button_container.add_child(btn)
 		_buttons.append(btn)
+		
+		# 设置自定义尺寸（如果配置了）
+		if btn_config.has("min_width") or btn_config.has("min_height"):
+			var min_size := btn.custom_minimum_size
+			if btn_config.has("min_width"):
+				min_size.x = btn_config["min_width"]
+			if btn_config.has("min_height"):
+				min_size.y = btn_config["min_height"]
+			btn.custom_minimum_size = min_size
 	
-	if _buttons.size() == 2:
-		button_container.alignment = BoxContainer.ALIGNMENT_END
-	elif _buttons.size() >= 3:
-		button_container.alignment = BoxContainer.ALIGNMENT_BEGIN
+	# 全部使用右对齐
+	button_container.alignment = BoxContainer.ALIGNMENT_END
 
 func _on_button_pressed(metadata: String) -> void:
 	close(metadata)

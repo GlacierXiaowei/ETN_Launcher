@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://yp3qm4c7udmm"]
 
-[ext_resource type="Script" uid="uid://dp12aruxr726m" path="res://scenes/test/glass_components/glass_button.gd" id="1_glass_button"]
+[ext_resource type="Script" uid="uid://dp12aruxr726m" path="res://component/GlassComponent/glass_button.gd" id="1_glass_button"]
 [ext_resource type="Texture2D" uid="uid://d3gtoixr80gem" path="res://assets/image/IMG_20251203_162337.jpg" id="1_oe6lu"]
 [ext_resource type="PackedScene" uid="uid://cw0ru57wgwlca" path="res://component/GlassComponent/medium_popup.tscn" id="2_to1a0"]
 [ext_resource type="PackedScene" uid="uid://bt2slew67ckvp" path="res://component/GlassComponent/large_popup.tscn" id="5_0ajtr"]

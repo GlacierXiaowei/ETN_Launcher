@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://cw0ru57wgwlca"]
 
 [ext_resource type="Shader" uid="uid://ct2hawbu1tjn0" path="res://assets/shaders/liquid_glass_ui.gdshader" id="1_l4pyi"]
-[ext_resource type="Script" uid="uid://cr3yb4jpq0wk" path="res://scenes/test/glass_components/glass_panel.gd" id="2_576ie"]
-[ext_resource type="Script" uid="uid://dp12aruxr726m" path="res://scenes/test/glass_components/glass_button.gd" id="3_y7yhe"]
+[ext_resource type="Script" uid="uid://cr3yb4jpq0wk" path="res://component/GlassComponent/glass_panel.gd" id="2_576ie"]
+[ext_resource type="Script" uid="uid://dp12aruxr726m" path="res://component/GlassComponent/glass_button.gd" id="3_y7yhe"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_to1a0"]
 shader = ExtResource("1_l4pyi")
