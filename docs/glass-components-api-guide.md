@@ -220,3 +220,60 @@ scenes/test/glass_components/
 ---
 
 *最后更新:2026-02-28*
+
+---
+
+## PopupManager
+
+> 位于 `res://script/managers/popup_manager.gd`，通常以 AutoLoad 单例方式使用。
+
+### show_popup(config: Dictionary) -> void
+
+显示一个全局弹窗。
+
+常用字段：
+- `size`: `"medium" | "large"`
+- `title`: 标题文本
+- `content_type`: `"label" | "richtext"`
+- `content`: 内容文本（label 或 richtext 的文本）
+- `buttons`: Array[Dictionary]
+  - `text`: 按钮文案
+  - `type`: `"primary" | "secondary" | "third"`
+  - `metadata`: 业务标识
+  - `stay_open`: 是否保持弹窗不关闭
+  - `disabled`: 是否禁用按钮
+
+### show_confirm(...)
+
+```gdscript
+PopupManager.show_confirm(
+  "删除存档",
+  "确定要删除这个存档吗？",
+  func(): _delete_save(),
+  func(): print("用户取消")
+)
+```
+
+注意：该快捷方法内部使用一次性回调，不会在多次调用后累积触发。
+
+### show_alert(...)
+
+```gdscript
+PopupManager.show_alert(
+  "保存成功",
+  "您的游戏进度已保存。",
+  func(): _return_to_menu()
+)
+```
+
+### show_loading(title := "请稍候", label_text := "请稍候...", use_fade := true)
+
+进入 loading/等待态：
+- 若当前有弹窗：保存快照，替换按钮为一个 disabled 的“请稍候...”按钮；不修改 richtext 内容。
+- 若当前无弹窗：自动创建一个等待弹窗作为载体。
+
+### hide_loading(restore_config := {}, use_fade := true)
+
+退出 loading/等待态：
+- `restore_config` 非空：用该配置更新当前弹窗（常用于“操作完成”进入下一步）。
+- `restore_config` 为空：恢复 show_loading 前保存的快照。

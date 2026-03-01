@@ -7,6 +7,9 @@ signal popup_closed
 var _current_popup: GlobalPopup = null
 var _popup_scene: PackedScene = load("res://component/GlassComponent/global_popup.tscn")
 
+var _loading_active := false
+var _loading_snapshot: Dictionary = {}
+
 func show_popup(config: Dictionary) -> void:
 	if _current_popup != null:
 		var clear_on_new: bool = config.get("clear_on_new", true)
@@ -60,18 +63,24 @@ func show_confirm(title: String, content: String, on_ok: Callable, on_cancel: Ca
 		]
 	}
 	
-	var callback := func(m: String) -> void:
-		if m == "confirm":
+	show_popup(config)
+	var popup := _current_popup
+	if popup == null or not is_instance_valid(popup):
+		return
+	if not on_ok.is_valid() and not on_cancel.is_valid():
+		return
+	
+	var wrapper: Callable
+	wrapper = func(m: String) -> void:
+		if not is_instance_valid(popup):
+			return
+		if popup.button_pressed.is_connected(wrapper):
+			popup.button_pressed.disconnect(wrapper)
+		if m == "confirm" and on_ok.is_valid():
 			on_ok.call()
 		elif m == "cancel" and on_cancel.is_valid():
 			on_cancel.call()
-	
-	if on_cancel.is_valid():
-		popup_button_pressed.connect(callback)
-	elif on_ok.is_valid():
-		popup_button_pressed.connect(callback)
-	
-	show_popup(config)
+	popup.button_pressed.connect(wrapper)
 
 func show_alert(title: String, content: String, on_ok: Callable = Callable()) -> void:
 	var config := {
@@ -83,13 +92,22 @@ func show_alert(title: String, content: String, on_ok: Callable = Callable()) ->
 		]
 	}
 	
-	if on_ok.is_valid():
-		var callback := func(m: String) -> void:
-			if m == "ok":
-				on_ok.call()
-		popup_button_pressed.connect(callback)
-	
 	show_popup(config)
+	var popup := _current_popup
+	if popup == null or not is_instance_valid(popup):
+		return
+	if not on_ok.is_valid():
+		return
+	
+	var wrapper: Callable
+	wrapper = func(m: String) -> void:
+		if not is_instance_valid(popup):
+			return
+		if popup.button_pressed.is_connected(wrapper):
+			popup.button_pressed.disconnect(wrapper)
+		if m == "ok":
+			on_ok.call()
+	popup.button_pressed.connect(wrapper)
 
 func update_popup(config: Dictionary) -> bool:
 	if _current_popup == null or not is_instance_valid(_current_popup):
@@ -112,3 +130,54 @@ func close_and_show_new(config: Dictionary) -> void:
 
 func has_open_popup() -> bool:
 	return _current_popup != null and is_instance_valid(_current_popup)
+
+
+func show_loading(title: String = "请稍候", label_text: String = "请稍候...", use_fade: bool = true) -> void:
+	if has_open_popup():
+		_loading_active = true
+		_loading_snapshot = _current_popup.get_state_snapshot()
+		if use_fade:
+			await _current_popup.apply_loading_state_with_fade("请稍候...", label_text)
+		else:
+			_current_popup.apply_loading_state("请稍候...", label_text)
+		return
+	
+	_loading_active = true
+	_loading_snapshot = {}
+	show_popup({
+		"size": "medium",
+		"title": title,
+		"content_type": "label",
+		"content": label_text,
+		"buttons": [
+			{
+				"text": "请稍候...",
+				"type": "secondary",
+				"metadata": "_loading",
+				"stay_open": true,
+				"disabled": true,
+			}
+		]
+	})
+
+
+func hide_loading(restore_config: Dictionary = {}, use_fade: bool = true) -> void:
+	if not has_open_popup():
+		_loading_active = false
+		_loading_snapshot = {}
+		return
+	
+	var cfg: Dictionary = {}
+	if not restore_config.is_empty():
+		cfg = restore_config
+		if not cfg.has("transition_animation"):
+			cfg["transition_animation"] = use_fade
+		update_popup(cfg)
+	elif not _loading_snapshot.is_empty():
+		cfg = _loading_snapshot
+		if not cfg.has("transition_animation"):
+			cfg["transition_animation"] = use_fade
+		update_popup(cfg)
+	
+	_loading_active = false
+	_loading_snapshot = {}

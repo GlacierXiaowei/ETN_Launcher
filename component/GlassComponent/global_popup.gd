@@ -133,6 +133,10 @@ func _build_buttons(buttons: Array) -> void:
 		}
 		buttons = [default_btn]
 	
+	if _config == null:
+		_config = {}
+	_config["buttons"] = buttons
+	
 	# 按类型排序：primary -> secondary -> third（从左到右）
 	var type_order := {"primary": 0, "secondary": 1, "third": 2}
 	buttons.sort_custom(func(a, b):
@@ -144,6 +148,7 @@ func _build_buttons(buttons: Array) -> void:
 	for btn_config in buttons:
 		var btn := GlassButton.new()
 		btn.text = btn_config.get("text", "Button")
+		btn.disabled = btn_config.get("disabled", false) as bool
 		
 		var btn_type := btn_config.get("type", "secondary") as String
 		match btn_type:
@@ -239,7 +244,10 @@ func set_buttons(buttons: Array) -> void:
 	_build_buttons(buttons)
 
 func update(config: Dictionary) -> void:
-	_config = config
+	if _config == null:
+		_config = {}
+	for k in config.keys():
+		_config[k] = config[k]
 	
 	if config.has("title"):
 		set_title(config["title"])
@@ -250,6 +258,43 @@ func update(config: Dictionary) -> void:
 	
 	if config.has("buttons"):
 		set_buttons(config["buttons"])
+
+
+func get_state_snapshot() -> Dictionary:
+	# Snapshot only the state we can reliably restore via PopupManager.update_popup().
+	var snap: Dictionary = {}
+	snap["size"] = _config.get("size", "medium")
+	snap["title"] = _config.get("title", "")
+	snap["content_type"] = _config.get("content_type", "richtext")
+	snap["content"] = _config.get("content", "")
+	snap["buttons"] = _config.get("buttons", [])
+	return snap
+
+
+func apply_loading_state(wait_button_text: String = "请稍候...", label_text: String = "") -> void:
+	var ct := _config.get("content_type", "richtext") as String
+	if ct != "richtext":
+		if label_text != "":
+			set_content(label_text, "label")
+	set_buttons([
+		{
+			"text": wait_button_text,
+			"type": "secondary",
+			"metadata": "_loading",
+			"stay_open": true,
+			"disabled": true,
+		}
+	])
+
+
+func apply_loading_state_with_fade(wait_button_text: String = "请稍候...", label_text: String = "") -> void:
+	var content_container := $PopupContainer/GlassPanel/Margin/VBox
+	var tween := create_tween()
+	tween.tween_property(content_container, "modulate:a", 0.0, 0.15)
+	await tween.finished
+	apply_loading_state(wait_button_text, label_text)
+	tween = create_tween()
+	tween.tween_property(content_container, "modulate:a", 1.0, 0.15)
 
 func update_with_fade(new_config: Dictionary) -> void:
 	var content_container := $PopupContainer/GlassPanel/Margin/VBox
