@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://c8yvxg3ulq3a"]
+
+[ext_resource type="Shader" uid="uid://by5cf8rcjgiox" path="res://assets/shaders/fake_3d.gdshader" id="1_fake3d"]
+[ext_resource type="Texture2D" uid="uid://7e8k25vqanoy" path="res://assets/image/poster/game1_poster .png" id="2_poster"]
+[ext_resource type="Script" uid="uid://uk7jtelrgkfh" path="res://scenes/card/components/card_visual_component.gd" id="3_visual"]
+[ext_resource type="Script" uid="uid://bs04euwgvuj6t" path="res://scenes/card/game_card.gd" id="4_main"]
+
+[sub_resource type="StyleBoxEmpty" id="empty_style"]
+
+[sub_resource type="ShaderMaterial" id="3d_mat"]
+resource_local_to_scene = true
+shader = ExtResource("1_fake3d")
+shader_parameter/rect_size = Vector2(1152, 648)
+shader_parameter/fov = 90.0
+shader_parameter/cull_back = true
+shader_parameter/y_rot = 0.0
+shader_parameter/x_rot = 0.0
+shader_parameter/inset = 0.0
+shader_parameter/corner_radius_px = 24.0
+
+[node name="GameCard" type="Button" unique_id=1449577529]
+custom_minimum_size = Vector2(1152, 648)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -324.0
+offset_right = 576.0
+offset_bottom = 324.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(576, 324)
+theme_override_styles/normal = SubResource("empty_style")
+theme_override_styles/pressed = SubResource("empty_style")
+theme_override_styles/hover = SubResource("empty_style")
+theme_override_styles/disabled = SubResource("empty_style")
+theme_override_styles/focus = SubResource("empty_style")
+script = ExtResource("4_main")
+
+[node name="Shadow" type="TextureRect" parent="." unique_id=521906612]
+modulate = Color(0, 0, 0, 0.3)
+self_modulate = Color(1, 1, 1, 0.5)
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 30.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="CardTexture" type="TextureRect" parent="." unique_id=110349457]
+material = SubResource("3d_mat")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_poster")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CardVisualComponent" type="Node" parent="." unique_id=1602200362]
+script = ExtResource("3_visual")
+card_texture = NodePath("../CardTexture")
+shadow = NodePath("../Shadow")
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]
