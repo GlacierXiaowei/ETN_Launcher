@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://b1buxjobpf6x6" path="res://component/Card/card_3d_visual_component.tscn" id="4_64ipm"]
 [ext_resource type="Script" uid="uid://bs04euwgvuj6t" path="res://scenes/card/game_card.gd" id="4_main"]
 [ext_resource type="PackedScene" uid="uid://us7l60ki2tyo" path="res://component/Card/card_shadow_component.tscn" id="5_8klju"]
+[ext_resource type="Script" uid="uid://bnyi8a0pralxw" path="res://component/Card/card_shadow_component.gd" id="6_halyi"]
 [ext_resource type="PackedScene" uid="uid://d031ml6lnis0l" path="res://component/Card/card_darg_component.tscn" id="7_s30m7"]
 [ext_resource type="Script" uid="uid://br7tm2g0nbelb" path="res://component/Card/card_darg_component.gd" id="8_oy5mk"]
 
@@ -73,10 +74,6 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -70.0
-offset_top = 57.0
-offset_right = -70.0
-offset_bottom = 57.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_poster")
@@ -88,6 +85,7 @@ card_texture = NodePath("../CardTexture")
 shadow = NodePath("../Shadow")
 
 [node name="CardShadowComponent" parent="." unique_id=409364384 node_paths=PackedStringArray("card", "shadow_texture_rect") instance=ExtResource("5_8klju")]
+script = ExtResource("6_halyi")
 card = NodePath("..")
 shadow_texture_rect = NodePath("../Shadow")
 

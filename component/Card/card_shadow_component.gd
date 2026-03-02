@@ -34,6 +34,8 @@ extends Node
 
 
 func _ready() -> void:
+	await card.ready
+	await  shadow_texture_rect.ready
 	if not card:
 		push_warning("CardShadowComponent: card reference is not set!")
 	if not shadow_texture_rect:

@@ -12,13 +12,17 @@ signal card_hover_ended()
 @export var angle_y_max: float = 8.0
 @export var poster_texture: Texture2D
 
+@onready var card_drag_component: CardDragComponent = $CardDragComponent
 @onready var visual_component: Card3DVisualComponent = $Card3DVisualComponent
 @onready var card_texture_rect: TextureRect = $CardTexture
 @onready var shadow: TextureRect = $Shadow
 
+var _last_drag_pos: Vector2
+var _drag_velocity: Vector2
+
 var _is_selected: bool = false
 var _tween_hover: Tween
-var _tween_rot: Tween
+#var _tween_rot: Tween
 var _current_rot_x: float = 0.0
 var _current_rot_y: float = 0.0
 
@@ -28,6 +32,31 @@ func _ready() -> void:
 	angle_y_max = deg_to_rad(angle_y_max)
 	_update_card_size()
 	_setup_texture()
+
+
+@warning_ignore("unused_parameter")
+func _process(delta: float) -> void:
+	if not card_drag_component:
+		return
+	
+	# 更新拖拽位置
+
+	card_drag_component.process_drag()
+	
+	# 如果在拖拽中，计算速度并应用3D旋转
+	if card_drag_component.is_dragging():
+		_update_drag_rotation(delta)
+
+
+func _update_drag_rotation(delta: float) -> void:
+	var current_pos: Vector2 = global_position
+	_drag_velocity = (current_pos - _last_drag_pos) / delta
+	_last_drag_pos = current_pos
+	
+
+	visual_component.set_rotation_from_velocity(_drag_velocity, angle_x_max)
+
+
 
 func _update_card_size() -> void:
 	var viewport_size = get_viewport_rect().size
@@ -73,6 +102,13 @@ func _on_mouse_exited() -> void:
 	_current_rot_y = 0.0
 
 func _on_gui_input(event: InputEvent) -> void:
+	if card_drag_component:
+		card_drag_component.handle_input(event)
+	
+	# 新增：如果在拖拽中，不处理悬停3D效果
+	if card_drag_component and card_drag_component.is_dragging():
+		return
+	
 	if not event is InputEventMouseMotion:
 		return
 	
