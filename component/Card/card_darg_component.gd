@@ -176,28 +176,27 @@ func _update_drag_position() -> void:
 	card.global_position = target_pos
 
 
-## 将位置限制在屏幕边界内（硬限制实现）
+## 将位置限制在屏幕边界内（允许一半超出）
 ## 参数:
 ##   pos: Vector2 - 待限制的位置
 ## 返回: Vector2 - 限制后的位置
 ## 说明: 
-##   - 考虑Canvas Item缩放，使用get_visible_rect获取实际视口
-##   - 硬限制：位置被强制钳制在有效范围内，无法超出
+##   - 允许卡片的一半超出屏幕边缘
+##   - 防止卡片完全丢失在屏幕外
 func _clamp_position_to_boundary(pos: Vector2) -> Vector2:
 	# 获取视口的实际可见矩形（已考虑Canvas变换和缩放）
 	var viewport_rect: Rect2 = get_viewport().get_visible_rect()
 	var card_size: Vector2 = card.size
 	
-	# 计算可拖拽区域的最小/最大坐标
-	# min_x: 左边距
-	# max_x: 屏幕宽度 - 卡片宽度 - 右边距
-	var min_x: float = boundary_margin.x
-	var max_x: float = viewport_rect.size.x - card_size.x - boundary_margin.x
-	var min_y: float = boundary_margin.y
-	var max_y: float = viewport_rect.size.y - card_size.y - boundary_margin.y
+	# 新边界计算：允许卡片一半超出屏幕
+	# min_x: 左边可以出去一半的卡片宽度
+	# max_x: 右边可以出去一半的卡片宽度
+	var min_x: float = -card_size.x / 2.0
+	var max_x: float = viewport_rect.size.x - card_size.x / 2.0
+	var min_y: float = -card_size.y / 2.0
+	var max_y: float = viewport_rect.size.y - card_size.y / 2.0
 	
-	# 使用 clampf 函数将位置硬限制在边界内
-	# 这意味着卡片边缘无法超出边界，鼠标继续移动卡片也不会动
+	# 使用 clampf 函数将位置限制在新的边界内
 	var clamped_x: float = clampf(pos.x, min_x, max_x)
 	var clamped_y: float = clampf(pos.y, min_y, max_y)
 	
