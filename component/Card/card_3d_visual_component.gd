@@ -1,5 +1,5 @@
 extends Node
-class_name CardVisualComponent
+class_name Card3DVisualComponent
 
 @export var card_texture: TextureRect
 @export var shadow: TextureRect

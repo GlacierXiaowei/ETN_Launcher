@@ -12,7 +12,7 @@ signal card_hover_ended()
 @export var angle_y_max: float = 8.0
 @export var poster_texture: Texture2D
 
-@onready var visual_component: CardVisualComponent = $CardVisualComponent
+@onready var visual_component: Card3DVisualComponent = $Card3DVisualComponent
 @onready var card_texture_rect: TextureRect = $CardTexture
 @onready var shadow: TextureRect = $Shadow
 
