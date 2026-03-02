@@ -30,12 +30,12 @@ extends Node
 @export var shadow_texture_rect: TextureRect
 
 ## 最大偏移量（像素）- 卡片在最边缘时的阴影偏移距离
-@export var max_offset: float = 50.0
+@export var max_offset: float = 200
 
 
 func _ready() -> void:
-	await card.ready
-	await  shadow_texture_rect.ready
+	#await card.ready
+	#await  shadow_texture_rect.ready
 	if not card:
 		push_warning("CardShadowComponent: card reference is not set!")
 	if not shadow_texture_rect:

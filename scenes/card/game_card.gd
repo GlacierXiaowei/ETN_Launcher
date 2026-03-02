@@ -12,6 +12,7 @@ signal card_hover_ended()
 @export var angle_y_max: float = 8.0
 @export var poster_texture: Texture2D
 
+@onready var shadow_component: CardShadowComponent = $CardShadowComponent
 @onready var card_drag_component: CardDragComponent = $CardDragComponent
 @onready var visual_component: Card3DVisualComponent = $Card3DVisualComponent
 @onready var card_texture_rect: TextureRect = $CardTexture
@@ -102,13 +103,13 @@ func _on_mouse_exited() -> void:
 	_current_rot_y = 0.0
 
 func _on_gui_input(event: InputEvent) -> void:
-	if card_drag_component:
-		card_drag_component.handle_input(event)
+	shadow_component.update_shadow_position()
+	card_drag_component.handle_input(event)
 	
-	# 新增：如果在拖拽中，不处理悬停3D效果
-	if card_drag_component and card_drag_component.is_dragging():
-		return
-	
+	## 新增：如果在拖拽中，不处理悬停3D效果
+	#if card_drag_component and card_drag_component.is_dragging():
+		#return
+	#
 	if not event is InputEventMouseMotion:
 		return
 	
