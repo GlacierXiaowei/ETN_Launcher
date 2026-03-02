@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://c6glt1h30t2pa"]
+
+[ext_resource type="Script" uid="uid://cbl5tic0rj68j" path="res://scenes/test/game_card/test_phase_3.gd" id="1_k1fj6"]
+[ext_resource type="PackedScene" uid="uid://c8yvxg3ulq3a" path="res://scenes/card/game_card.tscn" id="2_c50e5"]
+
+[node name="TestPhase3" type="Control" unique_id=828974235]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k1fj6")
+
+[node name="Background" type="ColorRect" parent="." unique_id=913552645]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1, 0.1, 0.15, 1)
+
+[node name="StatusLabel" type="Label" parent="." unique_id=1651211125]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 50.0
+offset_right = 200.0
+offset_bottom = 100.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 24
+text = "Phase 1: 基础结构测试 - 请将鼠标悬停在卡片上"
+horizontal_alignment = 1
+
+[node name="GameCard" parent="." unique_id=1449577529 instance=ExtResource("2_c50e5")]
+layout_mode = 0
+
+[node name="Button" type="Button" parent="." unique_id=881084452]
+layout_mode = 0
+offset_left = 95.0
+offset_top = 614.0
+offset_right = 167.0
+offset_bottom = 645.0
+text = "取消选中"
+
+[connection signal="pressed" from="Button" to="GameCard" method="_enable_deselected"]

@@ -1,10 +1,11 @@
 extends Button
 class_name GameCard
 
-signal card_selected()
-signal card_deselected()
-signal card_hover_started()
-signal card_hover_ended()
+signal card_selected
+signal card_deselected
+signal card_confirm
+signal card_hover_started
+signal card_hover_ended
 
 @export var card_scale: float = 0.5
 @export var angle_x_max: float = 8.0
@@ -20,18 +21,16 @@ signal card_hover_ended()
 
 var _last_drag_pos: Vector2
 var _drag_velocity: Vector2
-
-var _is_selected: bool = false
 var _tween_hover: Tween
-#var _tween_rot: Tween
-var _current_rot_x: float = 0.0
-var _current_rot_y: float = 0.0
 
-# 添加变量
+# 点击检测相关
 var _click_start_pos: Vector2 = Vector2.ZERO
 var _is_potential_click: bool = false
 var _click_threshold: float = 10.0  # 移动阈值（像素）
-
+var _is_selected: bool = false
+var _tween_click_shadow : Tween
+var _tween_click_scale : Tween
+var _enable_hover : bool = true
 
 
 func _ready() -> void:
@@ -42,26 +41,11 @@ func _ready() -> void:
 	_setup_texture()
 	_center_in_viewport()
 
-
-
 @warning_ignore("unused_parameter")
 func _process(delta: float) -> void:
 	card_drag_component.process_drag()
-	# 如果在拖拽中，计算速度并应用3D旋转,同时阻止篇幅（否则功能异常）
 	if card_drag_component.is_dragging():
 		_update_drag_rotation(delta)
-
-func _update_hover_tilt() -> void:
-	var mouse_pos: Vector2 = get_local_mouse_position()
-	var lerp_val_x: float = remap(mouse_pos.x, 0.0, size.x, 0.0, 1.0)
-	var lerp_val_y: float = remap(mouse_pos.y, 0.0, size.y, 0.0, 1.0)
-	
-	var target_rot_x: float = lerp_angle(-angle_x_max, angle_x_max, lerp_val_x)
-	var target_rot_y: float = lerp_angle(angle_y_max, -angle_y_max, lerp_val_y)
-
-	visual_component.set_rotation_3d(rad_to_deg(target_rot_y), rad_to_deg(target_rot_x))
-
-
 
 func _update_drag_rotation(delta: float) -> void:
 	var current_pos: Vector2 = global_position
@@ -89,12 +73,13 @@ func _center_in_viewport() -> void:
 	var viewport_size = get_viewport().get_visible_rect().size
 	global_position = (viewport_size - size) / 2.0
 	card_float_component.set_base_position(global_position)
-	card_float_component.set_base_position(global_position)
 
 func _on_mouse_entered() -> void:
 	card_float_component.disable_float()
 	print("[GameCard] 鼠标进入 -")
-
+	
+	if not _enable_hover:
+		return
 	card_hover_started.emit()
 	
 	if _tween_hover and _tween_hover.is_running():
@@ -104,10 +89,11 @@ func _on_mouse_entered() -> void:
 
 
 func _on_mouse_exited() -> void:
-	print("[GameCard] 鼠标离开 - 发射 card_deselected")
-	card_deselected.emit()
-	card_hover_ended.emit()
-	
+	#print("[GameCard] 鼠标离开 - 发射 card_deselected")
+	#card_deselected.emit()
+	if not _enable_hover:
+		return
+
 	if _tween_hover and _tween_hover.is_running():
 		_tween_hover.kill()
 	_tween_hover = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
@@ -116,19 +102,21 @@ func _on_mouse_exited() -> void:
 	# 使用 visual_component 重置旋转
 	if visual_component:
 		visual_component.reset_rotation()
-	_current_rot_x = 0.0
-	_current_rot_y = 0.0
 	
 	await _tween_hover.finished
 	card_float_component.set_base_position(global_position)
 	card_float_component.enable_float()
+	
+	card_hover_ended.emit()
+
+
 func _on_gui_input(event: InputEvent) -> void:
 	_check_click_event(event)
 	shadow_component.update_shadow_position()
 	card_drag_component.handle_input(event)
 	
 
-	if not event is InputEventMouseMotion:
+	if not event is InputEventMouseMotion or not _enable_hover:
 		return
 	
 	var mouse_pos: Vector2 = get_local_mouse_position()
@@ -138,14 +126,11 @@ func _on_gui_input(event: InputEvent) -> void:
 	var target_rot_x: float = lerp_angle(-angle_x_max, angle_x_max, lerp_val_x)
 	var target_rot_y: float = lerp_angle(angle_y_max, -angle_y_max, lerp_val_y)
 	
-	_current_rot_x = target_rot_x
-	_current_rot_y = target_rot_y
 	
-	if visual_component:
-		visual_component.set_rotation_3d(rad_to_deg(_current_rot_y), rad_to_deg(_current_rot_x))
+	visual_component.set_rotation_3d(rad_to_deg(target_rot_y), rad_to_deg(target_rot_x))
 
 
-# 封装函数
+# 封装点击检测
 func _check_click_event(event: InputEvent) -> void:
 	if not (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT):
 		return
@@ -160,25 +145,84 @@ func _check_click_event(event: InputEvent) -> void:
 		_is_potential_click = false
 
 
-func deselect() -> void:
-	_is_selected = false
-	print("[GameCard] deselect() 被调用")
+##外界调用取消选中
+func _enable_deselected()->void:
+	card_deselected.emit()
 
-func is_selected() -> bool:
-	return _is_selected
 
 
 func _on_card_drag_component_drag_ended() -> void:
-	# 先更新基准位置
-	_last_drag_pos = global_position  
-	card_float_component.set_base_position(global_position)  
-	card_float_component.enable_float()
+	_last_drag_pos = global_position
+	card_float_component.set_base_position(global_position)
+#
+	#if _tween_hover:
+		#await _tween_hover.finished
+	#card_float_component.set_base_position(global_position)
+	#card_float_component.enable_float()
 
 
 func _on_card_drag_component_drag_started() -> void:
+	#card_float_component.disable_float()
 	_last_drag_pos = global_position
-	card_float_component.disable_float()
+
+
 
 
 func _on_card_selected() -> void:
-	print("检测到点击")
+	_is_selected = true
+	_enable_hover = false
+	
+	card_drag_component.disable_drag()
+	if _tween_click_shadow and _tween_click_shadow.is_running():
+		_tween_click_shadow.kill()
+	_tween_click_shadow = create_tween()
+	_tween_click_shadow.set_ease(Tween.EASE_OUT)
+	_tween_click_shadow.set_trans(Tween.TRANS_BACK)
+	_tween_click_shadow.tween_property(shadow, "modulate:a", 0.0, 0.3)
+	
+	if _tween_click_scale and _tween_click_scale.is_running():
+		_tween_click_scale.kill()
+	_tween_click_scale = create_tween()
+	_tween_click_scale.set_ease(Tween.EASE_OUT)
+	_tween_click_scale.set_trans(Tween.TRANS_BACK)  # 优雅的回弹效果
+	_tween_click_scale.tween_property(card_texture_rect, "scale", Vector2(0.925, 0.925), 0.4)
+
+
+	if _tween_hover and _tween_hover.is_running():
+		_tween_hover.kill()
+	_tween_hover = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
+	_tween_hover.tween_property(self, "scale", Vector2.ONE, 0.75)
+	
+	# 使用 visual_component 重置旋转
+	if visual_component:
+		visual_component.reset_rotation()
+	
+	await _tween_hover.finished
+	card_float_component.set_base_position(global_position)	
+	card_hover_ended.emit()
+
+
+func _on_card_deselected() -> void:
+	_is_selected = false
+	_enable_hover = true
+	
+	card_drag_component.enable_drag()
+	if _tween_click_shadow and _tween_click_shadow.is_running():
+		_tween_click_shadow.kill()
+	_tween_click_shadow = create_tween()
+	_tween_click_shadow.set_ease(Tween.EASE_OUT)
+	_tween_click_shadow.set_trans(Tween.TRANS_BACK)
+	_tween_click_shadow.tween_property(shadow, "modulate:a", 1.0, 0.3)
+	
+	if _tween_click_scale and _tween_click_scale.is_running():
+		_tween_click_scale.kill()
+	_tween_click_scale = create_tween()
+	_tween_click_scale.set_ease(Tween.EASE_OUT)
+	_tween_click_scale.set_trans(Tween.TRANS_BACK)  # 优雅的回弹效果
+	_tween_click_scale.tween_property(card_texture_rect, "scale", Vector2.ONE, 0.4)
+
+
+func _on_pressed() -> void:
+	if _is_selected:
+		card_confirm.emit()
+	

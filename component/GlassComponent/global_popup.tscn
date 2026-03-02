@@ -3,7 +3,6 @@
 [ext_resource type="Shader" uid="uid://ct2hawbu1tjn0" path="res://assets/shaders/liquid_glass_ui.gdshader" id="1_shdr"]
 [ext_resource type="Theme" uid="uid://c5wbsyp58wb17" path="res://assets/theme/LG_standard.tres" id="2_a1usi"]
 [ext_resource type="Script" uid="uid://c3vraoil325jv" path="res://component/GlassComponent/global_popup.gd" id="2_scpt"]
-[ext_resource type="Texture2D" uid="uid://b2cwgcpd7084v" path="res://assets/image/V4无水印.png" id="2_wf7eb"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_panel"]
 shader = ExtResource("1_shdr")
@@ -58,13 +57,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("2_a1usi")
-
-[node name="TextureRect" type="TextureRect" parent="PopupContainer" unique_id=865617625]
-visible = false
-layout_mode = 0
-offset_right = 2730.0
-offset_bottom = 1535.0
-texture = ExtResource("2_wf7eb")
 
 [node name="GlassPanel" type="ColorRect" parent="PopupContainer" unique_id=1698745748]
 modulate = Color(1, 1, 1, 0.957)
