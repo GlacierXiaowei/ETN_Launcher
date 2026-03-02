@@ -66,12 +66,9 @@ func _on_mouse_exited() -> void:
 	_tween_hover = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
 	_tween_hover.tween_property(self, "scale", Vector2.ONE, 0.75)
 	
-	if _tween_rot and _tween_rot.is_running():
-		_tween_rot.kill()
-	_tween_rot = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-	if card_texture_rect and card_texture_rect.material:
-		_tween_rot.tween_property(card_texture_rect.material, "shader_parameter/x_rot", 0.0, 0.3)
-		_tween_rot.tween_property(card_texture_rect.material, "shader_parameter/y_rot", 0.0, 0.3)
+	# 使用 visual_component 重置旋转
+	if visual_component:
+		visual_component.reset_rotation()
 	_current_rot_x = 0.0
 	_current_rot_y = 0.0
 
@@ -89,9 +86,8 @@ func _on_gui_input(event: InputEvent) -> void:
 	_current_rot_x = target_rot_x
 	_current_rot_y = target_rot_y
 	
-	if card_texture_rect and card_texture_rect.material:
-		card_texture_rect.material.set_shader_parameter("x_rot", rad_to_deg(_current_rot_y))
-		card_texture_rect.material.set_shader_parameter("y_rot", rad_to_deg(_current_rot_x))
+	if visual_component:
+		visual_component.set_rotation_3d(rad_to_deg(_current_rot_y), rad_to_deg(_current_rot_x))
 
 func _on_pressed() -> void:
 	print("[GameCard] 卡片被点击 - 发射 card_confirmed")
