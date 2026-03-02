@@ -43,32 +43,25 @@ func _ready():
 	
 	if card:
 		_original_position = card.global_position
-		_oscillator_x.set_displacement(float_amplitude.x * 0.5)
-		_oscillator_y.set_displacement(float_amplitude.y * 0.5)
 	
 	enable_float()
 
 func _process(delta):
-	var target_pos = _original_position
 	if not _float_enabled:
 		return
-	# 1. 计算漂浮偏移
+	
 	_oscillator_x.update(delta)
 	_oscillator_y.update(delta)
-		
+	
 	var float_offset = Vector2(
 		_oscillator_x.displacement,
 		_oscillator_y.displacement
 	)
-	target_pos += float_offset
 	
-	# 2. 计算视差偏移
 	if _parallax_enabled:
 		_update_parallax(delta)
-		target_pos += _parallax_offset
 	
-	# 应用位置
-	card.global_position = target_pos
+	card.global_position = _original_position + float_offset + _parallax_offset
 
 func _update_parallax(delta):
 	var viewport_size = get_viewport().get_visible_rect().size
@@ -85,12 +78,14 @@ func _update_parallax(delta):
 		-normalized.y * parallax_strength.y
 	)
 	
-	_parallax_offset.x = lerp(_parallax_offset.x, target_parallax.x, smoothing * delta)
-	_parallax_offset.y = lerp(_parallax_offset.y, target_parallax.y, smoothing * delta)
+	_parallax_offset = _parallax_offset.lerp(target_parallax, smoothing * delta)
 
 func enable_float():
 	_float_enabled = true
+	_parallax_offset = Vector2.ZERO
 	if _oscillator_x and _oscillator_y:
+		_oscillator_x.reset()
+		_oscillator_y.reset()
 		_oscillator_x.enabled = true
 		_oscillator_y.enabled = true
 
@@ -99,16 +94,11 @@ func disable_float():
 	if _oscillator_x and _oscillator_y:
 		_oscillator_x.enabled = false
 		_oscillator_y.enabled = false
-	
-	## 平滑回到原位
-	#if card:
-		#var tween = create_tween()
-		#tween.tween_property(card, "position", _original_position + _parallax_offset, 0.3)
 
 func set_parallax_enabled(enabled: bool):
 	_parallax_enabled = enabled
 	if not enabled:
 		_parallax_offset = Vector2.ZERO
 
-func set_base_position(pos: Vector2) -> void:
+func set_base_position(pos: Vector2):
 	_original_position = pos

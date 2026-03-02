@@ -40,6 +40,7 @@ func _ready() -> void:
 	angle_y_max = deg_to_rad(angle_y_max)
 	_update_card_size()
 	_setup_texture()
+	_center_in_viewport()
 
 
 
@@ -69,16 +70,12 @@ func _update_drag_rotation(delta: float) -> void:
 	visual_component.set_rotation_from_velocity(_drag_velocity, rad_to_deg(angle_x_max))
 
 
-
-
 func _update_card_size() -> void:
 	var viewport_size = get_viewport_rect().size
 	var target_width = viewport_size.x * card_scale
 	var target_height = target_width * (9.0 / 16.0)
 	custom_minimum_size = Vector2(target_width, target_height)
-	
-	var half_size = custom_minimum_size / 2.0
-	pivot_offset = half_size
+
 	
 	if visual_component:
 		visual_component.update_rect_size(custom_minimum_size)
@@ -88,7 +85,14 @@ func _setup_texture() -> void:
 		visual_component.set_poster_texture(poster_texture)
 		print("[GameCard] 海报纹理已设置")
 
+func _center_in_viewport() -> void:
+	var viewport_size = get_viewport().get_visible_rect().size
+	global_position = (viewport_size - size) / 2.0
+	card_float_component.set_base_position(global_position)
+	card_float_component.set_base_position(global_position)
+
 func _on_mouse_entered() -> void:
+	card_float_component.disable_float()
 	print("[GameCard] 鼠标进入 -")
 
 	card_hover_started.emit()
@@ -97,6 +101,7 @@ func _on_mouse_entered() -> void:
 		_tween_hover.kill()
 	_tween_hover = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
 	_tween_hover.tween_property(self, "scale", Vector2(1.075, 1.075), 0.4)
+
 
 func _on_mouse_exited() -> void:
 	print("[GameCard] 鼠标离开 - 发射 card_deselected")
@@ -113,7 +118,10 @@ func _on_mouse_exited() -> void:
 		visual_component.reset_rotation()
 	_current_rot_x = 0.0
 	_current_rot_y = 0.0
-
+	
+	await _tween_hover.finished
+	card_float_component.set_base_position(global_position)
+	card_float_component.enable_float()
 func _on_gui_input(event: InputEvent) -> void:
 	_check_click_event(event)
 	shadow_component.update_shadow_position()
