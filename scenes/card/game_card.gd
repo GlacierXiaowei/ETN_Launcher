@@ -66,7 +66,8 @@ func _update_drag_rotation(delta: float) -> void:
 	var current_pos: Vector2 = global_position
 	_drag_velocity = (current_pos - _last_drag_pos) / delta
 	_last_drag_pos = current_pos
-	visual_component.set_rotation_from_velocity(_drag_velocity, angle_x_max)
+	visual_component.set_rotation_from_velocity(_drag_velocity, rad_to_deg(angle_x_max))
+
 
 
 
@@ -88,8 +89,8 @@ func _setup_texture() -> void:
 		print("[GameCard] 海报纹理已设置")
 
 func _on_mouse_entered() -> void:
-	print("[GameCard] 鼠标进入 - 发射 card_selected")
-	card_selected.emit()
+	print("[GameCard] 鼠标进入 -")
+
 	card_hover_started.emit()
 	
 	if _tween_hover and _tween_hover.is_running():
@@ -169,3 +170,7 @@ func _on_card_drag_component_drag_ended() -> void:
 func _on_card_drag_component_drag_started() -> void:
 	_last_drag_pos = global_position
 	card_float_component.disable_float()
+
+
+func _on_card_selected() -> void:
+	print("检测到点击")

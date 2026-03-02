@@ -11,16 +11,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="empty_style"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_64ipm"]
-bg_color = Color(0.60038817, 0.60038817, 0.60038817, 0)
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
-corner_radius_top_left = 24
-corner_radius_top_right = 24
-corner_radius_bottom_right = 24
-corner_radius_bottom_left = 24
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s30m7"]
 
 [sub_resource type="ShaderMaterial" id="3d_mat"]
 resource_local_to_scene = true
@@ -49,7 +40,7 @@ grow_vertical = 2
 pivot_offset = Vector2(480, 270)
 size_flags_horizontal = 4
 theme_override_styles/normal = SubResource("empty_style")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_64ipm")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_s30m7")
 theme_override_styles/hover = SubResource("empty_style")
 theme_override_styles/disabled = SubResource("empty_style")
 theme_override_styles/focus = SubResource("empty_style")
@@ -93,6 +84,7 @@ card = NodePath("..")
 [node name="CardFloatComponent" parent="." unique_id=128989448 node_paths=PackedStringArray("card") instance=ExtResource("8_fc8he")]
 card = NodePath("..")
 
+[connection signal="card_selected" from="." to="." method="_on_card_selected"]
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
