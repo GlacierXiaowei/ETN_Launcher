@@ -1,3 +1,6 @@
 [gd_scene format=3 uid="uid://bjm3hmyfw6fux"]
 
+[ext_resource type="Script" uid="uid://be1yp2xr3iqgt" path="res://component/Card/card_float_component.gd" id="1_04yc4"]
+
 [node name="CardFloatComponent" type="Node" unique_id=128989448]
+script = ExtResource("1_04yc4")

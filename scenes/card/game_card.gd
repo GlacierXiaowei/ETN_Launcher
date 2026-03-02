@@ -3,7 +3,6 @@ class_name GameCard
 
 signal card_selected()
 signal card_deselected()
-signal card_confirmed()
 signal card_hover_started()
 signal card_hover_ended()
 
@@ -12,6 +11,7 @@ signal card_hover_ended()
 @export var angle_y_max: float = 8.0
 @export var poster_texture: Texture2D
 
+@onready var card_float_component: CardFloatComponent = $CardFloatComponent
 @onready var shadow_component: CardShadowComponent = $CardShadowComponent
 @onready var card_drag_component: CardDragComponent = $CardDragComponent
 @onready var visual_component: Card3DVisualComponent = $Card3DVisualComponent
@@ -27,6 +27,13 @@ var _tween_hover: Tween
 var _current_rot_x: float = 0.0
 var _current_rot_y: float = 0.0
 
+# 添加变量
+var _click_start_pos: Vector2 = Vector2.ZERO
+var _is_potential_click: bool = false
+var _click_threshold: float = 10.0  # 移动阈值（像素）
+
+
+
 func _ready() -> void:
 	print("[GameCard] _ready() - 初始化完成")
 	angle_x_max = deg_to_rad(angle_x_max)
@@ -35,26 +42,30 @@ func _ready() -> void:
 	_setup_texture()
 
 
+
 @warning_ignore("unused_parameter")
 func _process(delta: float) -> void:
-	if not card_drag_component:
-		return
-	
-	# 更新拖拽位置
-
 	card_drag_component.process_drag()
-	
-	# 如果在拖拽中，计算速度并应用3D旋转
+	# 如果在拖拽中，计算速度并应用3D旋转,同时阻止篇幅（否则功能异常）
 	if card_drag_component.is_dragging():
 		_update_drag_rotation(delta)
+
+func _update_hover_tilt() -> void:
+	var mouse_pos: Vector2 = get_local_mouse_position()
+	var lerp_val_x: float = remap(mouse_pos.x, 0.0, size.x, 0.0, 1.0)
+	var lerp_val_y: float = remap(mouse_pos.y, 0.0, size.y, 0.0, 1.0)
+	
+	var target_rot_x: float = lerp_angle(-angle_x_max, angle_x_max, lerp_val_x)
+	var target_rot_y: float = lerp_angle(angle_y_max, -angle_y_max, lerp_val_y)
+
+	visual_component.set_rotation_3d(rad_to_deg(target_rot_y), rad_to_deg(target_rot_x))
+
 
 
 func _update_drag_rotation(delta: float) -> void:
 	var current_pos: Vector2 = global_position
 	_drag_velocity = (current_pos - _last_drag_pos) / delta
 	_last_drag_pos = current_pos
-	
-
 	visual_component.set_rotation_from_velocity(_drag_velocity, angle_x_max)
 
 
@@ -103,13 +114,11 @@ func _on_mouse_exited() -> void:
 	_current_rot_y = 0.0
 
 func _on_gui_input(event: InputEvent) -> void:
+	_check_click_event(event)
 	shadow_component.update_shadow_position()
 	card_drag_component.handle_input(event)
 	
-	## 新增：如果在拖拽中，不处理悬停3D效果
-	#if card_drag_component and card_drag_component.is_dragging():
-		#return
-	#
+
 	if not event is InputEventMouseMotion:
 		return
 	
@@ -126,9 +135,21 @@ func _on_gui_input(event: InputEvent) -> void:
 	if visual_component:
 		visual_component.set_rotation_3d(rad_to_deg(_current_rot_y), rad_to_deg(_current_rot_x))
 
-func _on_pressed() -> void:
-	print("[GameCard] 卡片被点击 - 发射 card_confirmed")
-	card_confirmed.emit()
+
+# 封装函数
+func _check_click_event(event: InputEvent) -> void:
+	if not (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT):
+		return
+	
+	if event.is_pressed():
+		_is_potential_click = true
+		_click_start_pos = get_global_mouse_position()
+	elif event.is_released() and _is_potential_click:
+		var moved = get_global_mouse_position().distance_to(_click_start_pos)
+		if moved < _click_threshold:
+			card_selected.emit()
+		_is_potential_click = false
+
 
 func deselect() -> void:
 	_is_selected = false
@@ -136,3 +157,15 @@ func deselect() -> void:
 
 func is_selected() -> bool:
 	return _is_selected
+
+
+func _on_card_drag_component_drag_ended() -> void:
+	# 先更新基准位置
+	_last_drag_pos = global_position  
+	card_float_component.set_base_position(global_position)  
+	card_float_component.enable_float()
+
+
+func _on_card_drag_component_drag_started() -> void:
+	_last_drag_pos = global_position
+	card_float_component.disable_float()

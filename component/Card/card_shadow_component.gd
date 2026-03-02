@@ -30,7 +30,7 @@ extends Node
 @export var shadow_texture_rect: TextureRect
 
 ## 最大偏移量（像素）- 卡片在最边缘时的阴影偏移距离
-@export var max_offset: float = 200
+@export var max_offset: float = 300
 
 
 func _ready() -> void:
