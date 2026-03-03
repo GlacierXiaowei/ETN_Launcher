@@ -4,6 +4,7 @@ class_name PatchInstall
 
 signal state_changed(state: InstallSignalHub.InstallState)
 signal error_occurred(error_message: String)
+signal download_finished
 
 var full_package : Dictionary
 var all_patch: Array = []
@@ -119,6 +120,7 @@ func begin_download() -> void:
 	
 	is_download_successful = true
 	print("[PatchInstall] begin_download: All patches downloaded successfully")
+	download_finished.emit()
 
 
 ##清空下载文件夹

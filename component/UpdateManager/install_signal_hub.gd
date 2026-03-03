@@ -3,6 +3,7 @@ class_name InstallSignalHub
 
 enum InstallState {
 	CHECKING_UPDATE,
+	NEED_UPDATE,
 	CHECK_FAILED,
 	UP_TO_DATE,
 	DOWNLOAD_STARTED,

@@ -13,7 +13,8 @@ var user_path = game_dir.path_join(game_name)
 var _local : VersionInfo
 var _server : UpdatePolicy
 
-signal update_needed_state
+signal update_needed(result: String)
+signal up_to_date
 signal update_state_changed(state: InstallSignalHub.InstallState)
 signal update_error_occurred(error_message: String)
 
@@ -31,6 +32,7 @@ func _ready() -> void:
 
 
 func init_check_version() -> void:
+	update_state_changed.emit(InstallSignalHub.InstallState.CHECKING_UPDATE)
 	print("========== 开始测试流程 ==========")
 	print("用户目录：", user_path)
 	print("\n[步骤 1] 获取本地版本信息...")
@@ -56,29 +58,24 @@ func init_check_version() -> void:
 	
 	print("\n[步骤 3] 版本比较...")
 	var checker = UpdateChecker.new()
-	
-	if signal_hub:
-		signal_hub.register_installer(checker)
-	
 	var result = checker.check(local, server)
 	print("  - 比较结果：", result)
-	
-	if signal_hub:
-		signal_hub.unregister_installer(checker)
-	
 	checker.queue_free()
 	
-	update_needed_state.emit(result)
 	match result:
 		"UP_TO_DATE":
 			print("\n[结果] 已是最新版本，无需更新")
+			up_to_date.emit()
 		"FULL_UPDATE_REQUIRED":
 			print("\n[结果] 需要全量更新")
 			server.force_full_package = true
+			update_needed.emit(result)
 		"NORMAL_UPDATE_REQUIRED":
 			print("\n[结果] 需要补丁更新")
+			update_needed.emit(result)
 		_:
 			print("\n[结果] 未知状态：", result)
+			update_needed.emit(result)
 
 
 func _on_hub_state_changed(state: InstallSignalHub.InstallState) -> void:
@@ -105,7 +102,7 @@ func _on_hub_error(error_message: String) -> void:
 	printerr("[InstallTestScene] 错误：", error_message)
 
 
-func _on_正常流程_pressed() -> void:
+func _on_下载_pressed() -> void:
 	if not _server.force_full_package:
 		update_flow.test_patch_download(_local,_server)
 	else:

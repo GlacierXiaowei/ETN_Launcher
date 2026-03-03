@@ -10,7 +10,7 @@ var http_proxy = ""
 var https_proxy = ""
 
 # 测试用：使用本地mock文件
-var use_mock_cloud_version : bool = false
+var use_mock_cloud_version : bool = true
 var mock_cloud_version_path : String = "res://data/mock_cloud_version.json"
 
 
