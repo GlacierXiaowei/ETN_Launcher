@@ -94,20 +94,25 @@ func init_need_installed_patch() -> void:
 func begin_download() -> void:
 	is_download_successful = false
 	
-	# 步骤1：清空下载文件夹
+	# 步骤 1：清空下载文件夹
 	if not VersionUtils.clear_folder(download_path):
 		push_error("[PatchInstall] begin_download: Failed to clear download folder")
 		return
 	
-	# 步骤2：获取需要下载的URL列表
+	# 步骤 2：获取需要下载的 URL 列表
 	var urls = get_patch_urls()
 	if urls.size() == 0:
 		push_error("[PatchInstall] begin_download: No URLs found for needed patches")
 		return
 	
-	# 步骤3：依次下载每个文件
+	# 步骤 3：依次下载每个文件
 	for url_info in urls:
-		download_single_file_with_shell(url_info.url, url_info.file_name)
+		if not await download_single_file(url_info.url, url_info.file_name):
+			push_error("[PatchInstall] begin_download: Failed to download " + url_info.file_name)
+			return
+	
+	is_download_successful = true
+	print("[PatchInstall] begin_download: All patches downloaded successfully")
 
 
 ##清空下载文件夹
