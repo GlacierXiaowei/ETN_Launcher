@@ -6,13 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bvoi1pypwfbj2" path="res://component/UpdateManager/update_full.tscn" id="4_fgsfl"]
 [ext_resource type="PackedScene" uid="uid://b74q280ars3yx" path="res://component/UpdateManager/update_choose_file.tscn" id="8_in5ve"]
 
-[node name="InstallTestScene" type="Control" unique_id=378045110 node_paths=PackedStringArray("update_choose_file")]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="InstallTestScene" type="Node" unique_id=898823719 node_paths=PackedStringArray("update_choose_file")]
 script = ExtResource("1_sqc7e")
 update_choose_file = NodePath("Component/UpdateChooseFile")
 
@@ -28,7 +22,7 @@ install_test_scene = NodePath("../..")
 [node name="UpdateChooseFile" parent="Component" unique_id=1216761608 instance=ExtResource("8_in5ve")]
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1399638644]
-layout_mode = 1
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -40,29 +34,35 @@ theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=202175992]
+visible = false
 layout_mode = 2
 
 [node name="正常流程" type="Button" parent="MarginContainer/VBoxContainer" unique_id=790202475]
+visible = false
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 text = "正常流程"
 
 [node name="全量" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1952587101]
+visible = false
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 text = "全量"
 
 [node name="补丁" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1510831741]
+visible = false
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 text = "补丁"
 
 [node name="选择自定义文件" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1130837744]
+visible = false
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 text = "选择自定义文件"
 
 [node name="开始安装" type="Button" parent="MarginContainer/VBoxContainer" unique_id=475388810]
+visible = false
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 text = "开始安装"

@@ -72,6 +72,11 @@ func handle_input(event: InputEvent) -> void:
 		# 鼠标释放：结束拖拽
 		if _is_dragging:
 			_end_drag()
+	
+	###尝试修复 连续点击卡片无法移动得问题	
+	#if event is InputEventMouseEnter and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		#if not _is_dragging:
+			#_start_drag()
 
 ## 每帧更新拖拽位置，由父节点 GameCard._process() 调用
 ## 参数:
@@ -115,9 +120,9 @@ func restore_to_center() -> void:
 	_tween_restore.set_ease(Tween.EASE_OUT)
 	_tween_restore.set_trans(Tween.TRANS_CUBIC)
 	_tween_restore.tween_property(
-		card, 
-		"global_position", 
-		_original_position, 
+		card,
+		"global_position",
+		_original_position,
 		restore_duration
 	)
 

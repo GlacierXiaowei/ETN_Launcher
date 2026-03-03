@@ -76,7 +76,6 @@ func _center_in_viewport() -> void:
 
 func _on_mouse_entered() -> void:
 	card_float_component.disable_float()
-	print("[GameCard] 鼠标进入 -")
 	
 	if not _enable_hover:
 		return
@@ -111,9 +110,10 @@ func _on_mouse_exited() -> void:
 
 
 func _on_gui_input(event: InputEvent) -> void:
+	card_drag_component.handle_input(event)
 	_check_click_event(event)
 	shadow_component.update_shadow_position()
-	card_drag_component.handle_input(event)
+
 	
 
 	if not event is InputEventMouseMotion or not _enable_hover:
@@ -141,8 +141,18 @@ func _check_click_event(event: InputEvent) -> void:
 	elif event.is_released() and _is_potential_click:
 		var moved = get_global_mouse_position().distance_to(_click_start_pos)
 		if moved < _click_threshold:
-			card_selected.emit()
+			_enable_selected()
 		_is_potential_click = false
+
+func _enable_selected() -> void:
+	#if _is_selected:
+		#_enable_deselected()
+	#else:
+	if _is_selected:
+		card_confirm.emit()
+		print("confirm")
+	else:
+		card_selected.emit()
 
 
 ##外界调用取消选中
@@ -169,10 +179,11 @@ func _on_card_drag_component_drag_started() -> void:
 
 
 func _on_card_selected() -> void:
+	print("selected")
 	_is_selected = true
 	_enable_hover = false
 	
-	card_float_component.disable_float()
+	#card_float_component.disable_float() 等设置了位置再启用
 	card_drag_component.disable_drag()
 	if _tween_click_shadow and _tween_click_shadow.is_running():
 		_tween_click_shadow.kill()
@@ -199,15 +210,19 @@ func _on_card_selected() -> void:
 		visual_component.reset_rotation()
 	
 	await _tween_hover.finished
+	
 	card_float_component.set_base_position(global_position)	
+	card_float_component.disable_float()
+	
 	card_hover_ended.emit()
 
 
 func _on_card_deselected() -> void:
+	print("deselected")
 	_is_selected = false
 	_enable_hover = true
 	
-	card_float_component.enable_float()
+	#card_float_component.enable_float()
 	card_drag_component.enable_drag()
 	if _tween_click_shadow and _tween_click_shadow.is_running():
 		_tween_click_shadow.kill()
@@ -222,10 +237,12 @@ func _on_card_deselected() -> void:
 	_tween_click_scale.set_ease(Tween.EASE_OUT)
 	_tween_click_scale.set_trans(Tween.TRANS_BACK)  # 优雅的回弹效果
 	_tween_click_scale.tween_property(card_texture_rect, "scale", Vector2.ONE, 0.4)
+	
+	await _tween_click_scale.finished
+	
+	card_float_component.set_base_position(global_position)	
+	card_float_component.enable_float()
 
 
-func _on_pressed() -> void:
-	if _is_selected:
-		card_confirm.emit()
 		#card_deselected.emit()
 	

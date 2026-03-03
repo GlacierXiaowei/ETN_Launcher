@@ -81,6 +81,5 @@ card = NodePath("..")
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="pressed" from="." to="." method="_on_pressed"]
 [connection signal="drag_ended" from="CardDragComponent" to="." method="_on_card_drag_component_drag_ended"]
 [connection signal="drag_started" from="CardDragComponent" to="." method="_on_card_drag_component_drag_started"]

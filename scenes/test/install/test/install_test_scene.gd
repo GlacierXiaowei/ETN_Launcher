@@ -1,12 +1,15 @@
-extends Control
+extends Node
 @export var update_choose_file: Node
+
+@export var game_name : String = "ETN_Farm"
+
 @onready var uptate_type_control: Node = $Component/UptateTypeControl
 @onready var update_flow: Node = $Component/UpdateFlow
 @onready var update_ui_manager: Node = $Component/UpdateUiManager
 
 
 var game_dir = OS.get_environment("APPDATA")
-var user_path = game_dir.path_join("ETN_Farm")
+var user_path = game_dir.path_join(game_name)
 ##最小化修改 初始化 的时候 这些就会赋值 其他的就不用管了
 var _local : VersionInfo
 var _server : UpdatePolicy
