@@ -18,7 +18,7 @@ signal up_to_date
 signal update_state_changed(state: InstallSignalHub.InstallState)
 signal update_error_occurred(error_message: String)
 
-
+ 
 func _ready() -> void:
 	if signal_hub:
 		signal_hub.state_changed.connect(_on_hub_state_changed)

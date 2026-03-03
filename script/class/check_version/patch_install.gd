@@ -203,6 +203,9 @@ func download_single_file(url: String, file_name: String) -> bool:
 	var http_request = HTTPRequest.new()
 	add_child(http_request)
 	
+	print("[PatchInstall] 请求 URL: ", url)
+	print("[PatchInstall] Godot HTTP 版本：", http_request.get_http_client_status())
+	
 	var download_success = false
 	var error_message = ""
 	
@@ -215,6 +218,11 @@ func download_single_file(url: String, file_name: String) -> bool:
 		return false
 	
 	var result = await http_request.request_completed
+	
+	print("[PatchInstall] request_completed 返回：")
+	print("  - result[0] (错误码): ", result[0], " (0=OK, 1=CantConnect, 2=ResolveError, 3=CannotConnect)")
+	print("  - result[1] (响应码): ", result[1])
+	print("  - result[3] (body 大小): ", result[3].size() if result.size() > 3 else "N/A")
 	
 	var response_code = result[1]
 	if response_code == 200:
