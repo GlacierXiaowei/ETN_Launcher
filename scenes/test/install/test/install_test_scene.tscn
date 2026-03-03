@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dc7jy7v5ekhpa" path="res://component/UpdateManager/update_ui_manager.tscn" id="2_fgsfl"]
 [ext_resource type="PackedScene" uid="uid://swmate486yfq" path="res://component/UpdateManager/uptate_type_control.tscn" id="2_gvesk"]
 [ext_resource type="PackedScene" uid="uid://bvoi1pypwfbj2" path="res://component/UpdateManager/update_full.tscn" id="4_fgsfl"]
+[ext_resource type="PackedScene" uid="uid://72i1fqlm3pi" path="res://component/UpdateManager/install_signal_hub.tscn" id="6_f4ah4"]
 [ext_resource type="PackedScene" uid="uid://b74q280ars3yx" path="res://component/UpdateManager/update_choose_file.tscn" id="8_in5ve"]
 
 [node name="InstallTestScene" type="Node" unique_id=898823719 node_paths=PackedStringArray("update_choose_file")]
@@ -16,10 +17,13 @@ update_choose_file = NodePath("Component/UpdateChooseFile")
 
 [node name="UptateTypeControl" parent="Component" unique_id=569876676 instance=ExtResource("2_gvesk")]
 
-[node name="UpdateFlow" parent="Component" unique_id=911630090 node_paths=PackedStringArray("install_test_scene") instance=ExtResource("4_fgsfl")]
+[node name="UpdateFlow" parent="Component" unique_id=911630090 node_paths=PackedStringArray("install_test_scene", "signal_hub") instance=ExtResource("4_fgsfl")]
 install_test_scene = NodePath("../..")
+signal_hub = NodePath("../InstallSignalHub")
 
 [node name="UpdateChooseFile" parent="Component" unique_id=1216761608 instance=ExtResource("8_in5ve")]
+
+[node name="InstallSignalHub" parent="Component" unique_id=877943049 instance=ExtResource("6_f4ah4")]
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1399638644]
 visible = false
