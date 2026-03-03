@@ -52,7 +52,7 @@ expand_mode = 1
 stretch_mode = 6
 
 [node name="Shadow" type="TextureRect" parent="." unique_id=820375665]
-self_modulate = Color(0, 0, 0, 0.25)
+self_modulate = Color(0, 0, 0, 0.45000002)
 show_behind_parent = true
 layout_mode = 1
 offset_right = 960.0

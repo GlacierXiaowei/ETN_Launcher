@@ -65,6 +65,17 @@ PopupManager.show_popup({
 
 关闭当前弹窗（如有）。
 
+**示例：**
+```gdscript
+# 手动关闭弹窗
+PopupManager.close_popup()
+
+# 带检查的关闭
+func _on_cancel_button_pressed() -> void:
+    if PopupManager.has_open_popup():
+        PopupManager.close_popup()
+```
+
 ---
 
 ### 2.3 update_popup(config: Dictionary) -> bool
@@ -75,6 +86,29 @@ PopupManager.show_popup({
 
 **返回值：** `true`=成功，`false`=无弹窗
 
+**示例：**
+```gdscript
+# 更新标题和内容（带淡入淡出动画）
+PopupManager.update_popup({
+    "title": "更新后的标题",
+    "content": "内容已更新！",
+    "transition_animation": true
+})
+
+# 更新按钮
+PopupManager.update_popup({
+    "buttons": [
+        {"text": "重新开始", "type": "primary", "metadata": "restart"},
+        {"text": "退出", "type": "secondary", "metadata": "exit"}
+    ]
+})
+
+# 检查更新是否成功
+var success = PopupManager.update_popup({"content": "新内容"})
+if not success:
+    print("当前没有弹窗，无法更新")
+```
+
 ---
 
 ### 2.4 has_open_popup() -> bool
@@ -83,6 +117,23 @@ PopupManager.show_popup({
 
 > **注：** 当前为单弹窗模式，同一时间最多只有一个弹窗。
 
+**示例：**
+```gdscript
+# 避免重复弹窗
+func _on_show_popup_pressed() -> void:
+    if PopupManager.has_open_popup():
+        print("已有弹窗显示中")
+        return
+    PopupManager.show_popup({"title": "新弹窗"})
+
+# 条件判断
+func _check_popup_status() -> void:
+    if PopupManager.has_open_popup():
+        print("弹窗正在显示")
+    else:
+        print("没有弹窗")
+```
+
 ---
 
 ### 2.5 close_and_show_new(config: Dictionary) -> void
@@ -90,6 +141,30 @@ PopupManager.show_popup({
 关闭当前弹窗，等待关闭动画完成后打开新弹窗。
 
 > **注：** 单弹窗模式下，推荐使用此方法安全替换弹窗内容。
+
+**示例：**
+```gdscript
+# 安全替换：关闭旧弹窗，显示新弹窗
+func _show_next_popup() -> void:
+    PopupManager.close_and_show_new({
+        "title": "第二步",
+        "content": "这是新的弹窗内容",
+        "buttons": [
+            {"text": "完成", "type": "primary", "metadata": "done"}
+        ]
+    })
+
+# 从确认弹窗切换到结果弹窗
+func _on_confirm_response(metadata: String) -> void:
+    if metadata == "confirm":
+        PopupManager.close_and_show_new({
+            "title": "操作完成",
+            "content": "您的操作已成功执行！",
+            "buttons": [
+                {"text": "确定", "type": "primary", "metadata": "ok"}
+            ]
+        })
+```
 
 ---
 
@@ -125,6 +200,29 @@ PopupManager.show_confirm(
 - `title`(String): 标题
 - `content`(String): 内容
 - `on_ok`(Callable, 可选): 点击确定的回调
+
+**回调语义：** 只触发一次（自动断开连接，不会累积）
+
+**示例：**
+```gdscript
+# 最简单用法：只显示提示
+PopupManager.show_alert("提示", "操作已完成。")
+
+# 带回调的用法
+PopupManager.show_alert(
+    "下载完成",
+    "文件已保存到下载目录。",
+    func(): print("用户已知晓")
+)
+
+# 在回调中执行后续操作
+func _on_export_finished() -> void:
+    PopupManager.show_alert(
+        "导出成功",
+        "游戏已成功导出！",
+        func(): _navigate_to_export_folder()
+    )
+```
 
 ---
 

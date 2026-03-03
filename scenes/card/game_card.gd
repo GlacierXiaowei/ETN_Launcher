@@ -172,6 +172,7 @@ func _on_card_selected() -> void:
 	_is_selected = true
 	_enable_hover = false
 	
+	card_float_component.disable_float()
 	card_drag_component.disable_drag()
 	if _tween_click_shadow and _tween_click_shadow.is_running():
 		_tween_click_shadow.kill()
@@ -206,6 +207,7 @@ func _on_card_deselected() -> void:
 	_is_selected = false
 	_enable_hover = true
 	
+	card_float_component.enable_float()
 	card_drag_component.enable_drag()
 	if _tween_click_shadow and _tween_click_shadow.is_running():
 		_tween_click_shadow.kill()
@@ -225,4 +227,5 @@ func _on_card_deselected() -> void:
 func _on_pressed() -> void:
 	if _is_selected:
 		card_confirm.emit()
+		#card_deselected.emit()
 	
