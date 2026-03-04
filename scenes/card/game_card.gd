@@ -197,7 +197,7 @@ func _on_card_selected() -> void:
 	_tween_click_scale = create_tween()
 	_tween_click_scale.set_ease(Tween.EASE_OUT)
 	_tween_click_scale.set_trans(Tween.TRANS_BACK)  # 优雅的回弹效果
-	_tween_click_scale.tween_property(card_texture_rect, "scale", Vector2(0.925, 0.925), 0.4)
+	_tween_click_scale.tween_property(card_texture_rect, "scale", Vector2(0.85, 0.85), 0.4)
 
 
 	if _tween_hover and _tween_hover.is_running():
@@ -221,9 +221,9 @@ func _on_card_deselected() -> void:
 	print("deselected")
 	_is_selected = false
 	_enable_hover = true
-	
-	#card_float_component.enable_float()
 	card_drag_component.enable_drag()
+	#card_float_component.enable_float()
+
 	if _tween_click_shadow and _tween_click_shadow.is_running():
 		_tween_click_shadow.kill()
 	_tween_click_shadow = create_tween()
