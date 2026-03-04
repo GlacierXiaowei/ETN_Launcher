@@ -68,6 +68,7 @@ func re_ready() -> void:
 
 
 ##用于检测自定义更新是否完成所有更新流程/是否安装完所有补丁
+##不过 目前并没有开放自定义补丁安装（指的是浏览器下载）
 func verify_version() -> bool:
 	if not _local or not _local:
 		update_error_occurred.emit("非法使用函数： verify_version。\n使用之前必须先初始化检查更新组件")
@@ -196,12 +197,13 @@ func _on_下载_pressed() -> void:
 		update_flow.test_full_download(_local,_server)
 
 
-func _on_选择自定义文件_pressed() -> void:
-	var result = await update_choose_file.select_zip_file()
+func _on_选择自定义文件_pressed(path_mode : bool =false) -> void:
+	var result = await update_choose_file.select_zip_file(path_mode)
 	
 	if result:
 		print("选择文件成功")
 		await update_choose_file.copy_file_to_install(update_choose_file.selected_path)
+		_on_开始安装_pressed()
 	else:
 		print("选择文件失败")
 		update_error_occurred.emit("[InstallComponent]err: 选择文件失败")

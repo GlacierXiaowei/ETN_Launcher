@@ -28,13 +28,15 @@ func _on_enter() -> void:
 		false:
 			PopupManager.show_alert(title,"点击确定自动安装", func():wait_for_install() )
 		true:
-			content = "点击确定我们将会启动浏览器下载，点击之后本窗口不会关闭\n本次下载需要你们找到文件所在位置请在浏览器下载完成之后，点击[wave]安装[/wave]选择文件并启动下载安装服务
-	下一个弹窗会有相关教程。\n如果您在安装过程中出现错误，原则上您下载的文件我们不会删除，您可直接选择安装重新操作
-	如果始终无法成功，请联系作者"
+			content = "我们支持通过
+1.文件浏览器窗口选择文件进行安装
+2.复制下载路径安装
+以下有复制路径的教程 （可以滚轮滑动向下翻页）
+如遇到问题 可向开发者反馈 （本来我也不想这么做 但是之前我的Http的连接速度太慢 只能让你们浏览器处理啦 理解万岁！）"
 
 			buttons= [
-				{"text": "下载" , "type" : "primary" , "metadata" : "download"},
-				{"text": "安装" , "type" : "secondary" , "metadata" : "install"},
+				{"text": "浏览" , "type" : "primary" , "metadata" : "primary"},
+				{"text": "路径" , "type" : "secondary" , "metadata" : "secondary"},
 				{"text": "取消" , "type" : "third" , "metadata" : "cancel"}
 					]
 	
@@ -47,10 +49,10 @@ func _on_enter() -> void:
 
 func on_popup_button_pressed(metadata : String) -> void:
 	match metadata:
-		"download":
-			install_component._on_下载_pressed()
-		"install":
-			transition.emit("InstallStarted")
+		"primary":
+			install_component._on_选择自定义文件_pressed(false)
+		"secondary":
+			install_component._on_选择自定义文件_pressed(true)
 		"cancel":
 			transition.emit("NeedUpdate")
 	
