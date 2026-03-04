@@ -5,6 +5,7 @@
   "target_patch" : 1,
   "force_update": true,
   "force_full_package": false,
+  "update_notes": "暂无更新公告",
   "full_package": {
 	"version": "2.9.9.0",
 	"url": "https://github.com/GlacierXiaowei/ETN_Farm/releases/download/v1.2.1.0/ETN_Farm.zip"
@@ -15,7 +16,7 @@
 	  "from_patch": 0,
 	  "to_patch": 1,
 	  "url": "https://github.com/GlacierXiaowei/ETN_Farm/releases/download/v1.2.0.2/Patch_002.pck",
-	  "notice": "补丁包1，更新公告"
+	  "update_notes": "补丁包1，更新公告"
 	}
   ]
 }

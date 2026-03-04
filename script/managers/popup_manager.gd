@@ -52,7 +52,7 @@ func close_popup() -> void:
 func is_popup_open() -> bool:
 	return _current_popup != null and is_instance_valid(_current_popup)
 
-func show_confirm(title: String, content: String, on_ok: Callable, on_cancel: Callable = Callable()) -> void:
+func show_confirm(title: String, content: String, on_ok: Callable = Callable(), on_cancel: Callable = Callable()) -> void:
 	var config := {
 		"size": "medium",
 		"title": title,
@@ -181,3 +181,32 @@ func hide_loading(restore_config: Dictionary = {}, use_fade: bool = true) -> voi
 	
 	_loading_active = false
 	_loading_snapshot = {}
+
+
+func show_input(title: String, placeholder: String, on_confirm: Callable, on_cancel: Callable = Callable(), initial_text: String = "") -> void:
+	var config := {
+		"size": "medium",
+		"title": title,
+		"content": "",
+		"content_type": "label",
+		"input_placeholder": placeholder,
+		"input_text": initial_text,
+		"buttons": [
+			{"text": "取消", "type": "secondary", "metadata": "cancel"},
+			{"text": "确定", "type": "primary", "metadata": "confirm"}
+		]
+	}
+	
+	show_popup(config)
+	var popup := _current_popup
+	if popup == null or not is_instance_valid(popup):
+		return
+	
+	popup.button_pressed.connect(func(m: String) -> void:
+		if m == "confirm":
+			var input_text = popup.get_input_text()
+			if on_confirm.is_valid():
+				on_confirm.call(input_text)
+		elif m == "cancel" and on_cancel.is_valid():
+			on_cancel.call()
+	, Object.CONNECT_ONE_SHOT)

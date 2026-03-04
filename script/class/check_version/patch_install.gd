@@ -25,6 +25,8 @@ var install_path: String
 var is_download_successful : bool = false
 var is_install_successful : bool = false
 
+##这个信号是一个孤儿 没有人监听 也许我们设置中自定义安装的时候 有作用吧
+##和InstallComponentHub的信号已经完成连接 等几个版本没有更新内容的时候就来修复这个bug吧
 signal install_finished
 
 

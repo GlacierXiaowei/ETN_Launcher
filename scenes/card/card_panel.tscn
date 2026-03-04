@@ -3,8 +3,19 @@
 [ext_resource type="Script" uid="uid://bavnpyclbdd7f" path="res://scenes/card/card_panel.gd" id="1_qcsas"]
 [ext_resource type="PackedScene" uid="uid://c8yvxg3ulq3a" path="res://scenes/card/game_card.tscn" id="2_2nm5h"]
 [ext_resource type="Texture2D" uid="uid://duhpdp7yww5rf" path="res://assets/image/poster/game2_poster .png" id="3_q2nvt"]
-[ext_resource type="PackedScene" uid="uid://fkwbkys7yssn" path="res://scenes/test/install/test/install_test_scene.tscn" id="4_68lau"]
-[ext_resource type="Script" uid="uid://qgkfdaxn36ue" path="res://script/state_machine/node_state_machine.gd" id="5_68lau"]
+[ext_resource type="PackedScene" uid="uid://fkwbkys7yssn" path="res://component/InstallComponent/install_component.tscn" id="4_68lau"]
+[ext_resource type="Script" uid="uid://bo7kxs2u0mykl" path="res://scenes/card/state/node_state_machine.gd" id="5_i4u0h"]
+[ext_resource type="Script" uid="uid://dmylsjrvy0qnq" path="res://scenes/card/state/not_installed.gd" id="6_i4u0h"]
+[ext_resource type="Script" uid="uid://nruumoeeh7qb" path="res://scenes/card/state/checking_update.gd" id="7_qw58v"]
+[ext_resource type="Script" uid="uid://dj1lse6hpcxgq" path="res://scenes/card/state/check_failed.gd" id="8_76bwr"]
+[ext_resource type="Script" uid="uid://7pna2qkbk5x" path="res://scenes/card/state/up_to_date.gd" id="9_f1p5f"]
+[ext_resource type="Script" uid="uid://l2g8pqw04o4h" path="res://scenes/card/state/need_update.gd" id="10_qw58v"]
+[ext_resource type="Script" uid="uid://dcjgdpwuqfo7j" path="res://scenes/card/state/download_started.gd" id="10_vgjac"]
+[ext_resource type="Script" uid="uid://iqfdklukyxdx" path="res://scenes/card/state/install_started.gd" id="11_4l0uo"]
+[ext_resource type="Script" uid="uid://dfhjrhkepgfel" path="res://scenes/card/state/running_state.gd" id="12_45hbk"]
+[ext_resource type="Script" uid="uid://dtnrwfsnrvmg4" path="res://scenes/card/state/update_failed.gd" id="14_76bwr"]
+[ext_resource type="PackedScene" uid="uid://xaw3rjo0357g" path="res://component/start_game.tscn" id="15_vgjac"]
+[ext_resource type="Script" uid="uid://4btg6qwfvs1o" path="res://component/start_game.gd" id="16_4l0uo"]
 
 [node name="CardPanel" type="Node2D" unique_id=694537855]
 script = ExtResource("1_qcsas")
@@ -12,24 +23,75 @@ script = ExtResource("1_qcsas")
 [node name="GameCard" parent="." unique_id=1449577529 instance=ExtResource("2_2nm5h")]
 poster_texture = ExtResource("3_q2nvt")
 
-[node name="InstallTestScene" parent="." unique_id=378045110 instance=ExtResource("4_68lau")]
-
-[node name="Button" type="Button" parent="." unique_id=1721875281]
-offset_left = 101.0
-offset_top = 651.0
-offset_right = 109.0
-offset_bottom = 659.0
-text = "取消选中"
+[node name="StateLabel" type="Label" parent="." unique_id=1122148181]
+offset_left = 992.0
+offset_top = 978.0
+offset_right = 1032.0
+offset_bottom = 1027.0
+text = "交互
+"
 
 [node name="GameName" type="Label" parent="." unique_id=124945963]
-offset_left = 827.0
-offset_top = 21.0
-offset_right = 867.0
-offset_bottom = 44.0
+offset_left = 946.0
+offset_top = 51.0
+offset_right = 1024.0
+offset_bottom = 74.0
 text = "ETN_Farm"
 
-[node name="NodeStateMachine" type="Node" parent="." unique_id=1475178055]
-script = ExtResource("5_68lau")
+[node name="Deselected" type="Button" parent="." unique_id=759516851]
+offset_left = 144.0
+offset_top = 611.0
+offset_right = 216.0
+offset_bottom = 642.0
+text = "取消选中"
+
+[node name="InstallComponent" parent="." unique_id=378045110 instance=ExtResource("4_68lau")]
+
+[node name="NodeStateMachine" type="Node" parent="." unique_id=1475178055 node_paths=PackedStringArray("initial_node_state")]
+script = ExtResource("5_i4u0h")
+initial_node_state = NodePath("CheckingUpdate")
 metadata/_custom_type_script = "uid://qgkfdaxn36ue"
 
-[connection signal="pressed" from="Button" to="GameCard" method="_enable_deselected"]
+[node name="NotInstalled" type="Node" parent="NodeStateMachine" unique_id=1567363670]
+script = ExtResource("6_i4u0h")
+metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
+
+[node name="CheckingUpdate" type="Node" parent="NodeStateMachine" unique_id=2078578469]
+script = ExtResource("7_qw58v")
+metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
+
+[node name="NeedUpdate" type="Node" parent="NodeStateMachine" unique_id=780602412]
+script = ExtResource("10_qw58v")
+metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
+
+[node name="CheckFailed" type="Node" parent="NodeStateMachine" unique_id=261912881]
+script = ExtResource("8_76bwr")
+metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
+
+[node name="UpToDate" type="Node" parent="NodeStateMachine" unique_id=1610313290]
+script = ExtResource("9_f1p5f")
+metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
+
+[node name="DownloadStarted" type="Node" parent="NodeStateMachine" unique_id=1402351824]
+script = ExtResource("10_vgjac")
+metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
+
+[node name="InstallStarted" type="Node" parent="NodeStateMachine" unique_id=345684160]
+script = ExtResource("11_4l0uo")
+metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
+
+[node name="RunningState" type="Node" parent="NodeStateMachine" unique_id=230346084]
+script = ExtResource("12_45hbk")
+metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
+
+[node name="UpdateFailed" type="Node" parent="NodeStateMachine" unique_id=1766383293]
+script = ExtResource("14_76bwr")
+metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
+
+[node name="StartGame" parent="." unique_id=297163049 instance=ExtResource("15_vgjac")]
+script = ExtResource("16_4l0uo")
+
+[connection signal="card_confirm" from="GameCard" to="NodeStateMachine" method="_on_card_confirm"]
+[connection signal="pressed" from="Deselected" to="GameCard" method="_enable_deselected"]
+[connection signal="update_error_occurred" from="InstallComponent" to="." method="_on_install_test_scene_update_error_occurred"]
+[connection signal="update_state_changed" from="InstallComponent" to="." method="_on_install_test_scene_update_state_changed"]

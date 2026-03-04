@@ -51,6 +51,10 @@ func get_update_policy(repo: String) -> UpdatePolicy:
 	if use_mock_cloud_version:
 		return _get_mock_update_policy(repo)
 	
+	
+	var err_target : UpdatePolicy = UpdatePolicy.new()
+	var err_notes : String = "[rainbow]获取服务器更新策略失败[/rainbow]"
+	
 	var http_request = HTTPRequest.new()
 	add_child(http_request)
 	
@@ -77,6 +81,7 @@ func get_update_policy(repo: String) -> UpdatePolicy:
 		
 		var error = http_request.request(download_url, headers)
 		if error != OK:
+			err_notes =err_notes + "[VersionUtils] Failed to request: " + download_url + " error: " + str(error) + "\n"
 			push_error("[VersionUtils] Failed to request: " + download_url + " error: " + str(error))
 			retry_count += 1
 			continue
@@ -91,23 +96,34 @@ func get_update_policy(repo: String) -> UpdatePolicy:
 			
 			var parse_result = JSON.parse_string(body)
 			if parse_result == null:
+				
+				err_notes = err_notes + "[VersionUtils] Failed to parse version JSON" + "\n"
 				push_error("[VersionUtils] Failed to parse version JSON")
-				return UpdatePolicy.new()
-			
+				err_target.err_notes = err_notes
+				return err_target
+				
 			return UpdatePolicy.new(parse_result)
+			
 		elif response_code == 0:
 			retry_count += 1
 			continue
+			
 		else:
+			
+			err_notes = err_notes + "[VersionUtils] Download failed with code: " + str(response_code) + "\n"
 			push_error("[VersionUtils] Download failed with code: " + str(response_code))
 			last_response_code = response_code
 			retry_count += 1
 			continue
 	
+	
 	remove_child(http_request)
 	http_request.queue_free()
+	err_notes = err_notes + "[VersionUtils] All retries failed, last response code: " + str(last_response_code) + "\n"
 	push_error("[VersionUtils] All retries failed, last response code: " + str(last_response_code))
-	return UpdatePolicy.new()
+	err_target.err_notes = err_notes
+	
+	return err_target
 
 ##从本地文件获取模拟的服务器更新策略（用于测试）
 func _get_mock_update_policy(_repo: String) -> UpdatePolicy:
@@ -161,6 +177,35 @@ func get_version_info(path: String = "") -> VersionInfo:
 	
 	return VersionInfo.new(json.data)
 
+
+##检查游戏是否安装
+func check_game_installed(game_name: String, user_path: String) -> bool:
+	var exe_path = user_path.path_join(game_name + ".exe")
+	var pck_path = user_path.path_join(game_name + ".pck")
+	return FileAccess.file_exists(exe_path) and FileAccess.file_exists(pck_path)
+
+##重置版本文件为零版本
+func reset_version(user_path: String) -> bool:
+	var source_path = "res://data/game_zero_version.json"
+	var dest_path = user_path.path_join("version.json")
+	
+	if not FileAccess.file_exists(source_path):
+		push_error("[VersionUtils] reset_version: Source file not found: " + source_path)
+		return false
+	
+	if not DirAccess.dir_exists_absolute(user_path):
+		var make_dir_err = DirAccess.make_dir_recursive_absolute(user_path)
+		if make_dir_err != OK:
+			push_error("[VersionUtils] reset_version: Failed to create directory")
+			return false
+	
+	var copy_err = DirAccess.copy_absolute(source_path, dest_path)
+	if copy_err != OK:
+		push_error("[VersionUtils] reset_version: Failed to copy file: " + str(copy_err))
+		return false
+	
+	print("[VersionUtils] reset_version: Version file reset to ", dest_path)
+	return true
 
 ##清空下载文件夹
 func clear_folder(path : String) -> bool:

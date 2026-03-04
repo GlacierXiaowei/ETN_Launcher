@@ -14,7 +14,6 @@ var _local : VersionInfo
 var _server : UpdatePolicy
 
 signal update_needed_state_signal
-signal update_process_state_signal
 
 @export var update_needed_state : String = "UNKONW"
 @export var update_process_state: String = "UNKONW"

@@ -2,6 +2,7 @@ extends Node
 class_name InstallSignalHub
 
 enum InstallState {
+	NOT_INSTALLED,
 	CHECKING_UPDATE,
 	NEED_UPDATE,
 	CHECK_FAILED,

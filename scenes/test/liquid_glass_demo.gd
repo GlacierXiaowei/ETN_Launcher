@@ -28,7 +28,7 @@ var _is_syncing_ui := false
 
 func _ready() -> void:
 	# Give the demo usable typography/button styling without relying on a pre-authored Theme resource.
-	ETNThemeFactory.apply_glass_theme(self)
+	#ETNThemeFactory.apply_glass_theme(self)
 
 	# Visually separate primary/secondary buttons in the demo.
 	primary_button.add_theme_color_override("font_color", Color(1, 1, 1, 1))

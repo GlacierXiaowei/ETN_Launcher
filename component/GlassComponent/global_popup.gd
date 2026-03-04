@@ -27,6 +27,8 @@ var _is_closing := false
 var _dim_background: ColorRect = null
 var _blur_overlay: ColorRect = null
 
+var _input_line_edit: LineEdit = null
+
 func setup(config: Dictionary) -> void:
 	_config = config
 	if not _config.has("content_type"):
@@ -51,8 +53,6 @@ func setup(config: Dictionary) -> void:
 		_:
 			glass_panel.custom_minimum_size = Vector2(600, 400)
 
-	# Keep the popup centered by updating offsets (scene anchors are centered).
-	# NOTE: Avoid setting `position` directly; it will break anchor-based centering.
 	var target_size := glass_panel.custom_minimum_size
 	_apply_glass_panel_centered_layout(target_size)
 	
@@ -63,9 +63,7 @@ func setup(config: Dictionary) -> void:
 		content_min_y = 520.0
 	content_label.custom_minimum_size.y = content_min_y
 	
-	# Ensure layout is applied before using size-dependent shader params.
 	await get_tree().process_frame
-	# Re-apply centering after first layout pass (prevents top-left placement).
 	_apply_glass_panel_centered_layout(target_size)
 	glass_panel.pivot_offset = glass_panel.size / 2.0
 	_sync_glass_panel_shader_params()
@@ -84,6 +82,10 @@ func setup(config: Dictionary) -> void:
 		else:
 			content_label.bbcode_enabled = false
 			content_label.text = config["content"]
+	
+	# 创建输入框（如果配置了 input_placeholder）
+	if config.has("input_placeholder"):
+		_create_input_line_edit(config["input_placeholder"], config.get("input_text", ""))
 	
 	_build_buttons(config.get("buttons", []))
 	
@@ -250,6 +252,27 @@ func set_content(text: String, type: String = "label") -> void:
 
 func set_buttons(buttons: Array) -> void:
 	_build_buttons(buttons)
+
+func _create_input_line_edit(placeholder: String, initial_text: String = "") -> void:
+	if _input_line_edit != null:
+		return
+	
+	_input_line_edit = LineEdit.new()
+	_input_line_edit.name = "InputLineEdit"
+	_input_line_edit.placeholder_text = placeholder
+	_input_line_edit.text = initial_text
+	_input_line_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	
+	spacer.add_child(_input_line_edit)
+
+func get_input_text() -> String:
+	if _input_line_edit == null:
+		return ""
+	return _input_line_edit.text
+
+func set_input_text(text: String) -> void:
+	if _input_line_edit != null:
+		_input_line_edit.text = text
 
 func update(config: Dictionary) -> void:
 	if _config == null:
