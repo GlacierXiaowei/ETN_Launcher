@@ -15,7 +15,6 @@
 [ext_resource type="Script" uid="uid://dfhjrhkepgfel" path="res://scenes/card/state/running_state.gd" id="12_45hbk"]
 [ext_resource type="Script" uid="uid://dtnrwfsnrvmg4" path="res://scenes/card/state/update_failed.gd" id="14_76bwr"]
 [ext_resource type="PackedScene" uid="uid://xaw3rjo0357g" path="res://component/start_game.tscn" id="15_vgjac"]
-[ext_resource type="Script" uid="uid://4btg6qwfvs1o" path="res://component/start_game.gd" id="16_4l0uo"]
 
 [node name="CardPanel" type="Node2D" unique_id=694537855]
 script = ExtResource("1_qcsas")
@@ -89,7 +88,6 @@ script = ExtResource("14_76bwr")
 metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
 
 [node name="StartGame" parent="." unique_id=297163049 instance=ExtResource("15_vgjac")]
-script = ExtResource("16_4l0uo")
 
 [connection signal="card_confirm" from="GameCard" to="NodeStateMachine" method="_on_card_confirm"]
 [connection signal="pressed" from="Deselected" to="GameCard" method="_enable_deselected"]

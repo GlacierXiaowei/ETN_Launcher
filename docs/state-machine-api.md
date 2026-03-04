@@ -2,8 +2,28 @@
 
 > 游戏卡面状态管理系统 - 7 种游戏状态切换与弹窗联动
 
-**版本：** 1.0  
-**最后更新：** 2026-03-04
+**版本：** 1.1  
+**最后更新：** 2026-03-05
+
+---
+
+## ⚠️ 重要约定：状态名称格式
+
+**所有状态名称必须使用全小写（无下划线）格式！**
+
+| 正确 ✅ | 错误 ❌ |
+|--------|--------|
+| `"notinstalled"` | `"NotInstalled"` |
+| `"checkingupdate"` | `"CheckingUpdate"` |
+| `"uptodate"` | `"UpToDate"` |
+| `"runningstate"` | `"RunningState"` |
+
+**原因：** `transition_to()` 方法内部会将传入的名称转为小写后匹配节点，但为了代码一致性和避免混淆，**调用时请直接使用小写格式**。
+
+**状态名称转换规则：**
+- 枚举名：`NOT_INSTALLED` → 状态名：`"notinstalled"`
+- 节点名：`NotInstalled` → 状态名：`"notinstalled"`
+- 转换函数：使用 `_to_lowercase()` 而非 `_to_pascal_case()`
 
 ---
 
@@ -76,10 +96,24 @@ func _on_state_changed(old_state: String, new_state: String) -> void:
 
 ```gdscript
 # 方法 1：直接调用状态机的 transition_to
-state_machine.transition_to("notinstalledstate")
+state_machine.transition_to("notinstalled")  # ← 注意：全小写，无下划线
+state_machine.transition_to("checkingupdate")
+state_machine.transition_to("uptodate")
+state_machine.transition_to("runningstate")
 
 # 方法 2：通过状态管理器（推荐）
 card_panel.set_game_state("ready_to_launch")
+```
+
+**⚠️ 常见错误：**
+```gdscript
+# ❌ 错误：使用大驼峰
+state_machine.transition_to("NotInstalled")  # 不会工作！
+state_machine.transition_to("UpToDate")      # 不会工作！
+
+# ✅ 正确：使用全小写
+state_machine.transition_to("notinstalled")  # 正确
+state_machine.transition_to("uptodate")      # 正确
 ```
 
 ---
@@ -104,33 +138,28 @@ func _ready() -> void:
 
 func _on_state_changed(old_state: String, new_state: String) -> void:
     match new_state:
-        "notinstalledstate":
+        "notinstalled":
             state_label.text = "游戏未安装"
-            action_button.text = "安装"
+            action_button.text = "获取"
             action_button.visible = true
 
-        "checkingupdatestate":
+        "checkingupdate":
             state_label.text = "正在检查更新..."
             action_button.visible = false
 
-        "updateavailablestate":
-            state_label.text = "发现新版本"
+        "needupdate":
+            state_label.text = "需要注意"
             action_button.text = "更新"
             action_button.visible = true
 
-        "updaterequiredstate":
-            state_label.text = "需要更新"
-            action_button.text = "立即更新"
-            action_button.visible = true
-
-        "updatefailedstate":
+        "checkfailed":
             state_label.text = "检查失败"
             action_button.text = "重试"
             action_button.visible = true
 
-        "readytolaunchstate":
-            state_label.text = "准备启动"
-            action_button.text = "启动游戏"
+        "uptodate":
+            state_label.text = "启动游戏"
+            action_button.text = "启动"
             action_button.visible = true
 
         "runningstate":
@@ -193,15 +222,21 @@ PopupManager (显示弹窗)
 
 ## 2. 7 种游戏状态
 
-| 状态名                    | 类名                   | 说明     | 弹窗标题    | 弹窗按钮|
+| 状态名 (全小写)         | 类名                   | 说明     | 弹窗标题    | 弹窗按钮|
 | ---------------------- | -------------------- | ------ | ------- | --- |
-| `notinstalledstate`    | NotInstalledState    | 游戏未安装  | "游戏未安装" | [取消]|
-| `checkingupdatestate`  | CheckingUpdateState  | 检查更新中  | "检查更新"  | [等待]|
-| `updateavailablestate` | UpdateAvailableState | 有可选更新  | "有可用更新" | [暂不更|
-| `updaterequiredstate`  | UpdateRequiredState  | 需要强制更新 | "需要更新"  | [更新]|
-| `updatefailedstate`    | UpdateFailedState    | 检查失败   | "检查失败"  | [重试]|
-| `readytolaunchstate`   | ReadyToLaunchState   | 准备启动   | "启动游戏"  | [取消]|
-| `runningstate`         | RunningState         | 游戏运行中  | "游戏运行中" | [取消]|
+| `notinstalled`         | NotInstalled         | 游戏未安装  | "游戏未安装" | [取消] [安装]|
+| `checkingupdate`       | CheckingUpdate       | 检查更新中  | "检查更新"  | [等待]|
+| `needupdate`           | NeedUpdate           | 有可选更新  | "需要注意"  | [更新] [取消]|
+| `checkfailed`          | CheckFailed          | 检查失败   | "检查失败"  | [重试] [离线进入]|
+| `uptodate`             | UpToDate             | 准备启动   | -       | 无弹窗 (直接启动)|
+| `downloadstarted`      | DownloadStarted      | 开始下载   | -       | - |
+| `installstarted`       | InstallStarted       | 开始安装   | -       | - |
+| `installfinished`      | InstallFinished      | 安装完成   | -       | - |
+| `runningstate`         | RunningState         | 游戏运行中  | "游戏运行中" | [取消] [重新启动]|
+
+**注意：**
+- `uptodate` 状态**不显示弹窗**，直接启动游戏（Phase 4 设计变更）
+- `downloadstarted`、`installstarted`、`installfinished` 是中间过渡状态，不响应点击
 
 ---
 

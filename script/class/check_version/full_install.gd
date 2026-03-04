@@ -7,12 +7,12 @@ class_name FullInstall
 func _init(local: VersionInfo, server: UpdatePolicy) -> void:
 	if local == null:
 		push_error("[FullInstall] Error: local VersionInfo is null")
-		error_occurred.emit("Initialization failed: local VersionInfo is null")
+		error_occurred.emit("[FullInstall] Initialization failed: local VersionInfo is null")
 		return
 
 	if server == null:
 		push_error("[FullInstall] Error: server UpdatePolicy is null")
-		error_occurred.emit("Initialization failed: server UpdatePolicy is null")
+		error_occurred.emit("[FullInstall] Initialization failed: server UpdatePolicy is null")
 		return
 
 	download_path = "user://download/full/"
@@ -32,18 +32,18 @@ func begin_download() -> void:
 
 	if not clear_download_folder():
 		push_error("[FullInstall] begin_download: Failed to clear download folder")
-		error_occurred.emit("Failed to clear download folder")
+		error_occurred.emit("[FullInstall] Failed to clear download folder")
 		return
 
 	if full_package.is_empty():
 		push_error("[FullInstall] begin_download: full_package is empty")
-		error_occurred.emit("Full package is empty")
+		error_occurred.emit("[FullInstall] Full package is empty")
 		return
 
 	var url = full_package.get("url", "")
 	if url == "":
 		push_error("[FullInstall] begin_download: URL is empty in full_package")
-		error_occurred.emit("Full package URL is empty")
+		error_occurred.emit("[FullInstall] Full package URL is empty")
 		return
 
 	var file_name = "full_package.zip"
@@ -55,13 +55,13 @@ func begin_install() -> void:
 
 	if download_path == "" or download_path.is_empty():
 		push_error("[FullInstall] begin_install: download_path is empty")
-		error_occurred.emit("Download path is empty")
+		error_occurred.emit("[FullInstall] Download path is empty")
 		install_finished.emit(is_install_successful)
 		return
 
 	if install_path == "" or install_path.is_empty():
 		push_error("[FullInstall] begin_install: install_path is empty")
-		error_occurred.emit("Install path is empty")
+		error_occurred.emit("[FullInstall] Install path is empty")
 		install_finished.emit(is_install_successful)
 		return
 
@@ -69,7 +69,7 @@ func begin_install() -> void:
 	var download_dir = DirAccess.open(download_path)
 	if download_dir == null:
 		push_error("[FullInstall] begin_install: Failed to open download directory")
-		error_occurred.emit("Failed to open download directory")
+		error_occurred.emit("[FullInstall] Failed to open download directory")
 		install_finished.emit(is_install_successful)
 		return
 
@@ -84,14 +84,14 @@ func begin_install() -> void:
 
 	if zip_file == "":
 		push_error("[FullInstall] begin_install: No zip file found in download directory")
-		error_occurred.emit("No zip file found in download directory")
+		error_occurred.emit("[FullInstall] No zip file found in download directory")
 		install_finished.emit(is_install_successful)
 		return
 
 	var extracted_files = unzip_file(zip_file, download_path)
 	if extracted_files.size() == 0:
 		push_error("[FullInstall] begin_install: Failed to extract zip file")
-		error_occurred.emit("Failed to extract zip file")
+		error_occurred.emit("[FullInstall] Failed to extract zip file")
 		install_finished.emit(is_install_successful)
 		return
 
@@ -111,7 +111,7 @@ func begin_install() -> void:
 
 		if not move_file(source_path, dest_path):
 			push_error("[FullInstall] begin_install: Failed to move file: " + file_only_name)
-			error_occurred.emit("Failed to move file: " + file_only_name)
+			error_occurred.emit("[FullInstall] Failed to move file: " + file_only_name)
 			install_finished.emit(is_install_successful)
 			return
 
@@ -124,14 +124,14 @@ func unzip_file(zip_path: String, dest_path: String) -> Array:
 
 	if not FileAccess.file_exists(zip_path):
 		push_error("[FullInstall] unzip_file: zip file does not exist: " + zip_path)
-		error_occurred.emit("Zip file does not exist: " + zip_path)
+		error_occurred.emit("[FullInstall] Zip file does not exist: " + zip_path)
 		return extracted_files
 
 	var zip_reader = ZIPReader.new()
 	var error = zip_reader.open(zip_path)
 	if error != OK:
 		push_error("[FullInstall] unzip_file: Failed to open zip file, error: " + str(error))
-		error_occurred.emit("Failed to open zip file: " + str(error))
+		error_occurred.emit("[FullInstall] Failed to open zip file: " + str(error))
 		return extracted_files
 
 	var files = zip_reader.get_files()
@@ -146,7 +146,7 @@ func unzip_file(zip_path: String, dest_path: String) -> Array:
 		var file_out = FileAccess.open(dest_file_path, FileAccess.WRITE)
 		if file_out == null:
 			push_error("[FullInstall] unzip_file: Failed to create file: " + dest_file_path)
-			error_occurred.emit("Failed to create file: " + dest_file_path)
+			error_occurred.emit("[FullInstall] Failed to create file: " + dest_file_path)
 			continue
 
 		file_out.store_buffer(file_data)

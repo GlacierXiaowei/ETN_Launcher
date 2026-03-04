@@ -51,7 +51,7 @@ func _on_card_confirm() -> void:
 func on_popup_button_pressed(metadata : String) -> void:
 	match metadata:
 		"update":
-			transition.emit("DownloadStarted")
+			transition.emit("downloadstarted")
 			#这个我们让下一个节点处理吧
 			#install_component._on_下载_pressed()
 		"enter":

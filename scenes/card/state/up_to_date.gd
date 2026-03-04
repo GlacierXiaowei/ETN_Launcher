@@ -15,4 +15,4 @@ func _on_enter() -> void:
 
 func _on_card_confirm() -> void:
 	card_panel._start_game()
-	transition.emit("RunningState")
+	transition.emit("runningstate")

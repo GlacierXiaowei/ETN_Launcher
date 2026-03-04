@@ -40,11 +40,11 @@ func _on_card_confirm() -> void:
 func on_popup_button_pressed(metadata : String) -> void:
 	match metadata:
 		"download":
-			transition.emit("DownloadStarted")
+			transition.emit("downloadstarted")
 		"install":
-			transition.emit("InstallStarted")
+			transition.emit("installstarted")
 		"confirm":
-			transition.emit("CheckingUpdate")
+			transition.emit("checkingupdate")
 
 
 func set_err_content(err_notes :String) -> void :

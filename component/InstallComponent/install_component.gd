@@ -18,7 +18,7 @@ var _local : VersionInfo
 var _server : UpdatePolicy
 
 ##别忘记填充了 免得反复检查 
-var is_up_to_data : bool = false
+var is_up_to_date : bool = false
 
 #signal update_needed(result: String)
 #signal up_to_date
@@ -42,6 +42,7 @@ func _ready() -> void:
 	
 	check_game_installation()
 	if not is_installed:
+		await get_tree().process_frame
 		update_state_changed.emit(InstallSignalHub.InstallState.NOT_INSTALLED)
 		return
 	
@@ -58,6 +59,7 @@ func _ready() -> void:
 func re_ready() -> void:
 	check_game_installation()
 	if not is_installed:
+		await get_tree().process_frame
 		update_state_changed.emit(InstallSignalHub.InstallState.NOT_INSTALLED)
 		return
 	await init_check_version()
@@ -106,7 +108,7 @@ func init_check_version() -> void:
 		update_state_changed.emit(InstallSignalHub.InstallState.NOT_INSTALLED)
 		return
 	
-	if is_up_to_data :
+	if is_up_to_date :
 		update_state_changed.emit(InstallSignalHub.InstallState.UP_TO_DATE)
 		return
 	

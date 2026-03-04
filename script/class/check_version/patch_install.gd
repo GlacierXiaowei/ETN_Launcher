@@ -105,19 +105,19 @@ func begin_download() -> void:
 	
 	if not VersionUtils.clear_folder(download_path):
 		push_error("[PatchInstall] begin_download: Failed to clear download folder")
-		error_occurred.emit("Failed to clear download folder")
+		error_occurred.emit("[PatchInstall] Failed to clear download folder")
 		return
 	
 	var urls = get_patch_urls()
 	if urls.size() == 0:
 		push_error("[PatchInstall] begin_download: No URLs found for needed patches")
-		error_occurred.emit("No URLs found for needed patches")
+		error_occurred.emit("[PatchInstall] No URLs found for needed patches")
 		return
 	
 	for url_info in urls:
 		if not await download_single_file(url_info.url, url_info.file_name):
 			push_error("[PatchInstall] begin_download: Failed to download " + url_info.file_name)
-			error_occurred.emit("Failed to download: " + url_info.file_name)
+			error_occurred.emit("[PatchInstall] Failed to download: " + url_info.file_name)
 			return
 	
 	is_download_successful = true
@@ -199,7 +199,7 @@ func download_single_file(url: String, file_name: String) -> bool:
 	
 	if file_name == "" or file_name.is_empty():
 		push_error("[PatchInstall] download_single_file: file_name is empty")
-		error_occurred.emit("Download failed: file_name is empty")
+		error_occurred.emit("[PatchInstall] Download failed: file_name is empty")
 		return false
 	
 	var http_request = HTTPRequest.new()
@@ -214,7 +214,7 @@ func download_single_file(url: String, file_name: String) -> bool:
 	var error = http_request.request(url)
 	if error != OK:
 		push_error("[PatchInstall] download_single_file: Request failed with error: " + str(error))
-		error_occurred.emit("Download request failed: " + str(error))
+		error_occurred.emit("[PatchInstall] Download request failed: " + str(error))
 		remove_child(http_request)
 		http_request.queue_free()
 		return false
@@ -248,7 +248,7 @@ func download_single_file(url: String, file_name: String) -> bool:
 	
 	if not download_success:
 		push_error("[PatchInstall] download_single_file: " + error_message)
-		error_occurred.emit("Download failed: " + error_message)
+		error_occurred.emit("[PatchInstall] Download failed: " + error_message)
 	
 	return download_success
 
@@ -271,19 +271,19 @@ func begin_install() -> void:
 	
 	if download_path == "" or download_path.is_empty():
 		push_error("[PatchInstall] begin_install: download_path is empty")
-		error_occurred.emit("Download path is empty")
+		error_occurred.emit("[PatchInstall] Download path is empty")
 		install_finished.emit(is_install_successful)
 		return
 	
 	if install_path == "" or install_path.is_empty():
 		push_error("[PatchInstall] begin_install: install_path is empty")
-		error_occurred.emit("Install path is empty")
+		error_occurred.emit("[PatchInstall] Install path is empty")
 		install_finished.emit(is_install_successful)
 		return
 	
 	if not DirAccess.dir_exists_absolute(download_path):
 		push_error("[PatchInstall] begin_install: Download directory does not exist: " + download_path)
-		error_occurred.emit("Download directory does not exist")
+		error_occurred.emit("[PatchInstall] Download directory does not exist")
 		install_finished.emit(is_install_successful)
 		return
 	
@@ -291,20 +291,20 @@ func begin_install() -> void:
 		var d = DirAccess.open("user://")
 		if d == null:
 			push_error("[PatchInstall] begin_install: Failed to open user://")
-			error_occurred.emit("Failed to open user://")
+			error_occurred.emit("[PatchInstall] Failed to open user://")
 			install_finished.emit(is_install_successful)
 			return
 		var err = d.make_dir_recursive(install_path)
 		if err != OK:
 			push_error("[PatchInstall] begin_install: Failed to create install directory")
-			error_occurred.emit("Failed to create install directory")
+			error_occurred.emit("[PatchInstall] Failed to create install directory")
 			install_finished.emit(is_install_successful)
 			return
 	
 	var download_dir = DirAccess.open(download_path)
 	if download_dir == null:
 		push_error("[PatchInstall] begin_install: Failed to open download directory")
-		error_occurred.emit("Failed to open download directory")
+		error_occurred.emit("[PatchInstall] Failed to open download directory")
 		install_finished.emit(is_install_successful)
 		return
 	
@@ -319,7 +319,7 @@ func begin_install() -> void:
 	
 	if files_to_move.size() == 0:
 		push_error("[PatchInstall] begin_install: No files to install")
-		error_occurred.emit("No files to install")
+		error_occurred.emit("[PatchInstall] No files to install")
 		install_finished.emit(is_install_successful)
 		return
 	
@@ -329,7 +329,7 @@ func begin_install() -> void:
 		
 		if not move_file(source_path, dest_path):
 			push_error("[PatchInstall] begin_install: Failed to move file: " + f)
-			error_occurred.emit("Failed to move file: " + f)
+			error_occurred.emit("[PatchInstall] Failed to move file: " + f)
 			install_finished.emit(is_install_successful)
 			return
 	
