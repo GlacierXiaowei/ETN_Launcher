@@ -3,11 +3,12 @@ extends Node2D
 @onready var node_state_machine: NodeStateMachine = $NodeStateMachine
 @onready var update_failed: Node = $NodeStateMachine/UpdateFailed
 @onready var start_game: StartGame = $StartGame
+@onready var deselected: Control = $deselected
 
 
 func _ready() -> void:
 	update_failed.reset_err_content()
-	
+	deselected._on_game_card_card_deselected()
 
 ##目前关键错误不会直接弹窗 有点何意味啊 我觉得还不如
 func _on_install_test_scene_update_error_occurred(error_message: String) -> void:

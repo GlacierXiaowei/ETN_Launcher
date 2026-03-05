@@ -5,8 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://duhpdp7yww5rf" path="res://assets/image/poster/game2_poster .png" id="3_q2nvt"]
 [ext_resource type="Shader" uid="uid://ct2hawbu1tjn0" path="res://assets/shaders/liquid_glass_ui.gdshader" id="4_4l0uo"]
 [ext_resource type="PackedScene" uid="uid://fkwbkys7yssn" path="res://component/InstallComponent/install_component.tscn" id="4_68lau"]
-[ext_resource type="Script" uid="uid://dp12aruxr726m" path="res://component/GlassComponent/glass_button.gd" id="4_vgjac"]
+[ext_resource type="Script" uid="uid://dmfaagbi4fdmu" path="res://scenes/card/deselected.gd" id="5_45hbk"]
 [ext_resource type="Script" uid="uid://bo7kxs2u0mykl" path="res://scenes/card/state/node_state_machine.gd" id="5_i4u0h"]
+[ext_resource type="Texture2D" uid="uid://duqtrs7k8ngd8" path="res://assets/image/quit/x.svg" id="6_45hbk"]
 [ext_resource type="Script" uid="uid://dmylsjrvy0qnq" path="res://scenes/card/state/not_installed.gd" id="6_i4u0h"]
 [ext_resource type="Script" uid="uid://nruumoeeh7qb" path="res://scenes/card/state/checking_update.gd" id="7_qw58v"]
 [ext_resource type="Script" uid="uid://dj1lse6hpcxgq" path="res://scenes/card/state/check_failed.gd" id="8_76bwr"]
@@ -17,6 +18,10 @@
 [ext_resource type="Script" uid="uid://dfhjrhkepgfel" path="res://scenes/card/state/running_state.gd" id="12_45hbk"]
 [ext_resource type="Script" uid="uid://dtnrwfsnrvmg4" path="res://scenes/card/state/update_failed.gd" id="14_76bwr"]
 [ext_resource type="PackedScene" uid="uid://xaw3rjo0357g" path="res://component/Card/start_game.tscn" id="15_vgjac"]
+[ext_resource type="Script" uid="uid://dxx563dwn4au5" path="res://scenes/card/up_shadow.gd" id="19_ek5gw"]
+[ext_resource type="Script" uid="uid://rcme7r71iekf" path="res://scenes/card/down_shadow.gd" id="20_3gbhb"]
+[ext_resource type="FontFile" uid="uid://dxo63jv4vll8v" path="res://assets/fonts/MiSans-Bold.otf" id="20_vo7e3"]
+[ext_resource type="Texture2D" uid="uid://dv1goxmy2way3" path="res://assets/image/card_panel遮罩.png" id="20_w3mrt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_45hbk"]
 shader = ExtResource("4_4l0uo")
@@ -49,29 +54,13 @@ shader_parameter/distortion_k2 = 0.1
 
 [node name="CardPanel" type="Node2D" unique_id=694537855]
 script = ExtResource("1_qcsas")
-metadata/_edit_vertical_guides_ = [250.0]
-metadata/_edit_horizontal_guides_ = [540.0]
 
 [node name="GameCard" parent="." unique_id=1449577529 instance=ExtResource("2_2nm5h")]
 poster_texture = ExtResource("3_q2nvt")
 
-[node name="StateLabel" type="Label" parent="." unique_id=1122148181]
-offset_left = 992.0
-offset_top = 978.0
-offset_right = 1032.0
-offset_bottom = 1027.0
-text = "交互
-"
-
-[node name="GameName" type="Label" parent="." unique_id=124945963]
-offset_left = 946.0
-offset_top = 51.0
-offset_right = 1024.0
-offset_bottom = 74.0
-text = "ETN_Farm"
-
-[node name="GlassButton" type="Control" parent="." unique_id=207607241]
+[node name="deselected" type="Control" parent="." unique_id=1944687241]
 material = SubResource("ShaderMaterial_45hbk")
+custom_minimum_size = Vector2(108, 108)
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -84,13 +73,13 @@ offset_right = 168.0
 offset_bottom = 540.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("4_vgjac")
-text = "x"
-size_variant = 1
+pivot_offset_ratio = Vector2(0.5, 0.5)
+script = ExtResource("5_45hbk")
+content_type = 1
+text = " x "
+icon = ExtResource("6_45hbk")
 corner_radius_px = 48.0
-horizontal_padding = 48.0
-vertical_padding = 48.0
-metadata/_custom_type_script = "uid://dp12aruxr726m"
+metadata/_custom_type_script = "uid://cbkwige31qsk3"
 
 [node name="InstallComponent" parent="." unique_id=378045110 instance=ExtResource("4_68lau")]
 
@@ -137,7 +126,63 @@ metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
 
 [node name="StartGame" parent="." unique_id=297163049 instance=ExtResource("15_vgjac")]
 
+[node name="UpShadow" type="Node2D" parent="." unique_id=2015102994]
+script = ExtResource("19_ek5gw")
+
+[node name="TextureRect" type="TextureRect" parent="UpShadow" unique_id=1397324380]
+offset_right = 1280.0
+offset_bottom = 720.0
+scale = Vector2(1.5, 1.5)
+mouse_filter = 2
+texture = ExtResource("20_w3mrt")
+
+[node name="GameName" type="Label" parent="UpShadow" unique_id=124945963]
+offset_top = 60.0
+offset_right = 1920.0
+offset_bottom = 146.0
+pivot_offset_ratio = Vector2(0.5, 0.5)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("20_vo7e3")
+theme_override_font_sizes/font_size = 52
+text = "ETN Farm"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="DownShadow" type="Node2D" parent="." unique_id=236855529]
+script = ExtResource("20_3gbhb")
+
+[node name="TextureRect" type="TextureRect" parent="DownShadow" unique_id=1768252653]
+offset_left = 1920.0
+offset_top = 1080.0
+offset_right = 3200.0
+offset_bottom = 1800.0
+rotation = 3.1415927
+scale = Vector2(1.5, 1.5)
+mouse_filter = 2
+texture = ExtResource("20_w3mrt")
+
+[node name="StateLabel" type="Label" parent="DownShadow" unique_id=1122148181]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 945.0
+offset_right = 1920.0
+offset_bottom = 1020.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+theme_override_fonts/font = ExtResource("20_vo7e3")
+theme_override_font_sizes/font_size = 56
+text = "正在检查......"
+horizontal_alignment = 1
+
 [connection signal="card_confirm" from="GameCard" to="NodeStateMachine" method="_on_card_confirm"]
-[connection signal="pressed" from="GlassButton" to="GameCard" method="_enable_deselected"]
+[connection signal="card_deselected" from="GameCard" to="deselected" method="_on_game_card_card_deselected"]
+[connection signal="card_deselected" from="GameCard" to="UpShadow" method="_on_game_card_card_deselected"]
+[connection signal="card_deselected" from="GameCard" to="DownShadow" method="_on_game_card_card_deselected"]
+[connection signal="card_selected" from="GameCard" to="deselected" method="_on_game_card_card_selected"]
+[connection signal="card_selected" from="GameCard" to="UpShadow" method="_on_game_card_card_selected"]
+[connection signal="card_selected" from="GameCard" to="DownShadow" method="_on_game_card_card_selected"]
+[connection signal="pressed" from="deselected" to="GameCard" method="_enable_deselected"]
 [connection signal="update_error_occurred" from="InstallComponent" to="." method="_on_install_test_scene_update_error_occurred"]
 [connection signal="update_state_changed" from="InstallComponent" to="." method="_on_install_test_scene_update_state_changed"]

@@ -14,6 +14,23 @@ enum SizeVariant { MEDIUM, LARGE }
 			_label.text = v
 		_auto_resize()
 
+@export var font_size: int = 16:
+	set(v):
+		font_size = v
+		if _label != null:
+			_label.add_theme_font_size_override("font_size", v)
+		_auto_resize()
+
+@export var font: Font:
+	set(v):
+		font = v
+		if _label != null:
+			if v != null:
+				_label.add_theme_font_override("font", v)
+			else:
+				_label.remove_theme_font_override("font")
+		_auto_resize()
+
 @export_group("State")
 @export var disabled: bool = false:
 	set(v):
@@ -82,6 +99,9 @@ func _build_nodes_if_needed() -> void:
 		_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		_label.text = text
+		_label.add_theme_font_size_override("font_size", font_size)
+		if font != null:
+			_label.add_theme_font_override("font", font)
 		add_child(_label)
 
 	if _hit_button == null:
@@ -139,18 +159,16 @@ func _auto_resize() -> void:
 	if not auto_size or _label == null:
 		return
 	
-	var font: Font = _label.get_theme_font("font")
-	if font == null:
-		font = _label.get_theme_default_font()
-	if font == null:
+	var current_font: Font = font
+	if current_font == null:
+		current_font = _label.get_theme_font("font")
+	if current_font == null:
+		current_font = _label.get_theme_default_font()
+	if current_font == null:
 		return
-	var font_size := 16
-	if _label.has_theme_font_size_override("font_size"):
-		font_size = _label.get_theme_font_size("font_size")
-	else:
-		font_size = _label.get_theme_font_size("font_size")
+	var current_font_size := font_size
 	
-	var text_size := font.get_string_size(_label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
+	var text_size := current_font.get_string_size(_label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, current_font_size)
 	# Some fonts have tighter glyph bounds; add a small extra padding for long strings.
 	var extra_pad := 0.0
 	if text_size.x >= 200.0:
