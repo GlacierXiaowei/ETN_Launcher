@@ -11,6 +11,7 @@ signal popup_opened
 @onready var spacer: Control = $PopupContainer/GlassPanel/Margin/VBox/Spacer
 @onready var button_container: HBoxContainer = $PopupContainer/GlassPanel/Margin/VBox/ButtonContainer
 @onready var popup_container: Control = $PopupContainer
+@onready var input_line_edit: LineEdit = $PopupContainer/GlassPanel/Margin/VBox/Spacer/InputLineEdit
 
 const DEFAULT_CORNER_RADIUS_PX := 24.0
 const DIM_ALPHA := 0.5
@@ -26,8 +27,6 @@ var _is_closing := false
 
 var _dim_background: ColorRect = null
 var _blur_overlay: ColorRect = null
-
-var _input_line_edit: LineEdit = null
 
 func setup(config: Dictionary) -> void:
 	_config = config
@@ -95,9 +94,11 @@ func setup(config: Dictionary) -> void:
 			content_label.bbcode_enabled = false
 			content_label.text = config["content"]
 	
-	# 创建输入框（如果配置了 input_placeholder）
+	# 显示输入框（如果配置了 input_placeholder）
 	if config.has("input_placeholder"):
-		_create_input_line_edit(config["input_placeholder"], config.get("input_text", ""))
+		_show_input_line_edit(config["input_placeholder"], config.get("input_text", ""))
+	else:
+		_hide_input_line_edit()
 	
 	_build_buttons(config.get("buttons", []))
 	
@@ -265,26 +266,23 @@ func set_content(text: String, type: String = "label") -> void:
 func set_buttons(buttons: Array) -> void:
 	_build_buttons(buttons)
 
-func _create_input_line_edit(placeholder: String, initial_text: String = "") -> void:
-	if _input_line_edit != null:
-		return
-	
-	_input_line_edit = LineEdit.new()
-	_input_line_edit.name = "InputLineEdit"
-	_input_line_edit.placeholder_text = placeholder
-	_input_line_edit.text = initial_text
-	_input_line_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	
-	spacer.add_child(_input_line_edit)
+func _show_input_line_edit(placeholder: String, initial_text: String = "") -> void:
+	input_line_edit.visible = true
+	input_line_edit.placeholder_text = placeholder
+	input_line_edit.text = initial_text
+
+func _hide_input_line_edit() -> void:
+	input_line_edit.visible = false
+	input_line_edit.text = ""
 
 func get_input_text() -> String:
-	if _input_line_edit == null:
+	if not input_line_edit.visible:
 		return ""
-	return _input_line_edit.text
+	return input_line_edit.text
 
 func set_input_text(text: String) -> void:
-	if _input_line_edit != null:
-		_input_line_edit.text = text
+	if input_line_edit.visible:
+		input_line_edit.text = text
 
 func update(config: Dictionary) -> void:
 	if _config == null:

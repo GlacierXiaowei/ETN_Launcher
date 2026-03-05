@@ -19,5 +19,5 @@ func _on_enter() -> void:
 	
 
 func _on_card_confirm() -> void:
-	pass
+	card_panel._start_game()
 	##下次做  游戏中 文是否要重启 我们先关闭 然后启动 这个考虑使用call_deffer

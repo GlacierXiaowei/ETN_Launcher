@@ -1,10 +1,16 @@
 extends Node
 
-@onready var install_component: InstallComponent = $"../.."
+@onready var install_component: InstallComponent
 @export var copy_path : String =""
 var selected_path :String
 
 signal input_finished
+
+
+func _ready() -> void:
+	await  get_tree().process_frame
+	install_component = $"../.."
+
 
 func select_zip_file(path_mode : bool = false) -> bool:
 	selected_path = ""
@@ -47,10 +53,12 @@ func select_zip_file(path_mode : bool = false) -> bool:
 func _on_输入路径_pressed() -> void:
 	PopupManager.show_input(
 		"输入文件路径",
-		"请输入文件的完整路径...",
+		"请在下列的输入框中输入文件的完整路径...
+请不要有双引号等等，实例:\n  D://下载(D)//ETN_Farm.zip",
+		"请在此输入...",
 		_on_path_confirm,
 		func(): install_component.update_state_changed.emit(InstallSignalHub.InstallState.DOWNLOAD_FINISHED),
-		"请在此粘贴"
+		""
 	)
 
 

@@ -122,6 +122,7 @@ func begin_download() -> void:
 	
 	is_download_successful = true
 	print("[PatchInstall] begin_download: All patches downloaded successfully")
+	state_changed.emit(InstallSignalHub.InstallState.DOWNLOAD_FINISHED)
 	download_finished.emit()
 
 

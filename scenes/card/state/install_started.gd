@@ -32,7 +32,14 @@ func _on_enter() -> void:
 1.文件浏览器窗口选择文件进行安装
 2.复制下载路径安装
 以下有复制路径的教程 （可以滚轮滑动向下翻页）
-如遇到问题 可向开发者反馈 （本来我也不想这么做 但是之前我的Http的连接速度太慢 只能让你们浏览器处理啦 理解万岁！）"
+如遇到问题 可向开发者反馈 （本来我也不想这么做 但是之前我的Http的连接速度太慢 只能让你们浏览器处理啦 理解万岁！）
+[img valign=middle]res://scenes/card/更新指南/下载指南-1.png[/img]\n
+[img valign=middle]res://scenes/card/更新指南/下载指南-2.png[/img]\n
+[img valign=middle]res://scenes/card/更新指南/下载指南-3.png[/img]\n
+[img valign=middle]res://scenes/card/更新指南/下载指南-4.png[/img]\n
+[img valign=middle]res://scenes/card/更新指南/下载指南-5.png[/img]\n
+[img valign=middle]res://scenes/card/更新指南/下载指南-6.png[/img]\n
+"
 
 			buttons= [
 				{"text": "浏览" , "type" : "primary" , "metadata" : "primary"},
@@ -42,7 +49,7 @@ func _on_enter() -> void:
 	
 			PopupManager.popup_button_pressed.connect(on_popup_button_pressed, Object.CONNECT_ONE_SHOT)
 			PopupManager.show_popup({
-				"title" : title , "content" : content , "buttons" : buttons 
+				"title" : title , "content" : content , "buttons" : buttons ,"size" : "large"
 									})
 		
 

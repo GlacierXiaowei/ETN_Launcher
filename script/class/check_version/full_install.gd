@@ -18,7 +18,8 @@ func _init(local: VersionInfo, server: UpdatePolicy) -> void:
 	download_path = "user://download/full/"
 	var appdata = OS.get_environment("APPDATA")
 	var game_dir = appdata.path_join(server.game_name)
-	install_path = game_dir.path_join("patch")
+	# 全量包直接安装到游戏根目录，而不是 patch 子目录
+	install_path = game_dir
 	DirAccess.make_dir_recursive_absolute(install_path)
 
 	full_package = server.full_package

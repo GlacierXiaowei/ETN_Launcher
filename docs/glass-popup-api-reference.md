@@ -742,7 +742,9 @@ PopupManager.popup_button_pressed.connect(_on_response)  # _on_response 在 Game
 
 ### Q3: 多个弹窗同时弹出会怎样？
 
-当前为**单弹窗模式**，<mark>新弹窗会自动关闭旧弹窗</mark>。使用 `PopupManager.close_and_show_new()` 可确保动画完整。
+当前为**单弹窗模式**，<mark>新弹窗会自动关闭旧弹窗</mark>。
+
+使用 `PopupManager.close_and_show_new()` 可确保动画完整。
 
 ### Q4: 如何防止用户疯狂点击导致弹窗乱跳？
 

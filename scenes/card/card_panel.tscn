@@ -2,9 +2,10 @@
 
 [ext_resource type="Script" uid="uid://bavnpyclbdd7f" path="res://scenes/card/card_panel.gd" id="1_qcsas"]
 [ext_resource type="PackedScene" uid="uid://c8yvxg3ulq3a" path="res://scenes/card/game_card.tscn" id="2_2nm5h"]
-[ext_resource type="Texture2D" uid="uid://cbx0rlqrwqtrq" path="res://godot_ui_components-main/scenes/esport_event/assets/pablo-heimplatz-ZODcBkEohk8-unsplash.jpg" id="2_vgjac"]
 [ext_resource type="Texture2D" uid="uid://duhpdp7yww5rf" path="res://assets/image/poster/game2_poster .png" id="3_q2nvt"]
+[ext_resource type="Shader" uid="uid://ct2hawbu1tjn0" path="res://assets/shaders/liquid_glass_ui.gdshader" id="4_4l0uo"]
 [ext_resource type="PackedScene" uid="uid://fkwbkys7yssn" path="res://component/InstallComponent/install_component.tscn" id="4_68lau"]
+[ext_resource type="Script" uid="uid://dp12aruxr726m" path="res://component/GlassComponent/glass_button.gd" id="4_vgjac"]
 [ext_resource type="Script" uid="uid://bo7kxs2u0mykl" path="res://scenes/card/state/node_state_machine.gd" id="5_i4u0h"]
 [ext_resource type="Script" uid="uid://dmylsjrvy0qnq" path="res://scenes/card/state/not_installed.gd" id="6_i4u0h"]
 [ext_resource type="Script" uid="uid://nruumoeeh7qb" path="res://scenes/card/state/checking_update.gd" id="7_qw58v"]
@@ -17,20 +18,39 @@
 [ext_resource type="Script" uid="uid://dtnrwfsnrvmg4" path="res://scenes/card/state/update_failed.gd" id="14_76bwr"]
 [ext_resource type="PackedScene" uid="uid://xaw3rjo0357g" path="res://component/Card/start_game.tscn" id="15_vgjac"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_45hbk"]
+shader = ExtResource("4_4l0uo")
+shader_parameter/rect_size_px = Vector2(256, 256)
+shader_parameter/corner_radius_px = 24.0
+shader_parameter/tint = Color(2.117, 2.117, 2.117, 0.12)
+shader_parameter/opacity = 1.0
+shader_parameter/refraction_strength_px = 14.0
+shader_parameter/edge_refraction_boost = 4.0
+shader_parameter/edge_falloff_px = 16.0
+shader_parameter/blur_lod_center = 2.8
+shader_parameter/blur_lod_edge = 4.2
+shader_parameter/blur_strength = 1.0
+shader_parameter/blur_radius_px = 21.0
+shader_parameter/blur_quality = 0
+shader_parameter/refraction_isotropy = 0.35
+shader_parameter/refraction_edge_curve = 2.05
+shader_parameter/dispersion_strength = 1.4
+shader_parameter/dispersion_px = 16.0
+shader_parameter/border_width_px = 0.5
+shader_parameter/border_color = Color(1.353, 1.353, 1.353, 0.278)
+shader_parameter/rim_width_px = 2.25
+shader_parameter/rim_intensity = 4.0
+shader_parameter/rim_color = Color(3.294, 3.294, 3.294, 0.55)
+shader_parameter/rim_fresnel_power = 3.2
+shader_parameter/rim_curvature = 1.0
+shader_parameter/rim_f0 = 0.04
+shader_parameter/distortion_k1 = 0.15
+shader_parameter/distortion_k2 = 0.1
+
 [node name="CardPanel" type="Node2D" unique_id=694537855]
 script = ExtResource("1_qcsas")
-
-[node name="TextureRect" type="TextureRect" parent="." unique_id=203093259]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -18.0
-offset_top = -208.0
-offset_right = 1902.0
-offset_bottom = 1073.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_vgjac")
+metadata/_edit_vertical_guides_ = [250.0]
+metadata/_edit_horizontal_guides_ = [540.0]
 
 [node name="GameCard" parent="." unique_id=1449577529 instance=ExtResource("2_2nm5h")]
 poster_texture = ExtResource("3_q2nvt")
@@ -50,12 +70,27 @@ offset_right = 1024.0
 offset_bottom = 74.0
 text = "ETN_Farm"
 
-[node name="Deselected" type="Button" parent="." unique_id=759516851]
-offset_left = 144.0
-offset_top = 611.0
-offset_right = 216.0
-offset_bottom = 642.0
-text = "取消选中"
+[node name="GlassButton" type="Control" parent="." unique_id=207607241]
+material = SubResource("ShaderMaterial_45hbk")
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 168.0
+offset_top = 540.0
+offset_right = 168.0
+offset_bottom = 540.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_vgjac")
+text = "x"
+size_variant = 1
+corner_radius_px = 48.0
+horizontal_padding = 48.0
+vertical_padding = 48.0
+metadata/_custom_type_script = "uid://dp12aruxr726m"
 
 [node name="InstallComponent" parent="." unique_id=378045110 instance=ExtResource("4_68lau")]
 
@@ -103,6 +138,6 @@ metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
 [node name="StartGame" parent="." unique_id=297163049 instance=ExtResource("15_vgjac")]
 
 [connection signal="card_confirm" from="GameCard" to="NodeStateMachine" method="_on_card_confirm"]
-[connection signal="pressed" from="Deselected" to="GameCard" method="_enable_deselected"]
+[connection signal="pressed" from="GlassButton" to="GameCard" method="_enable_deselected"]
 [connection signal="update_error_occurred" from="InstallComponent" to="." method="_on_install_test_scene_update_error_occurred"]
 [connection signal="update_state_changed" from="InstallComponent" to="." method="_on_install_test_scene_update_state_changed"]

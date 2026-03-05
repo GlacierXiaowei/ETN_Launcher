@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dsqw1jug7vmk5"
-path="res://.godot/imported/logo_02.png-bb00d8befb8bf65fae9015513db4ce43.ctex"
+uid="uid://w5ns8p0d4uo2"
+path="res://.godot/imported/下载指南-6.png-97ca81fc04b424bdbc76bfc021725096.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/image/boot_logo/logo_02.png"
-dest_files=["res://.godot/imported/logo_02.png-bb00d8befb8bf65fae9015513db4ce43.ctex"]
+source_file="res://scenes/card/更新指南/下载指南-6.png"
+dest_files=["res://.godot/imported/下载指南-6.png-97ca81fc04b424bdbc76bfc021725096.ctex"]
 
 [params]
 

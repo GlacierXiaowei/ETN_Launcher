@@ -14,7 +14,7 @@ func _on_install_test_scene_update_error_occurred(error_message: String) -> void
 	PopupManager.close_and_show_new({
 		"title" : "发生错误" , "content" : error_message 
 	})
-	update_failed.set_err_content()
+	#update_failed.set_err_content()
 	node_state_machine.transition_to("updatefailed")
 
 func _on_install_test_scene_update_state_changed(state: InstallSignalHub.InstallState) -> void:
@@ -25,9 +25,10 @@ func _on_install_test_scene_update_state_changed(state: InstallSignalHub.Install
 		return
 		
 	if state_name == "downloadfinished" :
-		node_state_machine.transition_to("installfinished")
+		node_state_machine.transition_to("installstarted")
 		return
 	if state_name == "installfinished" :
+		PopupManager.show_confirm("安装成功","游戏已经完成安装，点击卡面启动游戏！\n祝您游戏愉快！",func(): pass)
 		node_state_machine.transition_to("uptodate")
 		return
 		

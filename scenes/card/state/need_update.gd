@@ -38,6 +38,7 @@ func _on_card_confirm() -> void:
 	4.若新版本要求必须更新，则必须更新游戏才能进入游戏"
    
 	buttons= [
+		#{"text": "全量下载" , "type" : "secondary" , "metadata" : "full_update"},
 		{"text": "更新" , "type" : "primary" , "metadata" : "update"},
 		{"text": "取消" , "type" : "third" , "metadata" : "cancel"}
 	]

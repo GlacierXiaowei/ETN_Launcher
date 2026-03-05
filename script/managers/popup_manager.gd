@@ -7,6 +7,7 @@ signal popup_closed
 var _current_popup: GlobalPopup = null
 var _popup_scene: PackedScene = load("res://component/GlassComponent/global_popup.tscn")
 
+@warning_ignore("unused_private_class_variable")
 var _loading_active := false
 var _loading_snapshot: Dictionary = {}
 
@@ -123,13 +124,14 @@ func has_open_popup() -> bool:
 
 
 func show_loading(title: String = "请稍候", label_text: String = "请稍候...", use_fade: bool = true) -> void:
-	print("[PopupManager] show_loading: 开始执行，_loading_active=", _loading_active, ", has_open_popup()=", has_open_popup())
-	if _loading_active:
-		print("[PopupManager] show_loading: _loading_active 为 true，直接返回")
-		return
+	print("[PopupManager] show_loading: 开始执行，has_open_popup()=", has_open_popup())
+	# _loading_active 检查已注释 - 用户反馈此检查在当前场景中不必要
+	# if _loading_active:
+	# 	print("[PopupManager] show_loading: _loading_active 为 true，直接返回")
+	# 	return
 	if has_open_popup():
 		print("[PopupManager] show_loading: 有弹窗，保存快照并进入 loading 状态")
-		_loading_active = true
+		# _loading_active = true  # 已注释
 		_loading_snapshot = _current_popup.get_state_snapshot()
 		if use_fade:
 			print("[PopupManager] show_loading: 使用淡入淡出动画")
@@ -141,7 +143,7 @@ func show_loading(title: String = "请稍候", label_text: String = "请稍候..
 		return
 	
 	print("[PopupManager] show_loading: 无弹窗，创建新等待弹窗")
-	_loading_active = true
+	# _loading_active = true  # 已注释
 	_loading_snapshot = {}
 	show_popup({
 		"size": "medium",
@@ -153,7 +155,7 @@ func show_loading(title: String = "请稍候", label_text: String = "请稍候..
 				"text": "请稍候...",
 				"type": "secondary",
 				"metadata": "_loading",
-				"stay_open": true,
+				"stay_open": false,
 				"disabled": true,
 			}
 		]
@@ -163,7 +165,7 @@ func show_loading(title: String = "请稍候", label_text: String = "请稍候..
 
 func hide_loading(restore_config: Dictionary = {}, use_fade: bool = true) -> void:
 	if not has_open_popup():
-		_loading_active = false
+		# _loading_active = false  # 已注释
 		_loading_snapshot = {}
 		return
 	
@@ -179,15 +181,15 @@ func hide_loading(restore_config: Dictionary = {}, use_fade: bool = true) -> voi
 			cfg["transition_animation"] = use_fade
 		update_popup(cfg)
 	
-	_loading_active = false
+	# _loading_active = false  # 已注释
 	_loading_snapshot = {}
 
 
-func show_input(title: String, placeholder: String, on_confirm: Callable, on_cancel: Callable = Callable(), initial_text: String = "") -> void:
+func show_input(title: String,content : String = "", placeholder: String = "请在此输入", on_confirm: Callable = Callable(), on_cancel: Callable = Callable(), initial_text: String = "") -> void:
 	var config := {
 		"size": "medium",
 		"title": title,
-		"content": "",
+		"content": content,
 		"content_type": "label",
 		"input_placeholder": placeholder,
 		"input_text": initial_text,
