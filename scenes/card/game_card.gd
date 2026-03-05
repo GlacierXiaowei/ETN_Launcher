@@ -220,8 +220,9 @@ func _on_card_selected() -> void:
 func _on_card_deselected() -> void:
 	print("deselected")
 	_is_selected = false
-	_enable_hover = true
-	card_drag_component.enable_drag()
+	card_float_component.set_base_position(global_position)	
+	card_float_component.enable_float()
+	
 	#card_float_component.enable_float()
 
 	if _tween_click_shadow and _tween_click_shadow.is_running():
@@ -240,9 +241,9 @@ func _on_card_deselected() -> void:
 	
 	await _tween_click_scale.finished
 	
-	card_float_component.set_base_position(global_position)	
-	card_float_component.enable_float()
-
+	
+	_enable_hover = true
+	card_drag_component.enable_drag()
 
 		#card_deselected.emit()
 	

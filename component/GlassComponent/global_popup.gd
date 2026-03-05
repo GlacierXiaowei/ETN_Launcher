@@ -56,12 +56,24 @@ func setup(config: Dictionary) -> void:
 	var target_size := glass_panel.custom_minimum_size
 	_apply_glass_panel_centered_layout(target_size)
 	
-	spacer.custom_minimum_size.y = 48
+	# Spacer 只在需要输入框时显示
+	var has_input = config.has("input_placeholder")
+	spacer.visible = has_input
+	spacer.custom_minimum_size.y = 48 if has_input else 0
+	# 设置 Spacer 的 size_flags，不需要时不要膨胀
+	spacer.size_flags_vertical = Control.SIZE_FILL if has_input else Control.SIZE_FILL
 	
+	# 如果没有 Spacer，将高度补偿给 Content
 	var content_min_y: float = 120.0
 	if size == "large":
 		content_min_y = 520.0
+	# 如果 Spacer 隐藏，将 52px 高度补偿给 Content
+	if not has_input:
+		content_min_y += 52
 	content_label.custom_minimum_size.y = content_min_y
+	
+	# 确保 ButtonContainer 可见
+	button_container.visible = true
 	
 	await get_tree().process_frame
 	_apply_glass_panel_centered_layout(target_size)

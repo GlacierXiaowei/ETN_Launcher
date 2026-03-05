@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bavnpyclbdd7f" path="res://scenes/card/card_panel.gd" id="1_qcsas"]
 [ext_resource type="PackedScene" uid="uid://c8yvxg3ulq3a" path="res://scenes/card/game_card.tscn" id="2_2nm5h"]
+[ext_resource type="Texture2D" uid="uid://cbx0rlqrwqtrq" path="res://godot_ui_components-main/scenes/esport_event/assets/pablo-heimplatz-ZODcBkEohk8-unsplash.jpg" id="2_vgjac"]
 [ext_resource type="Texture2D" uid="uid://duhpdp7yww5rf" path="res://assets/image/poster/game2_poster .png" id="3_q2nvt"]
 [ext_resource type="PackedScene" uid="uid://fkwbkys7yssn" path="res://component/InstallComponent/install_component.tscn" id="4_68lau"]
 [ext_resource type="Script" uid="uid://bo7kxs2u0mykl" path="res://scenes/card/state/node_state_machine.gd" id="5_i4u0h"]
@@ -14,10 +15,22 @@
 [ext_resource type="Script" uid="uid://iqfdklukyxdx" path="res://scenes/card/state/install_started.gd" id="11_4l0uo"]
 [ext_resource type="Script" uid="uid://dfhjrhkepgfel" path="res://scenes/card/state/running_state.gd" id="12_45hbk"]
 [ext_resource type="Script" uid="uid://dtnrwfsnrvmg4" path="res://scenes/card/state/update_failed.gd" id="14_76bwr"]
-[ext_resource type="PackedScene" uid="uid://xaw3rjo0357g" path="res://component/start_game.tscn" id="15_vgjac"]
+[ext_resource type="PackedScene" uid="uid://xaw3rjo0357g" path="res://component/Card/start_game.tscn" id="15_vgjac"]
 
 [node name="CardPanel" type="Node2D" unique_id=694537855]
 script = ExtResource("1_qcsas")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=203093259]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -18.0
+offset_top = -208.0
+offset_right = 1902.0
+offset_bottom = 1073.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_vgjac")
 
 [node name="GameCard" parent="." unique_id=1449577529 instance=ExtResource("2_2nm5h")]
 poster_texture = ExtResource("3_q2nvt")

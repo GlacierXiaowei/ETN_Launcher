@@ -112,5 +112,6 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="ButtonContainer" type="HBoxContainer" parent="PopupContainer/GlassPanel/Margin/VBox" unique_id=1237315127]
+visible = false
 layout_mode = 2
 alignment = 1

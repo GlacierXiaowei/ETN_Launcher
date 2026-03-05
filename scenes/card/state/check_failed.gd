@@ -3,6 +3,7 @@ extends NodeState
 
 @onready var state_label: Label = $"../../StateLabel"
 @onready var install_component: InstallComponent = $"../../InstallComponent"
+@onready var card_panel: Node2D = $"../.."
 
 
 var title: String
@@ -16,9 +17,9 @@ func _on_enter() -> void:
 func _on_card_confirm() -> void:
 	title = "检查更新失败"
 	content = "请尝试10分钟之后再试，检查更新失败属于正常的网络波动。
-	如若检查更新失败也可离线游玩，游戏存档等功能将不受影响。
-	您现在可选择直接离线进入或者重新尝试检查更新。
-	以下为错误信息：\n    " + install_component._server.err_notes + "如果要使用自定义更新，可前往设置放入本地的标准补丁包或游戏zip文件"
+如若检查更新失败也可离线游玩，游戏存档等功能将不受影响。
+您现在可选择直接离线进入或者重新尝试检查更新。
+以下为错误信息：\n		" + install_component._server.err_notes + "\n如果要使用自定义更新，可前往设置放入本地的标准补丁包或游戏zip文件"
 	buttons= [
 		{"text": "重试" , "type" : "primary" , "metadata" : "retry"},
 		{"text": "离线进入" , "type" : "secondary" , "metadata" : "enter"},
@@ -35,7 +36,7 @@ func on_popup_button_pressed(metadata : String) -> void:
 		"retry":
 			install_component.re_ready()
 		"enter":
-			pass##还没填充进入游戏的系统呢
+			card_panel._start_game()
 		"cancel":
 			pass
 	

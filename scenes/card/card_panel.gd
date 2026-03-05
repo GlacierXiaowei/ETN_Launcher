@@ -18,6 +18,7 @@ func _on_install_test_scene_update_error_occurred(error_message: String) -> void
 	node_state_machine.transition_to("updatefailed")
 
 func _on_install_test_scene_update_state_changed(state: InstallSignalHub.InstallState) -> void:
+	
 	var state_name = _to_lowercase(InstallSignalHub.InstallState.keys()[state])
 	##注意 这列对开始下载和开始安装不做反应 我们下载完了就要求安装 安装完了 直接进入 UpToDate 状态
 	if state_name == "downloadstarted" or state_name == "installstarted" :

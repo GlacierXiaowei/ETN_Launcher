@@ -1,6 +1,7 @@
 class_name CardFloatComponent
 extends Node
 
+
 # ============================================
 # CardFloatComponent - 卡片漂浮与视差组件
 # ============================================
@@ -49,6 +50,7 @@ func _ready():
 func _process(delta):
 	if not _float_enabled:
 		return
+	
 	
 	_oscillator_x.update(delta)
 	_oscillator_y.update(delta)

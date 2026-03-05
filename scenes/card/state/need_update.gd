@@ -3,6 +3,7 @@ extends NodeState
 
 @onready var state_label: Label = $"../../StateLabel"
 @onready var install_component: InstallComponent = $"../../InstallComponent"
+@onready var card_panel: Node2D = $"../.."
 
 
 var title: String
@@ -55,7 +56,7 @@ func on_popup_button_pressed(metadata : String) -> void:
 			#这个我们让下一个节点处理吧
 			#install_component._on_下载_pressed()
 		"enter":
-			pass##还没填充进入游戏的系统呢
+			card_panel._start_game()
 		"cancel":
 			pass
 	

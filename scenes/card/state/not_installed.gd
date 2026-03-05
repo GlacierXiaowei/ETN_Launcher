@@ -12,6 +12,8 @@ var content : String
 var buttons : Array
 
 func _on_enter() -> void:
+	install_component.re_ready()
+		
 	state_label.text = "未安装"
 
 
@@ -31,6 +33,8 @@ func on_popup_button_pressed(metadata : String) -> void:
 	match metadata:
 		"confirm":
 			install_component.reset_version()
+			install_component.is_installed = true
+			await get_tree().process_frame
 			install_component.re_ready()
 	
 	

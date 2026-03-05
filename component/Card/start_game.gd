@@ -5,6 +5,7 @@ class_name StartGame
 @onready var install_component: InstallComponent = $"../InstallComponent"
 @onready var game_card: GameCard = $"../GameCard"
 
+##注意 pid文件名为小写！ 但是本身的exe命名是正常的
 var game_name : String 
 var user_path : String
 var boot_path : String
@@ -12,12 +13,15 @@ var boot_path : String
 ## 游戏进程 ID
 var game_pid : int = -1
 
+signal boot_successful
+signal boot_failed 
+
 func _ready() -> void:
 	game_name = install_component.game_name
 	user_path = install_component.user_path
 	# 构建游戏启动路径
 	boot_path = user_path.path_join(game_name + ".exe")
-	
+
 ## 启动游戏
 func start_game() -> void:
 	# 步骤 1：检查游戏可执行文件是否存在
@@ -51,37 +55,32 @@ func start_game() -> void:
 		)
 		return
 	
-	# 步骤 4：启动游戏进程
-	var error = OS.create_process(boot_path, [])
-	if error != 0:
-		push_error("[StartGame] 启动游戏失败，错误码：" + str(error))
-		PopupManager.show_alert(
-			"启动失败",
-			"无法启动游戏。\n错误码：" + str(error) + "\n\n可能的原因：\n- 游戏文件损坏\n- 杀毒软件阻止\n- 系统权限不足",
-			func(): pass
-		)
-		return
+	# 步骤 4：启动游戏进程（不检查返回值，以轮询检测为准）
+	OS.create_process(boot_path, [])
 	
-	# 步骤 5：等待游戏进程启动
-	await get_tree().create_timer(1.0).timeout
+	# 步骤 5：异步轮询检测游戏进程（最多检测 10 秒）
+	var success = await _wait_for_game_boot()
 	
-	# 步骤 6：验证游戏是否成功启动
-	if is_game_running():
+	if success:
 		print("[StartGame] 游戏启动成功，进程 ID: ", game_pid)
 		# 切换到运行中状态
 		card_panel.node_state_machine.transition_to("runningstate")
+		boot_successful.emit()
 	else:
-		push_error("[StartGame] 游戏进程未找到，可能启动失败")
+		push_error("[StartGame] 游戏进程未找到，启动超时")
+		boot_failed.emit()
 		PopupManager.show_alert(
-			"启动异常",
-			"游戏进程已启动但无法检测到。\n\n请检查游戏是否正常运行。",
+			"启动失败",
+			"无法启动游戏。\n\n可能的原因：\n- 游戏文件损坏\n- 杀毒软件阻止\n- 系统权限不足",
 			func(): pass
 		)
 
+##为了防止混淆 我们启动器的PID将会写入到游戏数据目录 游戏的PID将会写到启动器的用户数据目录
 ## 检查游戏是否正在运行
 func is_game_running() -> bool:
 	# 尝试读取游戏 PID 文件
-	var pid_file_path = user_path.path_join(".game_pid")
+	var temp : String = "." + game_name.to_lower() + "_pid"
+	var pid_file_path =	OS.get_environment("APPDATA").path_join("ETN_Launcher").path_join(temp)
 	if not FileAccess.file_exists(pid_file_path):
 		return false
 	
@@ -102,14 +101,15 @@ func is_game_running() -> bool:
 	# 检查进程是否存在（Windows）
 	if OS.has_feature("windows"):
 		var output = []
-		# Godot 4.x: OS.execute(command, arguments, output_array)
-		var exit_code = OS.execute("tasklist", ["FI", "PID eq " + str(game_pid), "/NH"], output)
-		if exit_code == 0 and output.size() > 0 and not output[0].is_empty():
-			return true
+		# 使用 CSV 格式输出，便于解析
+		var exit_code = OS.execute("tasklist", ["/FI", "PID eq " + str(game_pid), "/NH", "/FO", "CSV"], output)
+		if exit_code == 0 and output.size() > 0:
+			# CSV 格式："进程名","PID","会话名"... 检查是否包含 PID
+			return str(game_pid) in output[0]
 	
 	return false
 
-## 写入启动器 PID 文件到游戏用户数据目录
+## 写入启动器 PID 文件到游戏的用户数据目录
 func _write_launcher_pid() -> bool:
 	var launcher_pid = OS.get_process_id()
 	var pid_file_path = user_path.path_join(".etn_launcher_pid")
@@ -134,3 +134,18 @@ func _on_restart_confirm() -> void:
 	
 	# 重新启动游戏
 	start_game()
+
+
+## 异步轮询检测游戏进程是否启动
+## 返回：true = 启动成功，false = 启动失败（超时）
+func _wait_for_game_boot() -> bool:
+	var check_count = 0
+	const max_check_count = 20  # 0.5 秒 * 20 = 10 秒超时
+	
+	while check_count < max_check_count:
+		await get_tree().create_timer(0.5).timeout
+		if is_game_running():
+			return true
+		check_count += 1
+	
+	return false

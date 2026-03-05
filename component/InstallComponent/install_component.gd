@@ -27,6 +27,8 @@ signal update_error_occurred(error_message: String)
 
 
 func check_game_installation() -> bool:
+	if is_installed:
+		return true
 	is_installed = VersionUtils.check_game_installed(game_name, user_path)
 	return is_installed
 
@@ -105,10 +107,12 @@ func verify_version() -> bool:
 		
 func init_check_version() -> void:
 	if not is_installed:
+		await get_tree().process_frame
 		update_state_changed.emit(InstallSignalHub.InstallState.NOT_INSTALLED)
 		return
 	
 	if is_up_to_date :
+		await get_tree().process_frame
 		update_state_changed.emit(InstallSignalHub.InstallState.UP_TO_DATE)
 		return
 	
@@ -123,6 +127,7 @@ func init_check_version() -> void:
 	print("  - game_name: ", local.game_name)
 	
 	
+	await get_tree().process_frame
 	update_state_changed.emit(InstallSignalHub.InstallState.CHECKING_UPDATE)
 	print("\n[步骤 2] 获取服务器更新策略...")
 	
