@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://bavnpyclbdd7f" path="res://scenes/card/card_panel.gd" id="1_qcsas"]
 [ext_resource type="PackedScene" uid="uid://c8yvxg3ulq3a" path="res://scenes/card/game_card.tscn" id="2_2nm5h"]
-[ext_resource type="Texture2D" uid="uid://duhpdp7yww5rf" path="res://assets/image/poster/game2_poster .png" id="3_q2nvt"]
 [ext_resource type="Shader" uid="uid://ct2hawbu1tjn0" path="res://assets/shaders/liquid_glass_ui.gdshader" id="4_4l0uo"]
 [ext_resource type="PackedScene" uid="uid://fkwbkys7yssn" path="res://component/InstallComponent/install_component.tscn" id="4_68lau"]
 [ext_resource type="Script" uid="uid://dmfaagbi4fdmu" path="res://scenes/card/deselected.gd" id="5_45hbk"]
@@ -56,7 +55,7 @@ shader_parameter/distortion_k2 = 0.1
 script = ExtResource("1_qcsas")
 
 [node name="GameCard" parent="." unique_id=1449577529 instance=ExtResource("2_2nm5h")]
-poster_texture = ExtResource("3_q2nvt")
+poster_texture = null
 
 [node name="deselected" type="Control" parent="." unique_id=1944687241]
 material = SubResource("ShaderMaterial_45hbk")
@@ -82,6 +81,7 @@ corner_radius_px = 48.0
 metadata/_custom_type_script = "uid://cbkwige31qsk3"
 
 [node name="InstallComponent" parent="." unique_id=378045110 instance=ExtResource("4_68lau")]
+game_name = ""
 
 [node name="NodeStateMachine" type="Node" parent="." unique_id=1475178055 node_paths=PackedStringArray("initial_node_state")]
 script = ExtResource("5_i4u0h")

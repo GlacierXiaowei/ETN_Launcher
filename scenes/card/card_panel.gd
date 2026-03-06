@@ -1,5 +1,17 @@
 extends Node2D
 
+@export var poster_texture :Texture:
+	set(value):
+		poster_texture = value
+		_update_children()
+@export var game_name : String:
+	set(value):
+		game_name = value
+		_update_children()
+
+@onready var game_card: GameCard = $GameCard
+@onready var install_component: InstallComponent = $InstallComponent
+@onready var game_name_label: Label = $UpShadow/GameName
 @onready var node_state_machine: NodeStateMachine = $NodeStateMachine
 @onready var update_failed: Node = $NodeStateMachine/UpdateFailed
 @onready var start_game: StartGame = $StartGame
@@ -9,6 +21,25 @@ extends Node2D
 func _ready() -> void:
 	update_failed.reset_err_content()
 	deselected._on_game_card_card_deselected()
+	_update_children()
+
+
+func _update_children() -> void:
+	if not is_node_ready():
+		return
+	
+	if game_card and poster_texture:
+		game_card.poster_texture = poster_texture
+		game_card._setup_texture()
+		print("[CardPanel] 海报纹理已设置到 GameCard: ", poster_texture.resource_path)
+	
+	if install_component and game_name != "":
+		install_component.game_name = game_name
+		print("[CardPanel] 游戏名称已设置到 InstallComponent: ", game_name)
+	
+	if game_name_label and game_name != "":
+		game_name_label.text = game_name
+		print("[CardPanel] 游戏名称已设置到 Label: ", game_name)
 
 ##目前关键错误不会直接弹窗 有点何意味啊 我觉得还不如
 func _on_install_test_scene_update_error_occurred(error_message: String) -> void:
