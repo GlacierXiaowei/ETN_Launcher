@@ -1,7 +1,7 @@
 extends Node
 class_name StartGame
 
-@onready var card_panel: Node2D = $".."
+@onready var card_panel: Control  = $".."
 @onready var install_component: InstallComponent = $"../InstallComponent"
 @onready var game_card: GameCard = $"../GameCard"
 

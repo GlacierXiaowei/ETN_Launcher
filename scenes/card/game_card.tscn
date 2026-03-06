@@ -37,7 +37,6 @@ theme_override_styles/hover = SubResource("empty_style")
 theme_override_styles/disabled = SubResource("empty_style")
 theme_override_styles/focus = SubResource("empty_style")
 script = ExtResource("4_main")
-poster_texture = ExtResource("2_poster")
 
 [node name="CardTexture" type="TextureRect" parent="." unique_id=110349457]
 material = SubResource("3d_mat")

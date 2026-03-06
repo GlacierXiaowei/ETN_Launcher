@@ -51,20 +51,22 @@ shader_parameter/rim_f0 = 0.04
 shader_parameter/distortion_k1 = 0.15
 shader_parameter/distortion_k2 = 0.1
 
-[node name="CardPanel" type="Node2D" unique_id=694537855]
+[node name="CardPanel" type="Control" unique_id=834242767]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_qcsas")
 
 [node name="GameCard" parent="." unique_id=1449577529 instance=ExtResource("2_2nm5h")]
+layout_mode = 0
 offset_left = 480.0
 offset_top = 270.0
 offset_right = 1440.0
 offset_bottom = 810.0
-poster_texture = null
 
 [node name="deselected" type="Control" parent="." unique_id=1944687241]
 material = SubResource("ShaderMaterial_45hbk")
 custom_minimum_size = Vector2(108, 108)
-layout_mode = 3
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -181,9 +183,11 @@ text = "正在检查......"
 horizontal_alignment = 1
 
 [connection signal="card_confirm" from="GameCard" to="NodeStateMachine" method="_on_card_confirm"]
+[connection signal="card_deselected" from="GameCard" to="." method="_on_game_card_card_deselected"]
 [connection signal="card_deselected" from="GameCard" to="deselected" method="_on_game_card_card_deselected"]
 [connection signal="card_deselected" from="GameCard" to="UpShadow" method="_on_game_card_card_deselected"]
 [connection signal="card_deselected" from="GameCard" to="DownShadow" method="_on_game_card_card_deselected"]
+[connection signal="card_selected" from="GameCard" to="." method="_on_game_card_card_selected"]
 [connection signal="card_selected" from="GameCard" to="deselected" method="_on_game_card_card_selected"]
 [connection signal="card_selected" from="GameCard" to="UpShadow" method="_on_game_card_card_selected"]
 [connection signal="card_selected" from="GameCard" to="DownShadow" method="_on_game_card_card_selected"]

@@ -6,11 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://duhpdp7yww5rf" path="res://assets/image/poster/game2_poster .png" id="3_wem23"]
 [ext_resource type="PackedScene" uid="uid://krmqa4wy3dt7" path="res://scenes/card/card_panel.tscn" id="4_uqeha"]
 [ext_resource type="Texture2D" uid="uid://vygi24l05wjw" path="res://assets/image/boot_logo/IMG_20250622_185657.jpg" id="6_3ovsr"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wem23"]
-shader = ExtResource("1_ob46e")
-shader_parameter/blur_amount = 2.5
-shader_parameter/brightness = 1.0
+[ext_resource type="PackedScene" uid="uid://bt0ahwy42uxtg" path="res://component/MainMenu/page_animation.tscn" id="8_thkx5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3ovsr"]
 
@@ -18,6 +14,33 @@ shader_parameter/brightness = 1.0
 shader = ExtResource("1_ob46e")
 shader_parameter/blur_amount = 2.5
 shader_parameter/brightness = 1.0
+
+[sub_resource type="GDScript" id="GDScript_5seab"]
+script/source = "extends Node
+
+##背景缩放动画 注意所有的动画都绑定在两个函数上 我们只需要管理Textrue的visibility
+@onready var bg: Control = $\"../BG\"
+
+var _tween_click_scale : Tween
+
+func _on_card_panel_card_selected() -> void:
+	
+	if _tween_click_scale and _tween_click_scale.is_running():
+		_tween_click_scale.kill()
+	_tween_click_scale = create_tween()
+	_tween_click_scale.set_ease(Tween.EASE_OUT)
+	#_tween_click_scale.set_trans(Tween.TRANS_BACK)  # 优雅的回弹效果
+	_tween_click_scale.tween_property(bg, \"scale\", Vector2(1.25,1.25), 3.00)
+
+
+func _on_card_panel_card_deselected() -> void:
+	if _tween_click_scale and _tween_click_scale.is_running():
+		_tween_click_scale.kill()
+	_tween_click_scale = create_tween()
+	_tween_click_scale.set_ease(Tween.EASE_OUT)
+	#_tween_click_scale.set_trans(Tween.TRANS_BACK)  # 优雅的回弹效果
+	_tween_click_scale.tween_property(bg, \"scale\", Vector2(1,1), 0.35)
+"
 
 [node name="MainMenu" type="Control" unique_id=1546848084]
 layout_mode = 3
@@ -28,37 +51,79 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_wem23")
 
-[node name="BG" type="Node2D" parent="." unique_id=1194454972]
-material = SubResource("ShaderMaterial_wem23")
+[node name="BG" type="Control" parent="." unique_id=1615569356]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="TextureRect" type="TextureRect" parent="BG" unique_id=57417779]
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("2_uqeha")
 
 [node name="TextureRect2" type="TextureRect" parent="BG" unique_id=1438072770]
 visible = false
-material = SubResource("ShaderMaterial_3ovsr")
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("3_wem23")
+
+[node name="TextureRect3" type="TextureRect" parent="BG" unique_id=500944933]
+visible = false
+material = SubResource("ShaderMaterial_3ovsr")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("6_3ovsr")
+expand_mode = 1
 
 [node name="BlurOverlay" type="ColorRect" parent="BG" unique_id=1840169048]
 material = SubResource("ShaderMaterial_5seab")
+layout_mode = 0
 offset_right = 1922.0
 offset_bottom = 1080.0
 mouse_filter = 2
 
 [node name="CardPanel" parent="." unique_id=694537855 instance=ExtResource("4_uqeha")]
-visible = false
+layout_mode = 0
 poster_texture = ExtResource("2_uqeha")
 game_name = "Embody_The_Now"
 
 [node name="CardPanel2" parent="." unique_id=312419549 instance=ExtResource("4_uqeha")]
+visible = false
+layout_mode = 0
 poster_texture = ExtResource("3_wem23")
 game_name = "ETN_Farm"
 
 [node name="CardPanel3" parent="." unique_id=1647972376 instance=ExtResource("4_uqeha")]
 visible = false
+layout_mode = 0
 poster_texture = ExtResource("6_3ovsr")
 game_name = "ETN_Test"
+
+[node name="PageAnimation" parent="." unique_id=311292017 instance=ExtResource("8_thkx5")]
+script = SubResource("GDScript_5seab")
+
+[connection signal="card_deselected" from="CardPanel" to="PageAnimation" method="_on_card_panel_card_deselected"]
+[connection signal="card_selected" from="CardPanel" to="PageAnimation" method="_on_card_panel_card_selected"]
+[connection signal="card_deselected" from="CardPanel2" to="PageAnimation" method="_on_card_panel_card_deselected"]
+[connection signal="card_selected" from="CardPanel2" to="PageAnimation" method="_on_card_panel_card_selected"]
+[connection signal="card_deselected" from="CardPanel3" to="PageAnimation" method="_on_card_panel_card_deselected"]
+[connection signal="card_selected" from="CardPanel3" to="PageAnimation" method="_on_card_panel_card_selected"]

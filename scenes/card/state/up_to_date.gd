@@ -1,6 +1,6 @@
 extends NodeState
 
-@onready var card_panel: Node2D = $"../.."
+@onready var card_panel: Control= $"../.."
 @onready var state_label: Label = $"../../DownShadow/StateLabel"
 @onready var install_component: InstallComponent = $"../../InstallComponent"
 

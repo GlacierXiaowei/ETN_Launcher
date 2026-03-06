@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 
 @export var poster_texture :Texture:
 	set(value):
@@ -16,6 +16,9 @@ extends Node2D
 @onready var update_failed: Node = $NodeStateMachine/UpdateFailed
 @onready var start_game: StartGame = $StartGame
 @onready var deselected: Control = $deselected
+
+signal card_selected
+signal card_deselected
 
 
 func _ready() -> void:
@@ -89,4 +92,12 @@ func _to_lowercase(input_str: String) -> String:
 
 ##这里和变量重名了 所以要用下划线
 func _start_game() -> void:
-	start_game.start_game()
+	call_deferred("start_game.start_game")
+
+
+func _on_game_card_card_deselected() -> void:
+	card_deselected.emit()
+
+
+func _on_game_card_card_selected() -> void:
+	card_selected.emit()
