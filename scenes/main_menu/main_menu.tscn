@@ -13,12 +13,101 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_x2yjq"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lqpn7"]
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3ovsr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5seab"]
 shader = ExtResource("1_ob46e")
 shader_parameter/blur_amount = 2.5
 shader_parameter/brightness = 1.0
+
+[sub_resource type="Shader" id="Shader_x2yjq"]
+code = "shader_type canvas_item;
+
+uniform sampler2D dissolve_texture : source_color;
+uniform float dissolve_value : hint_range(0,1);
+uniform float burn_size: hint_range(0.0, 1.0, 0.01);
+uniform vec4 burn_color: source_color;
+
+void fragment(){
+    vec4 main_texture = texture(TEXTURE, UV);
+    vec4 noise_texture = texture(dissolve_texture, UV);
+	float burn_size_step = burn_size * step(0.001, dissolve_value) * step(dissolve_value, 0.999);
+	float threshold = smoothstep(noise_texture.x-burn_size_step, noise_texture.x, dissolve_value);
+	float border = smoothstep(noise_texture.x, noise_texture.x + burn_size_step, dissolve_value);
+	COLOR.a *= threshold;
+	COLOR.rgb = mix(burn_color.rgb, main_texture.rgb, border);
+}
+"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_lqpn7"]
+load_path = "res://.godot/imported/PerlinNoise.png-007bef44c856b202da49354cc7c07a02.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qel0l"]
+shader = SubResource("Shader_x2yjq")
+shader_parameter/dissolve_texture = SubResource("CompressedTexture2D_lqpn7")
+shader_parameter/dissolve_value = 0.10000000475
+shader_parameter/burn_size = 0.0
+shader_parameter/burn_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Shader" id="Shader_lqpn7"]
+code = "shader_type canvas_item;
+
+uniform sampler2D dissolve_texture : source_color;
+uniform float dissolve_value : hint_range(0,1);
+uniform float burn_size: hint_range(0.0, 1.0, 0.01);
+uniform vec4 burn_color: source_color;
+
+void fragment(){
+    vec4 main_texture = texture(TEXTURE, UV);
+    vec4 noise_texture = texture(dissolve_texture, UV);
+	float burn_size_step = burn_size * step(0.001, dissolve_value) * step(dissolve_value, 0.999);
+	float threshold = smoothstep(noise_texture.x-burn_size_step, noise_texture.x, dissolve_value);
+	float border = smoothstep(noise_texture.x, noise_texture.x + burn_size_step, dissolve_value);
+	COLOR.a *= threshold;
+	COLOR.rgb = mix(burn_color.rgb, main_texture.rgb, border);
+}
+"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_x2yjq"]
+load_path = "res://.godot/imported/PerlinNoise.png-007bef44c856b202da49354cc7c07a02.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rrgl4"]
+shader = SubResource("Shader_lqpn7")
+shader_parameter/dissolve_texture = SubResource("CompressedTexture2D_x2yjq")
+shader_parameter/dissolve_value = 0.10800000512999999
+shader_parameter/burn_size = 0.0
+shader_parameter/burn_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Shader" id="Shader_dn3lk"]
+code = "shader_type canvas_item;
+
+uniform sampler2D dissolve_texture : source_color;
+uniform float dissolve_value : hint_range(0,1);
+uniform float burn_size: hint_range(0.0, 1.0, 0.01);
+uniform vec4 burn_color: source_color;
+
+void fragment(){
+    vec4 main_texture = texture(TEXTURE, UV);
+    vec4 noise_texture = texture(dissolve_texture, UV);
+	float burn_size_step = burn_size * step(0.001, dissolve_value) * step(dissolve_value, 0.999);
+	float threshold = smoothstep(noise_texture.x-burn_size_step, noise_texture.x, dissolve_value);
+	float border = smoothstep(noise_texture.x, noise_texture.x + burn_size_step, dissolve_value);
+	COLOR.a *= threshold;
+	COLOR.rgb = mix(burn_color.rgb, main_texture.rgb, border);
+}
+"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4ujhu"]
+load_path = "res://.godot/imported/PerlinNoise.png-007bef44c856b202da49354cc7c07a02.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vnpsp"]
+shader = SubResource("Shader_dn3lk")
+shader_parameter/dissolve_texture = SubResource("CompressedTexture2D_4ujhu")
+shader_parameter/dissolve_value = 0.0
+shader_parameter/burn_size = 0.0
+shader_parameter/burn_color = Color(0, 0, 0, 1)
 
 [node name="MainMenu" type="Control" unique_id=1546848084]
 layout_mode = 3
@@ -46,7 +135,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0, 0, 0, 1)
+color = Color(0, 0.069077924, 0.20159966, 1)
 
 [node name="TextureRect" type="TextureRect" parent="BG" unique_id=57417779]
 material = SubResource("ShaderMaterial_x2yjq")
@@ -62,6 +151,7 @@ texture = ExtResource("2_uqeha")
 
 [node name="TextureRect2" type="TextureRect" parent="BG" unique_id=1438072770]
 visible = false
+material = SubResource("ShaderMaterial_lqpn7")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -92,6 +182,7 @@ offset_bottom = 1080.0
 mouse_filter = 2
 
 [node name="CardPanel" parent="." unique_id=694537855 instance=ExtResource("4_uqeha")]
+material = SubResource("ShaderMaterial_qel0l")
 layout_mode = 1
 pivot_offset_ratio = Vector2(0.5, 0.5)
 poster_texture = ExtResource("2_uqeha")
@@ -99,6 +190,7 @@ game_name = "Embody_The_Now"
 
 [node name="CardPanel2" parent="." unique_id=834242767 instance=ExtResource("4_uqeha")]
 visible = false
+material = SubResource("ShaderMaterial_rrgl4")
 layout_mode = 1
 pivot_offset_ratio = Vector2(0.5, 0.5)
 poster_texture = ExtResource("3_wem23")
@@ -106,6 +198,7 @@ game_name = "ETN_Farm"
 
 [node name="CardPanel3" parent="." unique_id=165387555 instance=ExtResource("4_uqeha")]
 visible = false
+material = SubResource("ShaderMaterial_vnpsp")
 layout_mode = 1
 pivot_offset_ratio = Vector2(0.5, 0.5)
 poster_texture = ExtResource("6_3ovsr")

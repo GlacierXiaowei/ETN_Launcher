@@ -61,6 +61,7 @@ grow_vertical = 2
 script = ExtResource("1_qcsas")
 
 [node name="GameCard" parent="." unique_id=1449577529 instance=ExtResource("2_2nm5h")]
+use_parent_material = true
 layout_mode = 0
 anchors_preset = 0
 anchor_left = 0.25

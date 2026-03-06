@@ -9,6 +9,31 @@
 [ext_resource type="PackedScene" uid="uid://bjm3hmyfw6fux" path="res://component/Card/card_float_component.tscn" id="8_fc8he"]
 [ext_resource type="Script" uid="uid://br7tm2g0nbelb" path="res://component/Card/card_darg_component.gd" id="8_oy5mk"]
 
+[sub_resource type="Shader" id="Shader_s30m7"]
+code = "shader_type canvas_item;
+
+uniform sampler2D dissolve_texture : source_color;
+uniform float dissolve_value : hint_range(0,1);
+uniform float burn_size: hint_range(0.0, 1.0, 0.01);
+uniform vec4 burn_color: source_color;
+
+void fragment(){
+    vec4 main_texture = texture(TEXTURE, UV);
+    vec4 noise_texture = texture(dissolve_texture, UV);
+	float burn_size_step = burn_size * step(0.001, dissolve_value) * step(dissolve_value, 0.999);
+	float threshold = smoothstep(noise_texture.x-burn_size_step, noise_texture.x, dissolve_value);
+	float border = smoothstep(noise_texture.x, noise_texture.x + burn_size_step, dissolve_value);
+	COLOR.a *= threshold;
+	COLOR.rgb = mix(burn_color.rgb, main_texture.rgb, border);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oy5mk"]
+shader = SubResource("Shader_s30m7")
+shader_parameter/dissolve_value = 0.0
+shader_parameter/burn_size = 0.0
+shader_parameter/burn_color = Color(0, 0, 0, 1)
+
 [sub_resource type="StyleBoxEmpty" id="empty_style"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s30m7"]
@@ -25,6 +50,7 @@ shader_parameter/inset = 0.0
 shader_parameter/corner_radius_px = 24.0
 
 [node name="GameCard" type="Button" unique_id=1449577529]
+material = SubResource("ShaderMaterial_oy5mk")
 custom_minimum_size = Vector2(960, 540)
 anchors_preset = -1
 anchor_right = 0.5
@@ -49,6 +75,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(480, 270)
+texture = ExtResource("2_poster")
 expand_mode = 1
 stretch_mode = 6
 

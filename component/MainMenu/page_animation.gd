@@ -8,9 +8,12 @@ var bg_arr : Array
 @onready var texture_rect_2: TextureRect = $"../../BG/TextureRect2"
 @onready var texture_rect_3: TextureRect = $"../../BG/TextureRect3"
 
+@onready var blur_overlay: ColorRect = $"../../BG/BlurOverlay"
+
 var _tween_click_scale : Tween
 var _tween_bg_1 : Tween
 var _tween_bg_2 : Tween
+var _tween_blur : Tween
 
 func _ready() -> void:
 	bg_arr = [texture_rect ,texture_rect_2 ,texture_rect_3]
@@ -51,15 +54,20 @@ func turn_to_page(current_page: int,target_page : int):
 	bg_arr[target_page].scale = Vector2(0.1,0.1)
 	_tween_bg_1 = create_tween()
 	_tween_bg_1.set_ease(Tween.EASE_OUT)
+	_tween_bg_1.set_parallel()
 	_tween_bg_1.tween_property(bg_arr[target_page], "position",
-	 Vector2.ZERO, 0.6).set_trans(Tween.TRANS_SINE)
-	_tween_bg_1.tween_property(bg_arr[target_page],  "scale", Vector2.ONE, 0.6)
+	 Vector2.ZERO, 0.5).set_trans(Tween.TRANS_BACK)
+	_tween_bg_1.tween_property(bg_arr[target_page],  "scale", Vector2.ONE, 0.5)
+	
+	_tween_blur = create_tween()
+	_tween_blur.tween_property(blur_overlay.material, "shader_parameter/blur_amount", 5.0, 0.25)
+	_tween_blur.tween_property(blur_overlay.material, "shader_parameter/blur_amount", 2.5, 0.25)
 	
 	_tween_bg_2 = create_tween()
 	_tween_bg_2.set_ease(Tween.EASE_OUT)
-	_tween_bg_2.set_trans(Tween.TRANS_SINE)
+	_tween_bg_2.set_parallel()
 	_tween_bg_2.tween_property(bg_arr[current_page], "position",
-	 pos_up, 0.6).set_trans(Tween.TRANS_SINE)
-	_tween_bg_2.tween_property(bg_arr[current_page],  "scale", Vector2(0.1,0.1), 0.6)
+	 pos_up, 0.5).set_trans(Tween.TRANS_SINE)
+	_tween_bg_2.tween_property(bg_arr[current_page],  "scale", Vector2(0.1,0.1), 0.5)
 	await _tween_bg_2.finished
 	bg_arr[current_page].visible = false
