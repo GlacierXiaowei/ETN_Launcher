@@ -42,33 +42,37 @@ func _ready() -> void:
 		signal_hub.state_changed.connect(_on_hub_state_changed)
 		signal_hub.error_occurred.connect(_on_hub_error)
 	
-	check_game_installation()
+	call_deferred("check_game_installation")
 	if not is_installed:
 		await get_tree().process_frame
 		update_state_changed.emit(InstallSignalHub.InstallState.NOT_INSTALLED)
 		return
 	
-	await init_check_version()
-	if _server.force_full_package:
-		update_choose_file.copy_path ="user://download/full/"
-	else:
-		update_choose_file.copy_path ="user://download/patch/"
+	await call_deferred("init_check_version")
+	if _server:
+		if _server.force_full_package:
+			update_choose_file.copy_path ="user://download/full/"
+		else:
+			update_choose_file.copy_path ="user://download/patch/"
 
 
 ##用于外部调用 来重置检查更新 这将会不会导致信号重复链接 同时依然会检查游戏是否存在(需要手动调用reset_version) 但是会重置_server和_local
 ##GDScript 在处理类的new时 会自动管理内存泄漏问题：自动delete未被“指针”引用的对象 所以我们直接新建就可以
 ##但是安全起见 等玩家反馈再修复 手动清除吧 
 func re_ready() -> void:
+	if not is_inside_tree():
+		return
 	check_game_installation()
 	if not is_installed:
 		await get_tree().process_frame
 		update_state_changed.emit(InstallSignalHub.InstallState.NOT_INSTALLED)
 		return
 	await init_check_version()
-	if _server.force_full_package:
-		update_choose_file.copy_path ="user://download/full/"
-	else:
-		update_choose_file.copy_path ="user://download/patch/"
+	if _server:
+		if _server.force_full_package:
+			update_choose_file.copy_path ="user://download/full/"
+		else:
+			update_choose_file.copy_path ="user://download/patch/"
 
 
 ##用于检测自定义更新是否完成所有更新流程/是否安装完所有补丁

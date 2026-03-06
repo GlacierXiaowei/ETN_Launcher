@@ -12,7 +12,7 @@ var content : String
 var buttons : Array
 
 func _on_enter() -> void:
-	install_component.re_ready()
+	#install_component.re_ready()
 		
 	state_label.text = "未安装"
 

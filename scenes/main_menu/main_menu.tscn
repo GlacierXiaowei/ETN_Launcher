@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://krmqa4wy3dt7" path="res://scenes/card/card_panel.tscn" id="4_uqeha"]
 [ext_resource type="Texture2D" uid="uid://vygi24l05wjw" path="res://assets/image/boot_logo/IMG_20250622_185657.jpg" id="6_3ovsr"]
 [ext_resource type="PackedScene" uid="uid://bt0ahwy42uxtg" path="res://component/MainMenu/page_animation.tscn" id="8_thkx5"]
+[ext_resource type="PackedScene" uid="uid://ci08vxwvrp8jl" path="res://component/MainMenu/page_switcher.tscn" id="8_x2yjq"]
+[ext_resource type="Script" uid="uid://cg0maad146a10" path="res://component/MainMenu/page_switcher.gd" id="9_lqpn7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3ovsr"]
 
@@ -37,9 +39,9 @@ func _on_card_panel_card_deselected() -> void:
 	if _tween_click_scale and _tween_click_scale.is_running():
 		_tween_click_scale.kill()
 	_tween_click_scale = create_tween()
-	_tween_click_scale.set_ease(Tween.EASE_OUT)
+	_tween_click_scale.set_ease(Tween.EASE_IN)
 	#_tween_click_scale.set_trans(Tween.TRANS_BACK)  # 优雅的回弹效果
-	_tween_click_scale.tween_property(bg, \"scale\", Vector2(1,1), 0.35)
+	_tween_click_scale.tween_property(bg, \"scale\", Vector2(1,1), 0.15)
 "
 
 [node name="MainMenu" type="Control" unique_id=1546848084]
@@ -61,6 +63,7 @@ grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="TextureRect" type="TextureRect" parent="BG" unique_id=57417779]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -71,7 +74,6 @@ pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("2_uqeha")
 
 [node name="TextureRect2" type="TextureRect" parent="BG" unique_id=1438072770]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -106,24 +108,33 @@ layout_mode = 0
 poster_texture = ExtResource("2_uqeha")
 game_name = "Embody_The_Now"
 
-[node name="CardPanel2" parent="." unique_id=312419549 instance=ExtResource("4_uqeha")]
-visible = false
+[node name="CardPanel2" parent="." unique_id=834242767 instance=ExtResource("4_uqeha")]
 layout_mode = 0
 poster_texture = ExtResource("3_wem23")
 game_name = "ETN_Farm"
 
-[node name="CardPanel3" parent="." unique_id=1647972376 instance=ExtResource("4_uqeha")]
-visible = false
+[node name="CardPanel3" parent="." unique_id=165387555 instance=ExtResource("4_uqeha")]
 layout_mode = 0
 poster_texture = ExtResource("6_3ovsr")
 game_name = "ETN_Test"
 
-[node name="PageAnimation" parent="." unique_id=311292017 instance=ExtResource("8_thkx5")]
+[node name="Component" type="Node" parent="." unique_id=2014989997]
+
+[node name="PageAnimation" parent="Component" unique_id=311292017 instance=ExtResource("8_thkx5")]
 script = SubResource("GDScript_5seab")
 
-[connection signal="card_deselected" from="CardPanel" to="PageAnimation" method="_on_card_panel_card_deselected"]
-[connection signal="card_selected" from="CardPanel" to="PageAnimation" method="_on_card_panel_card_selected"]
-[connection signal="card_deselected" from="CardPanel2" to="PageAnimation" method="_on_card_panel_card_deselected"]
-[connection signal="card_selected" from="CardPanel2" to="PageAnimation" method="_on_card_panel_card_selected"]
-[connection signal="card_deselected" from="CardPanel3" to="PageAnimation" method="_on_card_panel_card_deselected"]
-[connection signal="card_selected" from="CardPanel3" to="PageAnimation" method="_on_card_panel_card_selected"]
+[node name="PageSwitcher" parent="Component" unique_id=146692010 instance=ExtResource("8_x2yjq")]
+script = ExtResource("9_lqpn7")
+
+[connection signal="card_deselected" from="CardPanel" to="." method="_on_card_panel_card_deselected"]
+[connection signal="card_deselected" from="CardPanel" to="Component/PageAnimation" method="_on_card_panel_card_deselected"]
+[connection signal="card_selected" from="CardPanel" to="." method="_on_card_panel_card_selected"]
+[connection signal="card_selected" from="CardPanel" to="Component/PageAnimation" method="_on_card_panel_card_selected"]
+[connection signal="card_deselected" from="CardPanel2" to="." method="_on_card_panel_card_deselected"]
+[connection signal="card_deselected" from="CardPanel2" to="Component/PageAnimation" method="_on_card_panel_card_deselected"]
+[connection signal="card_selected" from="CardPanel2" to="." method="_on_card_panel_card_selected"]
+[connection signal="card_selected" from="CardPanel2" to="Component/PageAnimation" method="_on_card_panel_card_selected"]
+[connection signal="card_deselected" from="CardPanel3" to="." method="_on_card_panel_card_deselected"]
+[connection signal="card_deselected" from="CardPanel3" to="Component/PageAnimation" method="_on_card_panel_card_deselected"]
+[connection signal="card_selected" from="CardPanel3" to="." method="_on_card_panel_card_selected"]
+[connection signal="card_selected" from="CardPanel3" to="Component/PageAnimation" method="_on_card_panel_card_selected"]
