@@ -55,6 +55,10 @@ shader_parameter/distortion_k2 = 0.1
 script = ExtResource("1_qcsas")
 
 [node name="GameCard" parent="." unique_id=1449577529 instance=ExtResource("2_2nm5h")]
+offset_left = 480.0
+offset_top = 270.0
+offset_right = 1440.0
+offset_bottom = 810.0
 poster_texture = null
 
 [node name="deselected" type="Control" parent="." unique_id=1944687241]

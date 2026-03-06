@@ -39,7 +39,7 @@ func _ready() -> void:
 	angle_y_max = deg_to_rad(angle_y_max)
 	_update_card_size()
 	_setup_texture()
-	_center_in_viewport()
+	#_center_in_viewport()
 
 @warning_ignore("unused_parameter")
 func _process(delta: float) -> void:
@@ -69,10 +69,10 @@ func _setup_texture() -> void:
 		visual_component.set_poster_texture(poster_texture)
 		print("[GameCard] 海报纹理已设置")
 
-func _center_in_viewport() -> void:
-	var viewport_size = get_viewport().get_visible_rect().size
-	global_position = (viewport_size - size) / 2.0
-	card_float_component.set_base_position(global_position)
+#func _center_in_viewport() -> void:
+	#var viewport_size = get_viewport().get_visible_rect().size
+	#global_position = (viewport_size - size) / 2.0
+	#card_float_component.set_base_position(global_position)
 
 func _on_mouse_entered() -> void:
 	card_float_component.disable_float()
