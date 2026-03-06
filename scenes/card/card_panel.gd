@@ -26,6 +26,8 @@ func _ready() -> void:
 	deselected._on_game_card_card_deselected()
 	_update_children()
 
+func control_effect(judge: bool) -> void:
+	game_card.control_effect(judge)
 
 func _update_children() -> void:
 	if not is_node_ready():

@@ -93,11 +93,6 @@ mouse_filter = 2
 
 [node name="CardPanel" parent="." unique_id=694537855 instance=ExtResource("4_uqeha")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
 poster_texture = ExtResource("2_uqeha")
 game_name = "Embody_The_Now"
@@ -105,11 +100,6 @@ game_name = "Embody_The_Now"
 [node name="CardPanel2" parent="." unique_id=834242767 instance=ExtResource("4_uqeha")]
 visible = false
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
 poster_texture = ExtResource("3_wem23")
 game_name = "ETN_Farm"
@@ -117,11 +107,6 @@ game_name = "ETN_Farm"
 [node name="CardPanel3" parent="." unique_id=165387555 instance=ExtResource("4_uqeha")]
 visible = false
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
 poster_texture = ExtResource("6_3ovsr")
 game_name = "ETN_Test"

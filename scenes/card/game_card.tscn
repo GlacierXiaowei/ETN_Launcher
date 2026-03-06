@@ -26,8 +26,9 @@ shader_parameter/corner_radius_px = 24.0
 
 [node name="GameCard" type="Button" unique_id=1449577529]
 custom_minimum_size = Vector2(960, 540)
-offset_right = 960.0
-offset_bottom = 540.0
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 0.5
 pivot_offset = Vector2(480, 270)
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -37,6 +38,7 @@ theme_override_styles/hover = SubResource("empty_style")
 theme_override_styles/disabled = SubResource("empty_style")
 theme_override_styles/focus = SubResource("empty_style")
 script = ExtResource("4_main")
+metadata/_edit_use_anchors_ = true
 
 [node name="CardTexture" type="TextureRect" parent="." unique_id=110349457]
 material = SubResource("3d_mat")

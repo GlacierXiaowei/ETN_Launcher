@@ -22,7 +22,7 @@ var _turn_page_enable : bool  = false
 func _ready() -> void:
 	#call_deferred("add_card") 
 	await get_tree().process_frame
-	card_panel.visible = false
+	card_panel.visible = true
 	card_panel_2.visible = false
 	card_panel_3.visible = false
 	
@@ -66,7 +66,7 @@ func turn_to_page(target_page : int) -> void:
 	zhe_zhao.mouse_filter = Control.MOUSE_FILTER_STOP
 	page_animation.turn_to_page(current_page,target_page)
 	current_page = target_page
-	await get_tree().create_timer(1.5).timeout
+	await get_tree().create_timer(0.8).timeout
 	zhe_zhao.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
 	if target_page == 0:
