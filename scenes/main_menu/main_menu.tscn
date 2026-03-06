@@ -6,9 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://duhpdp7yww5rf" path="res://assets/image/poster/game2_poster .png" id="3_wem23"]
 [ext_resource type="PackedScene" uid="uid://krmqa4wy3dt7" path="res://scenes/card/card_panel.tscn" id="4_uqeha"]
 [ext_resource type="Texture2D" uid="uid://vygi24l05wjw" path="res://assets/image/boot_logo/IMG_20250622_185657.jpg" id="6_3ovsr"]
+[ext_resource type="Script" uid="uid://vp55ycu0ngw2" path="res://component/MainMenu/page_animation.gd" id="8_lqpn7"]
 [ext_resource type="PackedScene" uid="uid://bt0ahwy42uxtg" path="res://component/MainMenu/page_animation.tscn" id="8_thkx5"]
 [ext_resource type="PackedScene" uid="uid://ci08vxwvrp8jl" path="res://component/MainMenu/page_switcher.tscn" id="8_x2yjq"]
 [ext_resource type="Script" uid="uid://cg0maad146a10" path="res://component/MainMenu/page_switcher.gd" id="9_lqpn7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x2yjq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3ovsr"]
 
@@ -16,33 +19,6 @@
 shader = ExtResource("1_ob46e")
 shader_parameter/blur_amount = 2.5
 shader_parameter/brightness = 1.0
-
-[sub_resource type="GDScript" id="GDScript_5seab"]
-script/source = "extends Node
-
-##背景缩放动画 注意所有的动画都绑定在两个函数上 我们只需要管理Textrue的visibility
-@onready var bg: Control = $\"../BG\"
-
-var _tween_click_scale : Tween
-
-func _on_card_panel_card_selected() -> void:
-	
-	if _tween_click_scale and _tween_click_scale.is_running():
-		_tween_click_scale.kill()
-	_tween_click_scale = create_tween()
-	_tween_click_scale.set_ease(Tween.EASE_OUT)
-	#_tween_click_scale.set_trans(Tween.TRANS_BACK)  # 优雅的回弹效果
-	_tween_click_scale.tween_property(bg, \"scale\", Vector2(1.25,1.25), 3.00)
-
-
-func _on_card_panel_card_deselected() -> void:
-	if _tween_click_scale and _tween_click_scale.is_running():
-		_tween_click_scale.kill()
-	_tween_click_scale = create_tween()
-	_tween_click_scale.set_ease(Tween.EASE_IN)
-	#_tween_click_scale.set_trans(Tween.TRANS_BACK)  # 优雅的回弹效果
-	_tween_click_scale.tween_property(bg, \"scale\", Vector2(1,1), 0.15)
-"
 
 [node name="MainMenu" type="Control" unique_id=1546848084]
 layout_mode = 3
@@ -62,18 +38,30 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
-[node name="TextureRect" type="TextureRect" parent="BG" unique_id=57417779]
-visible = false
+[node name="ColorRect" type="ColorRect" parent="BG" unique_id=1975193446]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="TextureRect" type="TextureRect" parent="BG" unique_id=57417779]
+material = SubResource("ShaderMaterial_x2yjq")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 2.0
+grow_horizontal = 2
+grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("2_uqeha")
 
 [node name="TextureRect2" type="TextureRect" parent="BG" unique_id=1438072770]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -104,24 +92,54 @@ offset_bottom = 1080.0
 mouse_filter = 2
 
 [node name="CardPanel" parent="." unique_id=694537855 instance=ExtResource("4_uqeha")]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
 poster_texture = ExtResource("2_uqeha")
 game_name = "Embody_The_Now"
 
 [node name="CardPanel2" parent="." unique_id=834242767 instance=ExtResource("4_uqeha")]
-layout_mode = 0
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
 poster_texture = ExtResource("3_wem23")
 game_name = "ETN_Farm"
 
 [node name="CardPanel3" parent="." unique_id=165387555 instance=ExtResource("4_uqeha")]
-layout_mode = 0
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
 poster_texture = ExtResource("6_3ovsr")
 game_name = "ETN_Test"
+
+[node name="ZheZhao" type="ColorRect" parent="." unique_id=1665789868]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
 
 [node name="Component" type="Node" parent="." unique_id=2014989997]
 
 [node name="PageAnimation" parent="Component" unique_id=311292017 instance=ExtResource("8_thkx5")]
-script = SubResource("GDScript_5seab")
+script = ExtResource("8_lqpn7")
 
 [node name="PageSwitcher" parent="Component" unique_id=146692010 instance=ExtResource("8_x2yjq")]
 script = ExtResource("9_lqpn7")

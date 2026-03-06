@@ -11,6 +11,8 @@ extends Control
 
 @onready var page_animation: Node = $Component/PageAnimation
 @onready var page_switcher: Node = $Component/PageSwitcher
+@onready var zhe_zhao: ColorRect = $ZheZhao
+
 
 ##注意 设置就是0页
 @export var current_page = 1
@@ -22,7 +24,7 @@ func _ready() -> void:
 	await get_tree().process_frame
 	card_panel.visible = false
 	card_panel_2.visible = false
-	card_panel_3.visibal = false
+	card_panel_3.visible = false
 	
 	
 	_turn_page_enable = true
@@ -45,16 +47,31 @@ func _ready() -> void:
 ##备注：向下滚就是翻下一页哈
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
+		if not _turn_page_enable :
+			return
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			print("滚轮向上")
+			turn_to_page(current_page -1)
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			print("滚轮向下")
+			turn_to_page(current_page + 1)
 
 ##同时调用动画 同时计数 同时处理页面重复/超出
 func turn_to_page(target_page : int) -> void:
+	_turn_page_enable = false
 	
-	await get_tree().create_timer(0.45).timeout
-
+	target_page = clamp(target_page , 0 , 3)
+	if current_page == target_page:
+		return
+	
+	##阻止点击
+	zhe_zhao.mouse_filter = Control.MOUSE_FILTER_STOP
+	page_animation.turn_to_page(current_page,target_page)
+	current_page = target_page
+	await get_tree().create_timer(1.5).timeout
+	zhe_zhao.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	if target_page == 0:
+		return
+	_turn_page_enable = true
 
 func _on_card_panel_card_selected() -> void:
 	_turn_page_enable = false
