@@ -83,11 +83,14 @@ stretch_mode = 6
 self_modulate = Color(0, 0, 0, 0.45000002)
 show_behind_parent = true
 layout_mode = 1
-offset_right = 960.0
-offset_bottom = 540.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("2_poster")
 expand_mode = 1
 stretch_mode = 6
+metadata/_edit_use_anchors_ = true
 
 [node name="Card3DVisualComponent" parent="." unique_id=165298578 node_paths=PackedStringArray("card_texture", "shadow") instance=ExtResource("4_64ipm")]
 card_texture = NodePath("../CardTexture")

@@ -19,7 +19,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5seab"]
 shader = ExtResource("1_ob46e")
-shader_parameter/blur_amount = 2.5
+shader_parameter/blur_amount = 2.000000095
 shader_parameter/brightness = 1.0
 
 [sub_resource type="Shader" id="Shader_x2yjq"]
@@ -216,8 +216,9 @@ color = Color(1, 1, 1, 0)
 
 [node name="Component" type="Node" parent="." unique_id=2014989997]
 
-[node name="PageAnimation" parent="Component" unique_id=311292017 instance=ExtResource("8_thkx5")]
+[node name="PageAnimation" parent="Component" unique_id=311292017 node_paths=PackedStringArray("main_menu") instance=ExtResource("8_thkx5")]
 script = ExtResource("8_lqpn7")
+main_menu = NodePath("../..")
 
 [node name="PageSwitcher" parent="Component" unique_id=146692010 instance=ExtResource("8_x2yjq")]
 script = ExtResource("9_lqpn7")

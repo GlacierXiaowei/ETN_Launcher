@@ -179,7 +179,11 @@ func _on_card_drag_component_drag_started() -> void:
 func control_effect(judge: bool) -> void:
 	_enable_hover = judge
 	card_drag_component._drag_enabled = judge
-	card_float_component._float_enabled = judge
+	if judge:
+		card_float_component.set_base_position(global_position)	
+		card_float_component.enable_float()
+	else:
+		card_float_component.disable_float()
 
 
 func _on_card_selected() -> void:
