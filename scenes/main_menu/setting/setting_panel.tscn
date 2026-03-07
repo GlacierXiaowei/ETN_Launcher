@@ -1,0 +1,122 @@
+[gd_scene format=3 uid="uid://dgf6c4efogqmt"]
+
+[ext_resource type="Script" uid="uid://brnepdw1o2was" path="res://scenes/main_menu/setting/setting_panel.gd" id="1_ejf3n"]
+[ext_resource type="Texture2D" uid="uid://745cjccayxkt" path="res://assets/image/about/info-circle.svg" id="3_kffsp"]
+[ext_resource type="Texture2D" uid="uid://l4cblrqi11fu" path="res://assets/image/settings/settings.svg" id="3_uij0o"]
+[ext_resource type="Texture2D" uid="uid://ducj7w27bl16p" path="res://assets/image/about/plus.svg" id="4_6p7xm"]
+[ext_resource type="Theme" uid="uid://d0sp76ws3rmrb" path="res://assets/theme/setting.tres" id="4_neqju"]
+
+[node name="SettingPanel" type="Control" unique_id=792300128]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+script = ExtResource("1_ejf3n")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=487925729]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.07058824, 0.2, 1)
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=1971567705]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+theme = ExtResource("4_neqju")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=366767178]
+layout_mode = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 60
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=2026028113]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer" unique_id=525630167]
+layout_mode = 2
+theme = ExtResource("4_neqju")
+theme_type_variation = &"OuterTitle"
+text = "设置"
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=1314076736]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 240
+theme_override_constants/margin_top = 180
+theme_override_constants/margin_right = 240
+theme_override_constants/margin_bottom = 180
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/MarginContainer" unique_id=427909539]
+layout_mode = 2
+theme_override_constants/separation = 80
+
+[node name="Button" type="Button" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=333760065]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("4_neqju")
+theme_type_variation = &"OurterGiantButton"
+text = "全部设置"
+icon = ExtResource("3_uij0o")
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+
+[node name="Button2" type="Button" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=1352707512]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("4_neqju")
+theme_type_variation = &"OurterGiantButton"
+text = "自定义安装"
+icon = ExtResource("4_6p7xm")
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+
+[node name="Button3" type="Button" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=439718418]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("4_neqju")
+theme_type_variation = &"OurterGiantButton"
+text = "关于"
+icon = ExtResource("3_kffsp")
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+
+[node name="Back" type="Button" parent="Panel/MarginContainer/VBoxContainer" unique_id=1701214242]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("4_neqju")
+theme_type_variation = &"OuterMiddleButton"
+text = "返回"
+
+[node name="ZheZhao" type="ColorRect" parent="." unique_id=261798389]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
+[connection signal="enter_outer_setting" from="." to="." method="_on_enter_outer_setting"]
+[connection signal="exit_outer_setting" from="." to="." method="_on_exit_outer_setting"]
+[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Button2" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Button3" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/Back" to="." method="_on_back_pressed"]

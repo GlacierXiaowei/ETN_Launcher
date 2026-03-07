@@ -1,8 +1,11 @@
 extends Node
 
 ##背景缩放动画 注意所有的动画都绑定在两个函数上 我们只需要管理Textrue的visibility
+@onready var zhe_zhao: ColorRect = $"../../ZheZhao"
 @onready var bg: Control = $"../../BG"
 @export var main_menu: Control 
+
+@onready var setting_panel: Control = $"../../SettingPanel"
 
 var bg_arr : Array
 @onready var texture_rect: TextureRect = $"../../BG/TextureRect"
@@ -21,6 +24,7 @@ var _tween_bg_1 : Tween
 var _tween_bg_2 : Tween
 var _tween_blur : Tween
 var _tween_card : Tween
+var _tween_setting : Tween
 
 func _ready() -> void:
 	bg_arr = [texture_rect ,texture_rect_2 ,texture_rect_3]
@@ -46,13 +50,17 @@ func _on_card_panel_card_deselected() -> void:
 
 
 func turn_to_page(current_page: int,target_page : int):
+	if target_page == 0:
+		turn_to_setting()
+		return
+	
 	current_page = current_page -1
 	target_page = target_page -1
 	
 	# 禁用卡面交互和漂浮组件
 	card_arr[current_page].control_effect(false)
 	card_arr[target_page].control_effect(false)
-
+	
 	## 背景位移动画
 	var bg_pos_up : = Vector2(0, -1080)
 	var bg_pos_down : = Vector2(0, 1080)
@@ -109,3 +117,31 @@ func turn_to_page(current_page: int,target_page : int):
 	# 恢复卡面交互和漂浮组件
 	card_arr[current_page].control_effect(true)
 	card_arr[target_page].control_effect(true)
+
+
+func turn_to_setting() -> void:
+	zhe_zhao.mouse_filter = Control.MOUSE_FILTER_STOP
+	
+	setting_panel.enter_outer_setting.emit()
+	if _tween_setting and _tween_setting.is_running():
+		_tween_setting.kill()
+	_tween_setting = create_tween()
+	_tween_setting.set_ease(Tween.EASE_OUT)
+	#_tween_setting.set_trans(Tween.TRANS_BACK)  # 优雅的回弹效果
+	_tween_setting.tween_property(setting_panel, "position", Vector2.ZERO, 0.3)
+	
+	await _tween_setting.finished
+	zhe_zhao.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+func _on_setting_panel_exit_outer_setting() -> void:
+	zhe_zhao.mouse_filter = Control.MOUSE_FILTER_STOP
+	
+	if _tween_setting and _tween_setting.is_running():
+		_tween_setting.kill()
+	_tween_setting = create_tween()
+	_tween_setting.set_ease(Tween.EASE_OUT)
+	#_tween_setting.set_trans(Tween.TRANS_BACK)  # 优雅的回弹效果
+	_tween_setting.tween_property(setting_panel, "position", Vector2(0,-1080), 0.3)
+	
+	await _tween_setting.finished
+	zhe_zhao.mouse_filter = Control.MOUSE_FILTER_IGNORE

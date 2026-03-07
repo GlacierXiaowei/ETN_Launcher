@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bt0ahwy42uxtg" path="res://component/MainMenu/page_animation.tscn" id="8_thkx5"]
 [ext_resource type="PackedScene" uid="uid://ci08vxwvrp8jl" path="res://component/MainMenu/page_switcher.tscn" id="8_x2yjq"]
 [ext_resource type="Script" uid="uid://cg0maad146a10" path="res://component/MainMenu/page_switcher.gd" id="9_lqpn7"]
+[ext_resource type="PackedScene" uid="uid://dgf6c4efogqmt" path="res://scenes/main_menu/setting/setting_panel.tscn" id="11_lqpn7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_x2yjq"]
 
@@ -223,6 +224,11 @@ main_menu = NodePath("../..")
 [node name="PageSwitcher" parent="Component" unique_id=146692010 instance=ExtResource("8_x2yjq")]
 script = ExtResource("9_lqpn7")
 
+[node name="SettingPanel" parent="." unique_id=792300128 instance=ExtResource("11_lqpn7")]
+layout_mode = 1
+offset_top = -1080.0
+offset_bottom = -1080.0
+
 [connection signal="card_deselected" from="CardPanel" to="." method="_on_card_panel_card_deselected"]
 [connection signal="card_deselected" from="CardPanel" to="Component/PageAnimation" method="_on_card_panel_card_deselected"]
 [connection signal="card_selected" from="CardPanel" to="." method="_on_card_panel_card_selected"]
@@ -235,3 +241,4 @@ script = ExtResource("9_lqpn7")
 [connection signal="card_deselected" from="CardPanel3" to="Component/PageAnimation" method="_on_card_panel_card_deselected"]
 [connection signal="card_selected" from="CardPanel3" to="." method="_on_card_panel_card_selected"]
 [connection signal="card_selected" from="CardPanel3" to="Component/PageAnimation" method="_on_card_panel_card_selected"]
+[connection signal="exit_outer_setting" from="SettingPanel" to="Component/PageAnimation" method="_on_setting_panel_exit_outer_setting"]

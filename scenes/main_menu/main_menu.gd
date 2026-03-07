@@ -50,7 +50,7 @@ func _input(event: InputEvent) -> void:
 		if not _turn_page_enable :
 			return
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			turn_to_page(current_page -1)
+			turn_to_page(current_page - 1)
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			turn_to_page(current_page + 1)
 
@@ -65,13 +65,14 @@ func turn_to_page(target_page : int) -> void:
 	##阻止点击
 	zhe_zhao.mouse_filter = Control.MOUSE_FILTER_STOP
 	page_animation.turn_to_page(current_page,target_page)
-	current_page = target_page
+	if target_page !=0 :
+		current_page = target_page
 	await get_tree().create_timer(0.8).timeout
 	zhe_zhao.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
-	if target_page == 0:
-		return
+	
 	_turn_page_enable = true
+
 
 func _on_card_panel_card_selected() -> void:
 	_turn_page_enable = false
