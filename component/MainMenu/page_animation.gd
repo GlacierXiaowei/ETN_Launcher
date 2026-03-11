@@ -25,6 +25,10 @@ var _tween_bg_2 : Tween
 var _tween_blur : Tween
 var _tween_card : Tween
 var _tween_setting : Tween
+var _card_pos_up : Vector2
+var _card_pos_down : Vector2
+var _current_page_idx : int
+var _target_page_idx : int
 
 func _ready() -> void:
 	bg_arr = [texture_rect ,texture_rect_2 ,texture_rect_3]
@@ -63,42 +67,27 @@ func turn_to_page(current_page: int,target_page : int):
 	
 	## 背景切换动画（模糊峰值时切换可见性）
 	bg_arr[current_page].visible = true
-	bg_arr[target_page].visible = true
+	bg_arr[target_page].visible = false  ## 第一阶段结束时才显示
 	bg_arr[target_page].scale = Vector2(1,1)
 	
-	## 模糊动画：2.0 → 5.0 → 2.0
+	## 模糊动画第一阶段：2.0 → 8.0 (0.5s)
 	_tween_blur = create_tween()
-	_tween_blur.tween_property(blur_overlay.material, "shader_parameter/blur_amount", 5.0, 0.25)
-	_tween_blur.tween_callback(_switch_background.bind(current_page, target_page))
-	_tween_blur.tween_property(blur_overlay.material, "shader_parameter/blur_amount", 2.0, 0.25)
+	_tween_blur.tween_property(blur_overlay.material, "shader_parameter/blur_amount", 8.0, 0.5)
+	_tween_blur.tween_callback(_start_second_phase.bind(current_page, target_page))
 	
-	## 卡面位移动画
-	var card_pos_up : = Vector2(0, -1080)
-	var card_pos_down : = Vector2(0, 1080)
+	## 卡面位移动画变量（在第二阶段使用）
+	_card_pos_up = Vector2(0, -1080)
+	_card_pos_down = Vector2(0, 1080)
 	if current_page > target_page:
-		var temp = card_pos_up
-		card_pos_up = card_pos_down
-		card_pos_down = temp
+		var temp = _card_pos_up
+		_card_pos_up = _card_pos_down
+		_card_pos_down = temp
 	
 	card_arr[current_page].visible = true
 	card_arr[current_page].position = Vector2.ZERO
-	card_arr[target_page].visible = true
-	card_arr[target_page].position = card_pos_down
+	card_arr[target_page].visible = true  ## 卡面需要 visible 才能滑动
+	card_arr[target_page].position = _card_pos_down
 	card_arr[target_page].modulate.a = 1.0
-	
-	_tween_card = create_tween()
-	_tween_card.set_ease(Tween.EASE_OUT)
-	_tween_card.set_parallel()
-	_tween_card.tween_property(card_arr[current_page], "position", card_pos_up, 0.5).set_trans(Tween.TRANS_BACK)
-	_tween_card.tween_property(card_arr[target_page], "position", Vector2.ZERO, 0.5).set_trans(Tween.TRANS_BACK)
-	
-	## 等待卡面动画完成后清理
-	await _tween_card.finished
-	card_arr[current_page].visible = false
-	
-	# 恢复卡面交互和漂浮组件
-	card_arr[current_page].control_effect(true)
-	card_arr[target_page].control_effect(true)
 
 
 func turn_to_setting() -> void:
@@ -129,7 +118,35 @@ func _on_setting_panel_exit_outer_setting() -> void:
 	zhe_zhao.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 
+func _start_second_phase(current_idx: int, target_idx: int) -> void:
+	## 第二阶段：背景模糊 8.0→2.0 (0.5s) + 卡面动画
+	_current_page_idx = current_idx
+	_target_page_idx = target_idx
+	
+	## 第一阶段结束，切换背景可见性
+	bg_arr[current_idx].visible = false
+	bg_arr[target_idx].visible = true
+	
+	## 背景模糊恢复：8.0 → 2.0 (0.5s)
+	_tween_blur = create_tween()
+	_tween_blur.tween_property(blur_overlay.material, "shader_parameter/blur_amount", 2.0, 0.5)
+	
+	## 卡面动画：0.5s 滑动（与背景第二阶段并行）
+	_tween_card = create_tween()
+	_tween_card.set_parallel()
+	_tween_card.tween_property(card_arr[current_idx], "position", _card_pos_up, 0.5).set_trans(Tween.TRANS_BACK)
+	_tween_card.tween_property(card_arr[target_idx], "position", Vector2.ZERO, 0.5).set_trans(Tween.TRANS_BACK)
+	
+	## 等待卡面动画完成后清理
+	await _tween_card.finished
+	card_arr[current_idx].visible = false
+	
+	# 恢复卡面交互和漂浮组件
+	card_arr[current_idx].control_effect(true)
+	card_arr[target_idx].control_effect(true)
+
+
 func _switch_background(current_idx: int, target_idx: int) -> void:
-	## 模糊峰值时切换背景可见性
+	## 模糊峰值时切换背景可见性（旧函数，保留兼容）
 	bg_arr[current_idx].visible = false
 	bg_arr[target_idx].scale = Vector2(1,1)

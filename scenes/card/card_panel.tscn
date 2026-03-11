@@ -19,7 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://xaw3rjo0357g" path="res://component/Card/start_game.tscn" id="15_vgjac"]
 [ext_resource type="Script" uid="uid://dxx563dwn4au5" path="res://scenes/card/up_shadow.gd" id="19_ek5gw"]
 [ext_resource type="Script" uid="uid://rcme7r71iekf" path="res://scenes/card/down_shadow.gd" id="20_3gbhb"]
-[ext_resource type="FontFile" uid="uid://dxo63jv4vll8v" path="res://assets/fonts/MiSans-Bold.otf" id="20_vo7e3"]
+[ext_resource type="FontFile" uid="uid://cmjjircih2nm5" path="res://assets/fonts/MiSans-Bold.otf" id="20_vo7e3"]
 [ext_resource type="Texture2D" uid="uid://dv1goxmy2way3" path="res://assets/image/card_panel遮罩.png" id="20_w3mrt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_45hbk"]
