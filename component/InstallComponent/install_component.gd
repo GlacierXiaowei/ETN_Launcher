@@ -42,13 +42,16 @@ func _ready() -> void:
 		signal_hub.state_changed.connect(_on_hub_state_changed)
 		signal_hub.error_occurred.connect(_on_hub_error)
 	
-	call_deferred("check_game_installation")
+	while game_name.is_empty():
+		await get_tree().process_frame
+	
+	check_game_installation()
 	if not is_installed:
 		await get_tree().process_frame
 		update_state_changed.emit(InstallSignalHub.InstallState.NOT_INSTALLED)
 		return
 	
-	await call_deferred("init_check_version")
+	await init_check_version()
 	if _server:
 		if _server.force_full_package:
 			update_choose_file.copy_path ="user://download/full/"

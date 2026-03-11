@@ -2,9 +2,9 @@
 
 > ETN Launcher 主菜单场景完整设计文档
 
-**版本：** 1.0  
-**日期：** 2026-03-06  
-**状态：** 待实现
+**版本：** 1.1  
+**日期：** 2026-03-11  
+**状态：** 已实现（背景动画 v2）
 
 ---
 
@@ -57,9 +57,10 @@ MainMenu (Control)
 
 | 决策 | 说明 |
 |------|------|
-| **背景独立于 CardPanel** | 背景放在主菜单场景下，不做 Y 轴滑动，只做缩放 + 模糊过渡 |
-| **CardPanel 预布局** | 所有 CardPanel 预先排好 Y 轴位置，跨页时中间页快速穿过 |
-| **右侧指示器** | 垂直排列，使用 GlassIconPanel，可点击跳转任意页 |
+| **背景独立于 CardPanel** | 背景放在主菜单场景下，不做 Y 轴滑动，只做模糊过渡 |
+| **背景可见性切换** | 模糊峰值时切换 visible（非位移动画） |
+| **两阶段动画** | 第一阶段（0.5s）背景模糊 + 卡面静止；第二阶段（0.5s）背景恢复 + 卡面滑动 |
+| **CardPanel 预布局** | 所有 CardPanel 预先设置 Y 轴位置，滑动时并行移动 |
 | **滚轮监听全局** | 整个 MainMenu 监听 `_input()`，不区分区域 |
 
 ---
@@ -69,12 +70,11 @@ MainMenu (Control)
 ### 3.1 时间轴
 
 ```
-T=0.00s  : 检测到滚轮 → 设置 is_hover=true（卡片悬停效果）
-T=0.25s  : 延迟结束 → 开始翻页动画
-T=0.25-0.55s : 当前页滑出（EASE_IN，前慢后快）
-T=0.25-0.55s : 目标页滑入（EASE_OUT，前快后慢）
-T=0.25-0.40s : 中间页快速穿过（LINEAR，跨页时）
-T=0.55s  : 动画完成 → is_hover=false
+T=0.00s  : 检测到滚轮 → 开始背景第一阶段动画
+T=0.00-0.50s : 背景模糊 2.0→8.0（第一阶段），卡面静止
+T=0.50s  : 模糊峰值 → 切换背景可见性，卡面开始滑动
+T=0.50-1.00s : 背景模糊 8.0→2.0（第二阶段），卡面滑动 0.5s
+T=1.00s  : 动画完成 → 恢复滚轮
 ```
 
 ### 3.2 卡片预布局位置
@@ -86,73 +86,64 @@ T=0.55s  : 动画完成 → is_hover=false
 CardPanel1 Y = 0         (当前显示)
 CardPanel2 Y = +1080     (屏幕下方)
 CardPanel3 Y = +2160     (更下方)
-
-第 2 页为当前页：
-CardPanel1 Y = -1080     (屏幕上方)
-CardPanel2 Y = 0         (当前显示)
-CardPanel3 Y = +1080     (屏幕下方)
-
-第 3 页为当前页：
-CardPanel1 Y = -2160     (更上方)
-CardPanel2 Y = -1080     (屏幕上方)
-CardPanel3 Y = 0         (当前显示)
 ```
 
-### 3.3 跨页动画处理（第 1 页 → 第 3 页）
+### 3.3 卡面滑动动画参数
 
-| CardPanel | 起始 Y | 目标 Y | 时长 | 缓动 |
-|-----------|--------|--------|------|------|
-| CardPanel1 | 0 | -1080 | 0.3s | EASE_IN |
-| CardPanel2 | +1080 | -1080 | 0.15s | LINEAR |
-| CardPanel3 | +2160 | 0 | 0.3s | EASE_OUT |
-
-**中间页（CardPanel2）快速穿过，产生视觉连贯性。**
+| 阶段 | 当前页 | 目标页 | 时长 | 缓动 |
+|------|--------|--------|------|------|
+| 第一阶段 (T=0-0.5s) | 静止 | 静止（预置于起点） | - | - |
+| 第二阶段 (T=0.5-1.0s) | 滑出 | 滑入 | 0.5s | TRANS_BACK |
 
 ### 3.4 Tween 缓动配置
 
 ```gdscript
-# 滑出动画（当前页向上）
-tween.tween_property(card, "position:y", target_y, 0.3)\
-    .set_trans(Tween.TRANS_CUBIC)\
-    .set_ease(Tween.EASE_IN)
-
-# 滑入动画（目标页向上）
-tween.tween_property(card, "position:y", 0, 0.3)\
-    .set_trans(Tween.TRANS_CUBIC)\
-    .set_ease(Tween.EASE_OUT)
-
-# 中间页（跨页时）
-tween.tween_property(mid_card, "position:y", target_y, 0.15)\
-    .set_trans(Tween.TRANS_LINEAR)\
-    .set_ease(Tween.EASE_IN)
+# 卡面动画（第二阶段触发，与背景并行）
+_tween_card = create_tween()
+_tween_card.set_parallel()
+_tween_card.tween_property(card_arr[current_idx], "position", _card_pos_up, 0.5)\
+    .set_trans(Tween.TRANS_BACK)
+_tween_card.tween_property(card_arr[target_idx], "position", Vector2.ZERO, 0.5)\
+    .set_trans(Tween.TRANS_BACK)
 ```
 
 ---
 
-## 4. 背景过渡设计（方案 D+A 结合）
+## 4. 背景过渡设计
 
 ### 4.1 效果描述
 
 - **背景不滑动**，保持在原地
-- 翻页时背景做**缩放 + 模糊联动**（呼吸感）
-- 跨页时过渡强度×1.5
+- 翻页时背景做**模糊过渡**（两阶段）
+- 第一阶段：模糊增强，卡面静止
+- 第二阶段：模糊减弱，卡面滑动
 
 ### 4.2 动画参数
 
-| 阶段 | 缩放 | 模糊强度 | 时长 |
-|------|------|----------|------|
-| 初始 | 1.0 | 2.0 | - |
-| 过渡峰值 | 1.1 | 5.0 | 0.15s |
-| 恢复 | 1.0 | 2.0 | 0.15s |
+| 阶段 | 模糊强度 | 时长 | 卡面状态 |
+|------|----------|------|----------|
+| 初始 | 2.0 | - | 静止 |
+| 第一阶段 | 2.0 → 8.0 | 0.5s | 静止 |
+| 切换点 | 8.0（峰值） | - | 切换背景 visible |
+| 第二阶段 | 8.0 → 2.0 | 0.5s | 滑动 0.5s |
+| 恢复 | 2.0 | - | 静止 |
 
-### 4.3 跨页强度修正
+### 4.3 双背景切换策略
 
-```gdscript
-var page_distance = abs(target_page - current_page)
-var intensity_multiplier = 1.0 + (page_distance - 1) * 0.5
+使用多个背景 TextureRect，在模糊峰值时切换可见性：
 
-# 跨 2 页时：blur = 5.0 * 1.5 = 7.5
-# 跨 1 页时：blur = 5.0 * 1.0 = 5.0
+```
+T=0.0-0.5s:  当前背景可见，模糊 2.0→8.0
+T=0.5s:      切换目标背景 visible（当前背景 hide）
+T=0.5-1.0s:  目标背景可见，模糊 8.0→2.0
+```
+
+### 4.4 卡面动画时序
+
+```
+T=0.0-0.5s:  卡面静止（目标页预置于滑动起点）
+T=0.5-1.0s:  当前页滑出 + 目标页滑入（并行 0.5s）
+T=1.0s:      当前页 hide，动画完成
 ```
 
 ### 4.4 双背景切换策略
@@ -271,19 +262,17 @@ func _build_indicators() -> void:
 
 ## 8. 可调参数汇总
 
-以下参数暴露在 `MainMenu` 脚本顶部，方便调整：
+以下参数在 `PageAnimation` 脚本中管理：
 
 ```gdscript
-# 动画时序
-@export var HOVER_DELAY: float = 0.25  # 滚轮延迟
-@export var SLIDE_DURATION: float = 0.3  # 滑动动画时长
-@export var MID_PAGE_DURATION: float = 0.15  # 中间页穿过时长
+# 背景模糊
+const BLUR_BASE: float = 2.0      # 基础模糊值
+const BLUR_PEAK: float = 8.0      # 峰值模糊值
 
-# 背景过渡
-@export var BACKGROUND_SCALE_PEAK: float = 1.1  # 缩放峰值
-@export var BACKGROUND_BLUR_BASE: float = 2.0  # 基础模糊
-@export var BACKGROUND_BLUR_PEAK: float = 5.0  # 峰值模糊
-@export var CROSS_PAGE_INTENSITY: float = 1.5  # 跨页强度倍率
+# 动画时序
+const PHASE_1_DURATION: float = 0.5  # 第一阶段时长（模糊增强）
+const PHASE_2_DURATION: float = 0.5  # 第二阶段时长（模糊减弱 + 卡面滑动）
+const CARD_SLIDE_DURATION: float = 0.5  # 卡面滑动时长
 
 # 页面指示器
 @export var INDICATOR_SIZE: float = 16.0
@@ -299,24 +288,26 @@ func _build_indicators() -> void:
 
 | 文件 | 路径 | 说明 |
 |------|------|------|
-| `main_menu.gd` | `scenes/main_menu/` | 主菜单脚本 |
+| `main_menu.gd` | `scenes/main_menu/` | 主菜单脚本（滚轮输入处理） |
 | `main_menu.tscn` | `scenes/main_menu/` | 主菜单场景 |
-| `card_panel.tscn` | `scenes/main_menu/` | 卡片面板场景 |
+| `card_panel.tscn` | `scenes/card/` | 卡片面板场景 |
+| `page_animation.gd` | `component/MainMenu/` | 页面动画脚本（背景 + 卡面） |
+| `page_animation.tscn` | `component/MainMenu/` | 页面动画组件场景 |
 | `background_blur.gdshader` | `assets/shaders/` | 背景模糊 Shader |
 
 ---
 
 ## 10. 实现检查清单
 
-- [ ] 创建 MainMenu 场景框架
-- [ ] 实现滚轮检测 + 延迟逻辑
-- [ ] 实现双卡面滑动动画（含跨页处理）
-- [ ] 实现背景缩放 + 模糊过渡
-- [ ] 实现双背景切换逻辑
+- [x] 创建 MainMenu 场景框架
+- [x] 实现滚轮检测 + 延迟逻辑
+- [x] 实现双卡面滑动动画（含跨页处理）
+- [x] 实现背景模糊过渡（两阶段：2.0→8.0→2.0）
+- [x] 实现双背景切换逻辑（模糊峰值时切换 visible）
 - [ ] 实现页面指示器（GlassIconPanel）
-- [ ] 实现滚轮锁变量
-- [ ] 暴露可调参数
-- [ ] 测试 2 页/3 页场景
+- [x] 实现滚轮锁变量
+- [x] 暴露可调参数
+- [x] 测试 2 页/3 页场景
 - [ ] 性能优化
 
 ---
