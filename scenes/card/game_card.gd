@@ -103,6 +103,11 @@ func _on_mouse_exited() -> void:
 		visual_component.reset_rotation()
 	
 	await _tween_hover.finished
+	
+	# 再次检查状态（防止翻页动画期间的竞态条件）
+	if not _enable_hover:
+		return
+	
 	card_float_component.set_base_position(global_position)
 	card_float_component.enable_float()
 	

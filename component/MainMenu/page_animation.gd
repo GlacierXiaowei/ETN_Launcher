@@ -96,8 +96,8 @@ func turn_to_setting() -> void:
 	if _tween_setting and _tween_setting.is_running():
 		_tween_setting.kill()
 	_tween_setting = create_tween()
-	_tween_setting.set_ease(Tween.EASE_IN)
-	#_tween_setting.set_trans(Tween.TRANS_BACK)  # 优雅的回弹效果
+	#_tween_setting.set_ease(Tween.EASE_IN)
+	_tween_setting.set_trans(Tween.TRANS_QUAD)  # 优雅的回弹效果
 	_tween_setting.tween_property(setting_panel, "position", Vector2.ZERO, 0.25)
 	
 	await _tween_setting.finished
@@ -109,8 +109,8 @@ func _on_setting_panel_exit_outer_setting() -> void:
 	if _tween_setting and _tween_setting.is_running():
 		_tween_setting.kill()
 	_tween_setting = create_tween()
-	_tween_setting.set_ease(Tween.EASE_OUT)
-	#_tween_setting.set_trans(Tween.TRANS_BACK)  # 优雅的回弹效果
+	#_tween_setting.set_ease(Tween.EASE_OUT)
+	_tween_setting.set_trans(Tween.TRANS_QUAD)  # 优雅的回弹效果
 	_tween_setting.tween_property(setting_panel, "position", Vector2(0,-1080), 0.3)
 	
 	await _tween_setting.finished
