@@ -60,6 +60,8 @@ func turn_to_page(target_page : int) -> void:
 	
 	target_page = clamp(target_page , 0 , 3)
 	if current_page == target_page:
+		_turn_page_enable = true
+		zhe_zhao.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		return
 	
 	##阻止点击
