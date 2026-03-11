@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://cmjjircih2nm5"
-path="res://.godot/imported/MiSans-Bold.otf-84ae247c88fb4dbdea33d86b9ebcd485.fontdata"
+uid="uid://d048trj75srh6"
+path="res://.godot/imported/MiSans-Light.otf-72c59794ea202fc6c88ab76c5ee434f2.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/MiSans-Bold.otf"
-dest_files=["res://.godot/imported/MiSans-Bold.otf-84ae247c88fb4dbdea33d86b9ebcd485.fontdata"]
+source_file="res://assets/fonts/MiSans-Light.otf"
+dest_files=["res://.godot/imported/MiSans-Light.otf-72c59794ea202fc6c88ab76c5ee434f2.fontdata"]
 
 [params]
 

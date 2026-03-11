@@ -7,7 +7,7 @@ signal exit_outer_setting
 
 func _on_button_pressed() -> void:
 	var title : String = "敬请期待"
-	var content : String = "预计3.2.0.0，之前完善"
+	var content : String = "预计3.2.0.0版本之前完善"
 	
 	PopupManager.show_popup({"title" :title , "content" :content })
 

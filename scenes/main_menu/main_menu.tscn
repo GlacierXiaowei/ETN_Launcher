@@ -77,7 +77,7 @@ load_path = "res://.godot/imported/PerlinNoise.png-007bef44c856b202da49354cc7c07
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rrgl4"]
 shader = SubResource("Shader_lqpn7")
 shader_parameter/dissolve_texture = SubResource("CompressedTexture2D_x2yjq")
-shader_parameter/dissolve_value = 0.10800000512999999
+shader_parameter/dissolve_value = 0.10800000513
 shader_parameter/burn_size = 0.0
 shader_parameter/burn_color = Color(0, 0, 0, 1)
 

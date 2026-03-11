@@ -61,27 +61,15 @@ func turn_to_page(current_page: int,target_page : int):
 	card_arr[current_page].control_effect(false)
 	card_arr[target_page].control_effect(false)
 	
-	## 背景位移动画
-	var bg_pos_up : = Vector2(0, -1080)
-	var bg_pos_down : = Vector2(0, 1080)
-	if current_page > target_page:
-		var temp = bg_pos_up
-		bg_pos_up = bg_pos_down
-		bg_pos_down = temp
-	
+	## 背景切换动画（模糊峰值时切换可见性）
 	bg_arr[current_page].visible = true
 	bg_arr[target_page].visible = true
+	bg_arr[target_page].scale = Vector2(1,1)
 	
-	bg_arr[target_page].scale = Vector2(0.1,0.1)
-	_tween_bg_1 = create_tween()
-	_tween_bg_1.set_ease(Tween.EASE_OUT)
-	_tween_bg_1.set_parallel()
-	_tween_bg_1.tween_property(bg_arr[target_page], "position",
-	 Vector2.ZERO, 0.5).set_trans(Tween.TRANS_BACK)
-	_tween_bg_1.tween_property(bg_arr[target_page],  "scale", Vector2.ONE, 0.5)
-	
+	## 模糊动画：2.0 → 5.0 → 2.0
 	_tween_blur = create_tween()
-	_tween_blur.tween_property(blur_overlay.material, "shader_parameter/blur_amount", 4.5, 0.25)
+	_tween_blur.tween_property(blur_overlay.material, "shader_parameter/blur_amount", 5.0, 0.25)
+	_tween_blur.tween_callback(_switch_background.bind(current_page, target_page))
 	_tween_blur.tween_property(blur_overlay.material, "shader_parameter/blur_amount", 2.0, 0.25)
 	
 	## 卡面位移动画
@@ -104,14 +92,8 @@ func turn_to_page(current_page: int,target_page : int):
 	_tween_card.tween_property(card_arr[current_page], "position", card_pos_up, 0.5).set_trans(Tween.TRANS_BACK)
 	_tween_card.tween_property(card_arr[target_page], "position", Vector2.ZERO, 0.5).set_trans(Tween.TRANS_BACK)
 	
-	_tween_bg_2 = create_tween()
-	_tween_bg_2.set_ease(Tween.EASE_OUT)
-	_tween_bg_2.set_parallel()
-	_tween_bg_2.tween_property(bg_arr[current_page], "position",
-	 bg_pos_up, 0.5).set_trans(Tween.TRANS_SINE)
-	_tween_bg_2.tween_property(bg_arr[current_page],  "scale", Vector2(0.1,0.1), 0.5)
-	await _tween_bg_2.finished
-	bg_arr[current_page].visible = false
+	## 等待卡面动画完成后清理
+	await _tween_card.finished
 	card_arr[current_page].visible = false
 	
 	# 恢复卡面交互和漂浮组件
@@ -145,3 +127,9 @@ func _on_setting_panel_exit_outer_setting() -> void:
 	
 	await _tween_setting.finished
 	zhe_zhao.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+
+func _switch_background(current_idx: int, target_idx: int) -> void:
+	## 模糊峰值时切换背景可见性
+	bg_arr[current_idx].visible = false
+	bg_arr[target_idx].scale = Vector2(1,1)
