@@ -9,6 +9,91 @@
 
 ---
 
+## 0. 重要：SCREEN_TEXTURE 工作原理
+
+> 使用 `hint_screen_texture` 的 shader 前，**必须理解此机制**，否则会出现"采样不到预期内容"的问题。
+
+### 0.1 核心机制
+
+`SCREEN_TEXTURE` 是**一次性复制**屏幕缓冲区，发生在场景中**第一个使用它的节点渲染之前**。
+
+```
+渲染顺序示例：
+1. NodeA 使用 SCREEN_TEXTURE → 触发 back buffer copy（此时屏幕只有背景）
+2. NodeB 渲染（添加到屏幕）
+3. NodeC 使用 SCREEN_TEXTURE → 复用的是同一份旧 copy（没有 NodeB！）
+```
+
+**关键点：** 所有使用 `SCREEN_TEXTURE` 的节点共享同一份屏幕快照，这份快照在第一个节点渲染时就固定了。
+
+### 0.2 常见问题
+
+**问题：** 场景中有多个节点使用 screen texture shader，后渲染的节点采样不到前面的内容。
+
+```gdscript
+# 场景结构
+MainMenu
+├── BG/BlurOverlay      # 使用 background_blur shader
+├── CardPanel           # 卡面内容
+└── ZheZhao             # 使用 background_blur shader（问题节点）
+
+# 问题：ZheZhao 采样时，CardPanel 还没渲染到屏幕缓冲区
+```
+
+### 0.3 解决方案：使用 CanvasLayer
+
+CanvasLayer 将节点放入**不同的渲染批次**，每个批次独立渲染，会触发新的 back buffer copy。
+
+```gdscript
+# 方案：给需要独立采样的节点添加 CanvasLayer
+func create_fullscreen_blur_overlay() -> Control:
+    # 创建 CanvasLayer 容器
+    var canvas_layer = CanvasLayer.new()
+    canvas_layer.layer = 1  # 比默认层(0)更高
+    
+    # 创建模糊层
+    var blur_rect = ColorRect.new()
+    blur_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+    blur_rect.material = ShaderMaterial.new()
+    blur_rect.material.shader = preload("res://assets/shaders/background_blur.gdshader")
+    blur_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    
+    canvas_layer.add_child(blur_rect)
+    return canvas_layer
+
+# 使用：添加到场景根节点
+var blur_layer = create_fullscreen_blur_overlay()
+get_tree().root.add_child(blur_layer)
+```
+
+**渲染顺序变化：**
+```
+Layer 0: BG, BlurOverlay, CardPanel 全部渲染完成
+    ↓
+Layer 1: 触发新的 back buffer copy（包含所有 Layer 0 内容）
+    ↓
+Layer 1: ZheZhao 渲染，采样到完整的屏幕内容 ✓
+```
+
+### 0.4 CanvasLayer 层级规划建议
+
+| Layer | 用途 | 说明 |
+|-------|------|------|
+| 0 | 默认层 | 背景、游戏内容、UI |
+| 1 | 全屏效果层 | 模糊遮罩、过渡效果 |
+| 2 | 弹窗背景层 | 半透明遮罩 |
+| 3 | 弹窗内容层 | 弹窗面板 |
+| 4 | 最顶层 | Toast、加载动画 |
+
+### 0.5 适用场景
+
+| 场景 | 是否需要 CanvasLayer |
+|------|---------------------|
+| 背景模糊（在所有内容之下） | 不需要 |
+| 全屏过渡效果（需要采样所有内容） | **需要** |
+| 弹窗背景模糊 | 不需要（弹窗内容在shader节点之上） |
+| 场景切换模糊 | **需要**（添加到 root） |
+
 ## 1. Shader 文件列表
 
 | Shader | 用途 | 推荐强度范围 |

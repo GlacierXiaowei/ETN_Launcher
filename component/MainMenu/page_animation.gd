@@ -2,10 +2,13 @@ extends Node
 
 ##背景缩放动画 注意所有的动画都绑定在两个函数上 我们只需要管理Textrue的visibility
 @onready var zhe_zhao: ColorRect = $"../../ZheZhao"
+@onready var layer_blur: ColorRect = $"../../CanvasLayer1/LayerBlur"
+
 @onready var bg: Control = $"../../BG"
 @export var main_menu: Control 
 
-@onready var setting_panel: Control = $"../../SettingPanel"
+@onready var setting_panel: Control = $"../../CanvasLayer2/SettingPanel"
+
 
 var bg_arr : Array
 @onready var texture_rect: TextureRect = $"../../BG/TextureRect"
@@ -18,6 +21,7 @@ var card_arr : Array
 @onready var card_panel_3: Control = $"../../CardPanel3"
 
 @onready var blur_overlay: ColorRect = $"../../BG/BlurOverlay"
+
 
 var _tween_click_scale : Tween
 
@@ -97,8 +101,9 @@ func turn_to_setting() -> void:
 		_tween_setting.kill()
 	_tween_setting = create_tween()
 	#_tween_setting.set_ease(Tween.EASE_IN)
-	_tween_setting.set_trans(Tween.TRANS_QUAD)  # 优雅的回弹效果
-	_tween_setting.tween_property(setting_panel, "position", Vector2.ZERO, 0.25)
+	_tween_setting.tween_property(layer_blur.material, "shader_parameter/blur_amount", 5.0, 0.45)
+	_tween_setting.parallel().tween_property(layer_blur.material, "shader_parameter/brightness", 0.5, 0.3)
+	_tween_setting.tween_property(setting_panel, "position", Vector2.ZERO, 0.25).set_trans(Tween.TRANS_QUAD)
 	
 	await _tween_setting.finished
 	zhe_zhao.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -110,8 +115,9 @@ func _on_setting_panel_exit_outer_setting() -> void:
 		_tween_setting.kill()
 	_tween_setting = create_tween()
 	#_tween_setting.set_ease(Tween.EASE_OUT)
-	_tween_setting.set_trans(Tween.TRANS_QUAD)  # 优雅的回弹效果
-	_tween_setting.tween_property(setting_panel, "position", Vector2(0,-1080), 0.3)
+	_tween_setting.parallel().tween_property(layer_blur.material, "shader_parameter/blur_amount", 0.0, 0.45)
+	_tween_setting.parallel().tween_property(layer_blur.material, "shader_parameter/brightness", 1.0, 0.45)
+	_tween_setting.parallel().tween_property(setting_panel, "position", Vector2(0,-1080), 0.3).set_trans(Tween.TRANS_QUAD)
 	
 	await _tween_setting.finished
 	zhe_zhao.mouse_filter = Control.MOUSE_FILTER_IGNORE

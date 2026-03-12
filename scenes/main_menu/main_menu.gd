@@ -18,6 +18,7 @@ extends Control
 @export var current_page = 1
 
 var _turn_page_enable : bool  = false
+var _is_enter_setting : bool = false
 
 func _ready() -> void:
 	#call_deferred("add_card") 
@@ -46,6 +47,9 @@ func _ready() -> void:
 
 ##备注：向下滚就是翻下一页哈
 func _input(event: InputEvent) -> void:
+	if _is_enter_setting:
+		return
+	
 	if event is InputEventMouseButton and event.pressed:
 		if not _turn_page_enable :
 			return
@@ -82,3 +86,11 @@ func _on_card_panel_card_selected() -> void:
 
 func _on_card_panel_card_deselected() -> void:
 	_turn_page_enable = true
+
+
+func _on_setting_panel_enter_outer_setting() -> void:
+	_is_enter_setting = true
+
+
+func _on_setting_panel_exit_outer_setting() -> void:
+	_is_enter_setting = false

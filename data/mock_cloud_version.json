@@ -1,22 +1,22 @@
 {
-  "game_name": "ETN_Farm",
-  "min_supported_version": "1.0.0.0",
-  "target_version": "1.3.0.0",
-  "target_patch" : 2,
-  "force_update": false,
   "force_full_package": true,
-  "update_notes": "暂无更新公告",
+  "force_update": "false",
   "full_package": {
-	"version": "2.9.9.0",
-	"url": "https://github.com/GlacierXiaowei/ETN_Farm/releases/download/v1.2.1.0/ETN_Farm.zip"
+	"url": "https://github.com/GlacierXiaowei/ETN_Farm/releases/download/v1.3.0.0/ETN_Farm.zip",
+	"version": "1.3.0.0"
   },
-	"patches": [
+  "game_name": "ETN_Farm",
+  "min_supported_version": "1.2.0.0",
+  "patches": [
 	{
-	  "patch_id": 2,
-	  "from_patch": 0,
-	  "to_patch": 2,
-	  "url": "https://github.com/GlacierXiaowei/ETN_Farm/releases/download/v1.2.0.2/Patch_002.pck",
-	  "update_notes": "补丁包2，更新公告"
+	  "from_patch": 0.0,
+	  "patch_id": 2.0,
+	  "to_patch": 2.0,
+	  "update_notes": "补丁包2\n（调试模式专用）",
+	  "url": "https://github.com/GlacierXiaowei/ETN_Farm/releases/download/v1.2.0.2/Patch_002.pck"
 	}
-  ]
+  ],
+  "target_patch": 2.0,
+  "target_version": "1.3.0.0",
+  "update_notes": "更新公告：\n\t现在已经接入ETN_Launcher,请使用启动器启动游戏。\n（调试模式专用）"
 }

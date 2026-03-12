@@ -80,7 +80,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("4_neqju")
 theme_type_variation = &"OurterGiantButton"
-text = "自定义安装"
+text = "调试模式"
 icon = ExtResource("4_6p7xm")
 icon_alignment = 1
 vertical_icon_alignment = 0
@@ -117,6 +117,6 @@ color = Color(1, 1, 1, 0)
 [connection signal="enter_outer_setting" from="." to="." method="_on_enter_outer_setting"]
 [connection signal="exit_outer_setting" from="." to="." method="_on_exit_outer_setting"]
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Button" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Button2" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Button2" to="." method="_on_button_2_pressed"]
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Button3" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/Back" to="." method="_on_back_pressed"]

@@ -17,10 +17,19 @@ signal boot_successful
 signal boot_failed 
 
 func _ready() -> void:
+	# 等待 install_component.game_name 被设置
+	while install_component.game_name.is_empty():
+		await get_tree().process_frame
+	
 	game_name = install_component.game_name
 	user_path = install_component.user_path
 	# 构建游戏启动路径
 	boot_path = user_path.path_join(game_name + ".exe")
+	
+	# 调试日志
+	print("[StartGame] 游戏名称：", game_name)
+	print("[StartGame] 用户路径：", user_path)
+	print("[StartGame] 启动路径：", boot_path)
 
 ## 启动游戏
 func start_game() -> void:

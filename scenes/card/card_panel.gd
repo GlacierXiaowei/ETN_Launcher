@@ -94,7 +94,8 @@ func _to_lowercase(input_str: String) -> String:
 
 ##这里和变量重名了 所以要用下划线
 func _start_game() -> void:
-	call_deferred("start_game.start_game")
+	start_game.call_deferred("start_game")
+
 
 
 func _on_game_card_card_deselected() -> void:

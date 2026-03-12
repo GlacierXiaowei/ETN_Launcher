@@ -6,9 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://duhpdp7yww5rf" path="res://assets/image/poster/game2_poster .png" id="3_wem23"]
 [ext_resource type="PackedScene" uid="uid://krmqa4wy3dt7" path="res://scenes/card/card_panel.tscn" id="4_uqeha"]
 [ext_resource type="Texture2D" uid="uid://vygi24l05wjw" path="res://assets/image/boot_logo/IMG_20250622_185657.jpg" id="6_3ovsr"]
+[ext_resource type="Shader" uid="uid://ct2hawbu1tjn0" path="res://assets/shaders/liquid_glass_ui.gdshader" id="7_qel0l"]
 [ext_resource type="Script" uid="uid://vp55ycu0ngw2" path="res://component/MainMenu/page_animation.gd" id="8_lqpn7"]
+[ext_resource type="Script" uid="uid://cr3yb4jpq0wk" path="res://component/GlassComponent/glass_panel.gd" id="8_rrgl4"]
 [ext_resource type="PackedScene" uid="uid://bt0ahwy42uxtg" path="res://component/MainMenu/page_animation.tscn" id="8_thkx5"]
 [ext_resource type="PackedScene" uid="uid://ci08vxwvrp8jl" path="res://component/MainMenu/page_switcher.tscn" id="8_x2yjq"]
+[ext_resource type="Script" uid="uid://cbkwige31qsk3" path="res://component/GlassComponent/glass_icon_panel.gd" id="9_dn3lk"]
 [ext_resource type="Script" uid="uid://cg0maad146a10" path="res://component/MainMenu/page_switcher.gd" id="9_lqpn7"]
 [ext_resource type="PackedScene" uid="uid://dgf6c4efogqmt" path="res://scenes/main_menu/setting/setting_panel.tscn" id="11_lqpn7"]
 
@@ -110,6 +113,40 @@ shader_parameter/dissolve_value = 0.0
 shader_parameter/burn_size = 0.0
 shader_parameter/burn_color = Color(0, 0, 0, 1)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4ujhu"]
+shader = ExtResource("7_qel0l")
+shader_parameter/rect_size_px = Vector2(108, 348)
+shader_parameter/corner_radius_px = 24.0
+shader_parameter/tint = Color(1.2143098, 1.2143098, 1.2143098, 0.209)
+shader_parameter/opacity = 1.0
+shader_parameter/refraction_strength_px = 14.0
+shader_parameter/edge_refraction_boost = 4.0
+shader_parameter/edge_falloff_px = 16.0
+shader_parameter/blur_lod_center = 2.8
+shader_parameter/blur_lod_edge = 4.2
+shader_parameter/blur_strength = 1.0
+shader_parameter/blur_radius_px = 21.0
+shader_parameter/blur_quality = 0
+shader_parameter/refraction_isotropy = 0.35
+shader_parameter/refraction_edge_curve = 2.05
+shader_parameter/dispersion_strength = 1.4
+shader_parameter/dispersion_px = 24.00000114
+shader_parameter/border_width_px = 0.5
+shader_parameter/border_color = Color(1.353, 1.353, 1.353, 0.278)
+shader_parameter/rim_width_px = 2.25
+shader_parameter/rim_intensity = 4.0
+shader_parameter/rim_color = Color(3.294, 3.294, 3.294, 0.55)
+shader_parameter/rim_fresnel_power = 3.2
+shader_parameter/rim_curvature = 1.0
+shader_parameter/rim_f0 = 0.04
+shader_parameter/distortion_k1 = 0.15
+shader_parameter/distortion_k2 = 0.1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dn3lk"]
+shader = ExtResource("1_ob46e")
+shader_parameter/blur_amount = 0.0
+shader_parameter/brightness = 1.0
+
 [node name="MainMenu" type="Control" unique_id=1546848084]
 layout_mode = 3
 anchors_preset = 15
@@ -118,6 +155,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_wem23")
+metadata/_edit_vertical_guides_ = [1752.0]
+metadata/_edit_horizontal_guides_ = [540.0]
 
 [node name="BG" type="Control" parent="." unique_id=1615569356]
 layout_mode = 1
@@ -205,6 +244,77 @@ pivot_offset_ratio = Vector2(0.5, 0.5)
 poster_texture = ExtResource("6_3ovsr")
 game_name = "ETN_Test"
 
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1913251870]
+
+[node name="Node" type="Control" parent="CanvasLayer" unique_id=1259730091]
+layout_mode = 3
+anchor_left = 0.884375
+anchor_top = 0.33888888
+anchor_right = 0.921875
+anchor_bottom = 0.6611111
+offset_right = 36.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Node" unique_id=1443709472]
+material = SubResource("ShaderMaterial_4ujhu")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("8_rrgl4")
+medium_size = Vector2(108, 348)
+metadata/_custom_type_script = "uid://cr3yb4jpq0wk"
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Node" unique_id=618251360]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Node/MarginContainer" unique_id=314687035]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="PageButton1" type="Control" parent="CanvasLayer/Node/MarginContainer/VBoxContainer" unique_id=673031544]
+custom_minimum_size = Vector2(40, 68)
+layout_mode = 2
+script = ExtResource("9_dn3lk")
+content_type = 1
+metadata/_custom_type_script = "uid://cbkwige31qsk3"
+
+[node name="PageButton2" type="Control" parent="CanvasLayer/Node/MarginContainer/VBoxContainer" unique_id=1771235073]
+custom_minimum_size = Vector2(40, 68)
+layout_mode = 2
+script = ExtResource("9_dn3lk")
+content_type = 1
+metadata/_custom_type_script = "uid://cbkwige31qsk3"
+
+[node name="PageButton3" type="Control" parent="CanvasLayer/Node/MarginContainer/VBoxContainer" unique_id=109264381]
+custom_minimum_size = Vector2(40, 68)
+layout_mode = 2
+script = ExtResource("9_dn3lk")
+content_type = 1
+metadata/_custom_type_script = "uid://cbkwige31qsk3"
+
+[node name="PageButton4" type="Control" parent="CanvasLayer/Node/MarginContainer/VBoxContainer" unique_id=962390982]
+custom_minimum_size = Vector2(40, 68)
+layout_mode = 2
+script = ExtResource("9_dn3lk")
+content_type = 1
+metadata/_custom_type_script = "uid://cbkwige31qsk3"
+
 [node name="ZheZhao" type="ColorRect" parent="." unique_id=1665789868]
 layout_mode = 1
 anchors_preset = 15
@@ -215,6 +325,17 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(1, 1, 1, 0)
 
+[node name="CanvasLayer1" type="CanvasLayer" parent="." unique_id=477369259]
+
+[node name="LayerBlur" type="ColorRect" parent="CanvasLayer1" unique_id=361259539]
+material = SubResource("ShaderMaterial_dn3lk")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
 [node name="Component" type="Node" parent="." unique_id=2014989997]
 
 [node name="PageAnimation" parent="Component" unique_id=311292017 node_paths=PackedStringArray("main_menu") instance=ExtResource("8_thkx5")]
@@ -224,8 +345,9 @@ main_menu = NodePath("../..")
 [node name="PageSwitcher" parent="Component" unique_id=146692010 instance=ExtResource("8_x2yjq")]
 script = ExtResource("9_lqpn7")
 
-[node name="SettingPanel" parent="." unique_id=792300128 instance=ExtResource("11_lqpn7")]
-layout_mode = 1
+[node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=1457311236]
+
+[node name="SettingPanel" parent="CanvasLayer2" unique_id=792300128 instance=ExtResource("11_lqpn7")]
 offset_top = -1080.0
 offset_bottom = -1080.0
 
@@ -241,4 +363,6 @@ offset_bottom = -1080.0
 [connection signal="card_deselected" from="CardPanel3" to="Component/PageAnimation" method="_on_card_panel_card_deselected"]
 [connection signal="card_selected" from="CardPanel3" to="." method="_on_card_panel_card_selected"]
 [connection signal="card_selected" from="CardPanel3" to="Component/PageAnimation" method="_on_card_panel_card_selected"]
-[connection signal="exit_outer_setting" from="SettingPanel" to="Component/PageAnimation" method="_on_setting_panel_exit_outer_setting"]
+[connection signal="enter_outer_setting" from="CanvasLayer2/SettingPanel" to="." method="_on_setting_panel_enter_outer_setting"]
+[connection signal="exit_outer_setting" from="CanvasLayer2/SettingPanel" to="." method="_on_setting_panel_exit_outer_setting"]
+[connection signal="exit_outer_setting" from="CanvasLayer2/SettingPanel" to="Component/PageAnimation" method="_on_setting_panel_exit_outer_setting"]
