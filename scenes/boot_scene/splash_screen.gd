@@ -28,7 +28,7 @@ func _show_next_logo() -> void:
 	logo_texture.texture = load(logos[current_logo_index])
 	current_logo_index += 1
 	
-	await get_tree().create_timer(1.5).timeout
+	await get_tree().create_timer(2.0).timeout
 	_show_next_logo()
 
 

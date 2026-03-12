@@ -27,6 +27,9 @@ signal update_error_occurred(error_message: String)
 
 
 func check_game_installation() -> bool:
+	if game_name == "ETN_Launcher":
+		is_installed = true
+		return is_installed
 	if is_installed:
 		return true
 	is_installed = VersionUtils.check_game_installed(game_name, user_path)

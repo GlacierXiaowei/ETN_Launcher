@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://533l3qoco7xf"]
 
 [ext_resource type="Script" uid="uid://pw1vh81oqcys" path="res://scenes/boot_scene/splash_screen.gd" id="1_ag6j4"]
-[ext_resource type="PackedScene" uid="uid://b1mwgkr4vdlsp" path="res://component/UpdateManager/install_component.tscn" id="2_ekg85"]
+[ext_resource type="PackedScene" uid="uid://fkwbkys7yssn" path="res://component/InstallComponent/install_component.tscn" id="2_ekg85"]
+[ext_resource type="Theme" uid="uid://d0sp76ws3rmrb" path="res://assets/theme/setting.tres" id="2_ywbgp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4fylj"]
 bg_color = Color(0, 0, 0, 1)
@@ -15,7 +16,80 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ag6j4")
 
+[node name="Control" type="Control" parent="." unique_id=1851421718]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Control" unique_id=1396691209]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.07058824, 0.2, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/ColorRect" unique_id=681884741]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 300
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 300
+theme_override_constants/margin_bottom = 100
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/ColorRect/MarginContainer" unique_id=1641249248]
+layout_mode = 2
+theme = ExtResource("2_ywbgp")
+theme_override_constants/separation = 36
+
+[node name="Label" type="Label" parent="Control/ColorRect/MarginContainer/VBoxContainer" unique_id=729314195]
+layout_mode = 2
+theme = ExtResource("2_ywbgp")
+theme_type_variation = &"OuterTitle"
+text = "正在检查更新"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/ColorRect/MarginContainer/VBoxContainer" unique_id=169438778]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("2_ywbgp")
+bbcode_enabled = true
+text = "你好"
+scroll_following = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/ColorRect/MarginContainer/VBoxContainer" unique_id=218436518]
+layout_mode = 2
+theme = ExtResource("2_ywbgp")
+alignment = 1
+
+[node name="Button" type="Button" parent="Control/ColorRect/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1380991817]
+custom_minimum_size = Vector2(256, 73)
+layout_mode = 2
+theme = ExtResource("2_ywbgp")
+theme_type_variation = &"OuterMiddleButton"
+text = "直接进入"
+
+[node name="Button2" type="Button" parent="Control/ColorRect/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1409560781]
+custom_minimum_size = Vector2(256, 73)
+layout_mode = 2
+theme = ExtResource("2_ywbgp")
+theme_type_variation = &"OuterMiddleButton"
+text = "请稍后"
+
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=363480042]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,7 +103,7 @@ metadata/_edit_use_anchors_ = true
 [node name="LogoTexture" type="TextureRect" parent="PanelContainer" unique_id=244007501]
 layout_mode = 2
 
-[node name="InstallComponent" parent="." unique_id=378045110 instance=ExtResource("2_ekg85")]
-repo_name = "ETN_Launcher"
+[node name="InstallComponent" parent="." unique_id=898823719 instance=ExtResource("2_ekg85")]
+game_name = "ETN_Launcher"
 
-[connection signal="update_needed_state_signal" from="InstallComponent" to="." method="_on_install_component_update_needed_state_signal"]
+[node name="UpdateController" type="Node" parent="." unique_id=872407832]

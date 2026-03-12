@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ch2277f8ebge0"]
 
 [ext_resource type="Script" uid="uid://c2y1eler8g12n" path="res://scenes/test/launcher_update_check.gd" id="1"]
-[ext_resource type="Texture2D" uid="uid://caxh2pffdam2v" path="res://assets/image/boot_logo/logo_02.png" id="2_2bwp6"]
+[ext_resource type="Texture2D" uid="uid://dsqw1jug7vmk5" path="res://assets/image/boot_logo/logo_02.png" id="2_2bwp6"]
 [ext_resource type="Theme" uid="uid://c5wbsyp58wb17" path="res://assets/theme/LG_standard.tres" id="4_2fa5q"]
 [ext_resource type="PackedScene" uid="uid://bypsoyn6vlp5p" path="res://component/small_loding_player.tscn" id="4_o0cpu"]
 [ext_resource type="PackedScene" uid="uid://c8yvxg3ulq3a" path="res://scenes/card/game_card.tscn" id="5_2fa5q"]
@@ -30,6 +30,8 @@ void fragment() {
 shader = SubResource("Shader_o0cpu")
 shader_parameter/blur_amount = 4.50000021375
 shader_parameter/brightness = 1.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_2fa5q"]
 
 [node name="LauncherUpdateCheck" type="Control" unique_id=301886309]
 layout_mode = 3
@@ -78,6 +80,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="LoadingSpinner" parent="." unique_id=784863350 instance=ExtResource("4_o0cpu")]
+material = SubResource("CanvasItemMaterial_2fa5q")
 layout_mode = 0
 anchors_preset = 0
 anchor_right = 0.0
