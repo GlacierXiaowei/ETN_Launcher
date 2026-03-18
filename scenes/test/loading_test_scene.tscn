@@ -56,6 +56,10 @@ text = "硬切加载测试"
 layout_mode = 2
 text = "背景模糊加载测试"
 
+[node name="BlackButton" type="Button" parent="VBoxContainer" unique_id=964727133]
+layout_mode = 2
+text = "黑屏加载测试"
+
 [node name="FullButton" type="Button" parent="VBoxContainer" unique_id=1569137042]
 layout_mode = 2
 text = "完整加载测试 (模糊 + 动画)"

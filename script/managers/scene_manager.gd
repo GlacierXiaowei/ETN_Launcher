@@ -8,8 +8,9 @@ var current_loading_mode = ""
 var is_loading = false
 
 # 加载模式常量
-const LOADING_MODE_HARD = "hard"           # 硬切加载（黑屏）
+const LOADING_MODE_HARD = "hard"           # 硬切加载
 const LOADING_MODE_BLUR = "blur"           # 背景模糊
+const LOADING_MODE_BLACK = "black"         # 黑屏加载
 const LOADING_MODE_FULL = "full"           # 完整加载（模糊+动画）
 
 # 信号
@@ -64,7 +65,7 @@ func _switch_to_loading_scene() -> void:
 		LOADING_MODE_HARD:
 			await _load_and_switch(target_scene_to_load)
 			return
-		LOADING_MODE_BLUR, _:
+		LOADING_MODE_BLUR, LOADING_MODE_BLACK, _:
 			if not ResourceLoader.exists(loading_scene_path):
 				push_error("Loading scene not found: " + loading_scene_path)
 				emit_signal("scene_switch_failed", "Loading scene not found: " + loading_scene_path)
@@ -73,9 +74,13 @@ func _switch_to_loading_scene() -> void:
 			
 			var loading_scene = load(loading_scene_path).instantiate()
 			
-			# BLUR模式不播放视频
-			if current_loading_mode == LOADING_MODE_BLUR:
-				loading_scene.play_video = false
+			match current_loading_mode:
+				LOADING_MODE_BLUR:
+					loading_scene.loading_mode = loading_scene.LoadingMode.BLUR
+				LOADING_MODE_BLACK:
+					loading_scene.loading_mode = loading_scene.LoadingMode.BLACK
+				_:
+					loading_scene.loading_mode = loading_scene.LoadingMode.FULL
 			
 			get_tree().root.add_child(loading_scene)
 			

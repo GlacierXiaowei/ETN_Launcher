@@ -13,6 +13,7 @@ func _ready() -> void:
 	# 连接按钮信号
 	$VBoxContainer/HardCutButton.pressed.connect(_on_hard_cut_pressed)
 	$VBoxContainer/BlurButton.pressed.connect(_on_blur_pressed)
+	$VBoxContainer/BlackButton.pressed.connect(_on_black_pressed)
 	$VBoxContainer/FullButton.pressed.connect(_on_full_pressed)
 	$VBoxContainer/DirectButton.pressed.connect(_on_direct_pressed)
 	
@@ -28,6 +29,11 @@ func _on_blur_pressed() -> void:
 	add_log("开始背景模糊加载测试...")
 	
 	SceneManager.switch_scene_with_loading("res://scenes/test/return_test_scene.tscn", SceneManager.LOADING_MODE_BLUR)
+
+func _on_black_pressed() -> void:
+	add_log("开始黑屏加载测试...")
+	
+	SceneManager.switch_scene_with_loading("res://scenes/test/return_test_scene.tscn", SceneManager.LOADING_MODE_BLACK)
 
 func _on_full_pressed() -> void:
 	add_log("开始完整加载测试...")
