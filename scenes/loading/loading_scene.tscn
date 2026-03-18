@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://dege5bfroyoku"]
+
+[ext_resource type="Script" uid="uid://dvtvprj3nm1ln" path="res://scenes/loading/loading_scene.gd" id="1_x1esv"]
+[ext_resource type="Shader" uid="uid://bdp4pqq40lmj3" path="res://assets/shaders/transition_blur.gdshader" id="2_ahcix"]
+[ext_resource type="PackedScene" uid="uid://bypsoyn6vlp5p" path="res://component/small_loding_player.tscn" id="3_o78o2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fsra7"]
+shader = ExtResource("2_ahcix")
+shader_parameter/blur_amount = 0.0
+shader_parameter/rect_size_px = Vector2(256, 256)
+shader_parameter/corner_radius_px = 0.0
+
+[node name="LoadingScene" type="Control" unique_id=440509768]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_x1esv")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=89024762]
+layer = 5
+
+[node name="BackgroundBlur" type="ColorRect" parent="CanvasLayer" unique_id=845133917]
+material = SubResource("ShaderMaterial_fsra7")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SmallLodingPlayer" parent="CanvasLayer" unique_id=784863350 instance=ExtResource("3_o78o2")]
+autoplay = false
+
+[node name="Timer" type="Timer" parent="." unique_id=1761314090]
+wait_time = 0.25
+one_shot = true

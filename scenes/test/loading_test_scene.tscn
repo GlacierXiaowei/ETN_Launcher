@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://n370dyj08ap5"]
+
+[ext_resource type="Script" uid="uid://cokqx5s3lthhp" path="res://scenes/test/loading_test_scene.gd" id="1_knjkc"]
+[ext_resource type="Texture2D" uid="uid://7e8k25vqanoy" path="res://assets/image/poster/game1_poster .png" id="2_1rw0y"]
+
+[node name="LoadingTestScene" type="Control" unique_id=1151422750]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_knjkc")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=916280963]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_1rw0y")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1414231616]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=412706854]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "加载场景测试"
+horizontal_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="VBoxContainer" unique_id=284917561]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "当前状态：空闲"
+horizontal_alignment = 1
+
+[node name="HSeparator1" type="HSeparator" parent="VBoxContainer" unique_id=1731297327]
+layout_mode = 2
+
+[node name="HardCutButton" type="Button" parent="VBoxContainer" unique_id=1204738621]
+layout_mode = 2
+text = "硬切加载测试"
+
+[node name="BlurButton" type="Button" parent="VBoxContainer" unique_id=964727132]
+layout_mode = 2
+text = "背景模糊加载测试"
+
+[node name="FullButton" type="Button" parent="VBoxContainer" unique_id=1569137042]
+layout_mode = 2
+text = "完整加载测试 (模糊 + 动画)"
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer" unique_id=628551804]
+layout_mode = 2
+
+[node name="DirectButton" type="Button" parent="VBoxContainer" unique_id=1760058958]
+layout_mode = 2
+text = "直接切换 (无加载)"
+
+[node name="LogLabel" type="Label" parent="." unique_id=425852575]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -80.0
+offset_right = 400.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 12
+text = "日志："
+horizontal_alignment = 1
+autowrap_mode = 2

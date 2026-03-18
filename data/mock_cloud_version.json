@@ -1,20 +1,20 @@
 {
   "force_full_package": true,
-  "force_update": "false",
+  "force_update": false,
   "full_package": {
-	"url": "https://github.com/GlacierXiaowei/ETN_Farm/releases/download/v1.3.0.0/ETN_Farm.zip",
-	"version": "1.3.0.0"
+    "url": "https://github.com/GlacierXiaowei/ETN_Farm/releases/download/v1.3.0.0/ETN_Farm.zip",
+    "version": "1.3.0.0"
   },
   "game_name": "ETN_Farm",
-  "min_supported_version": "1.2.0.0",
+  "min_supported_version": "0.0.0.0",
   "patches": [
-	{
-	  "from_patch": 0.0,
-	  "patch_id": 2.0,
-	  "to_patch": 2.0,
-	  "update_notes": "补丁包2\n（调试模式专用）",
-	  "url": "https://github.com/GlacierXiaowei/ETN_Farm/releases/download/v1.2.0.2/Patch_002.pck"
-	}
+    {
+      "from_patch": 0.0,
+      "patch_id": 2.0,
+      "to_patch": 2.0,
+      "update_notes": "补丁包2\n（调试模式专用）",
+      "url": "https://github.com/GlacierXiaowei/ETN_Farm/releases/download/v1.2.0.2/Patch_002.pck"
+    }
   ],
   "target_patch": 2.0,
   "target_version": "1.3.0.0",

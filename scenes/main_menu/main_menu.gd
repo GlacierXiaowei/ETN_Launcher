@@ -100,3 +100,5 @@ func _on_setting_panel_enter_outer_setting() -> void:
 
 func _on_setting_panel_exit_outer_setting() -> void:
 	_is_enter_setting = false
+	if page_button_manager and page_button_manager.has_method("sync_page"):
+		page_button_manager.sync_page(current_page)
