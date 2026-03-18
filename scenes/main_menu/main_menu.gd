@@ -11,6 +11,7 @@ extends Control
 
 @onready var page_animation: Node = $Component/PageAnimation
 @onready var page_switcher: Node = $Component/PageSwitcher
+@onready var page_button_manager: Node = $Component/PageButtonManager
 @onready var zhe_zhao: ColorRect = $ZheZhao
 
 
@@ -73,6 +74,11 @@ func turn_to_page(target_page : int) -> void:
 	page_animation.turn_to_page(current_page,target_page)
 	if target_page !=0 :
 		current_page = target_page
+	
+	##同步按钮状态
+	if page_button_manager and page_button_manager.has_method("sync_page"):
+		page_button_manager.sync_page(target_page)
+	
 	await get_tree().create_timer(0.8).timeout
 	zhe_zhao.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	

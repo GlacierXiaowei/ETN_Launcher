@@ -54,3 +54,15 @@ func _select_page(index: int) -> void:
 
 func get_current_page() -> int:
 	return _current_page
+
+func sync_page(page_index: int) -> void:
+	if page_index < 0 or page_index >= buttons.size():
+		return
+	if page_index == _current_page:
+		return
+	
+	if _current_page >= 0 and _current_page < buttons.size():
+		buttons[_current_page].is_selected = false
+	
+	_current_page = page_index
+	buttons[page_index].is_selected = true
