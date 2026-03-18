@@ -43,6 +43,14 @@ enum ContentType { TEXT, ICON }
 			_hit_button.disabled = v
 		_update_glass_state()
 
+@export var is_selected: bool = false:
+	set(v):
+		is_selected = v
+		_is_pressed = v
+		_update_glass_state()
+
+@export var page_index: int = 0
+
 @export_group("Button Style")
 @export var button_type: ButtonType = ButtonType.SECONDARY:
 	set(v):
@@ -109,7 +117,8 @@ func _build_nodes() -> void:
 	)
 	_hit_button.mouse_exited.connect(func() -> void:
 		_is_hover = false
-		_is_pressed = false
+		if not is_selected:
+			_is_pressed = false
 		_update_glass_state()
 	)
 	_hit_button.button_down.connect(func() -> void:
@@ -117,6 +126,8 @@ func _build_nodes() -> void:
 		_update_glass_state()
 	)
 	_hit_button.button_up.connect(func() -> void:
+		if is_selected:
+			return
 		_is_pressed = false
 		_update_glass_state()
 	)

@@ -101,7 +101,7 @@ border_width_right = 4
 border_width_bottom = 4
 border_color = Color(0.69789743, 0.7704825, 0.96949327, 0.669)
 
-[sub_resource type="Image" id="Image_8673s"]
+[sub_resource type="Image" id="Image_fa0u0"]
 data = {
 "data": PackedByteArray(255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255),
 "format": "RGBA8",
@@ -111,7 +111,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_oh71g"]
-image = SubResource("Image_8673s")
+image = SubResource("Image_fa0u0")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_un63t"]
 content_margin_left = 4.0

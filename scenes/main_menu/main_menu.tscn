@@ -14,6 +14,8 @@
 [ext_resource type="Script" uid="uid://cbkwige31qsk3" path="res://component/GlassComponent/glass_icon_panel.gd" id="9_dn3lk"]
 [ext_resource type="Script" uid="uid://cg0maad146a10" path="res://component/MainMenu/page_switcher.gd" id="9_lqpn7"]
 [ext_resource type="PackedScene" uid="uid://dgf6c4efogqmt" path="res://scenes/main_menu/setting/setting_panel.tscn" id="11_lqpn7"]
+[ext_resource type="PackedScene" uid="uid://bhktsuppxm0j3" path="res://component/MainMenu/page_button_manager.tscn" id="14_vnpsp"]
+[ext_resource type="Script" uid="uid://47pkm755bkce" path="res://component/MainMenu/page_button_manager.gd" id="15_a1gy5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_x2yjq"]
 
@@ -246,7 +248,7 @@ game_name = "ETN_Test"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1913251870]
 
-[node name="Node" type="Control" parent="CanvasLayer" unique_id=1259730091]
+[node name="PageButton" type="Control" parent="CanvasLayer" unique_id=1259730091]
 layout_mode = 3
 anchor_left = 0.884375
 anchor_top = 0.33888888
@@ -258,7 +260,7 @@ grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
 metadata/_edit_use_anchors_ = true
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Node" unique_id=1443709472]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/PageButton" unique_id=1443709472]
 material = SubResource("ShaderMaterial_4ujhu")
 layout_mode = 1
 anchors_preset = 15
@@ -271,7 +273,7 @@ script = ExtResource("8_rrgl4")
 medium_size = Vector2(108, 348)
 metadata/_custom_type_script = "uid://cr3yb4jpq0wk"
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Node" unique_id=618251360]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PageButton" unique_id=618251360]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -283,37 +285,41 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Node/MarginContainer" unique_id=314687035]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PageButton/MarginContainer" unique_id=314687035]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="PageButton1" type="Control" parent="CanvasLayer/Node/MarginContainer/VBoxContainer" unique_id=673031544]
+[node name="PageButton1" type="Control" parent="CanvasLayer/PageButton/MarginContainer/VBoxContainer" unique_id=673031544]
 custom_minimum_size = Vector2(40, 68)
 layout_mode = 2
 script = ExtResource("9_dn3lk")
 content_type = 1
 metadata/_custom_type_script = "uid://cbkwige31qsk3"
+metadata/PageIndex = 0
 
-[node name="PageButton2" type="Control" parent="CanvasLayer/Node/MarginContainer/VBoxContainer" unique_id=1771235073]
+[node name="PageButton2" type="Control" parent="CanvasLayer/PageButton/MarginContainer/VBoxContainer" unique_id=1771235073]
 custom_minimum_size = Vector2(40, 68)
 layout_mode = 2
 script = ExtResource("9_dn3lk")
 content_type = 1
 metadata/_custom_type_script = "uid://cbkwige31qsk3"
+metadata/PageIndex = 1
 
-[node name="PageButton3" type="Control" parent="CanvasLayer/Node/MarginContainer/VBoxContainer" unique_id=109264381]
+[node name="PageButton3" type="Control" parent="CanvasLayer/PageButton/MarginContainer/VBoxContainer" unique_id=109264381]
 custom_minimum_size = Vector2(40, 68)
 layout_mode = 2
 script = ExtResource("9_dn3lk")
 content_type = 1
 metadata/_custom_type_script = "uid://cbkwige31qsk3"
+metadata/PageIndex = 2
 
-[node name="PageButton4" type="Control" parent="CanvasLayer/Node/MarginContainer/VBoxContainer" unique_id=962390982]
+[node name="PageButton4" type="Control" parent="CanvasLayer/PageButton/MarginContainer/VBoxContainer" unique_id=962390982]
 custom_minimum_size = Vector2(40, 68)
 layout_mode = 2
 script = ExtResource("9_dn3lk")
 content_type = 1
 metadata/_custom_type_script = "uid://cbkwige31qsk3"
+metadata/PageIndex = 3
 
 [node name="ZheZhao" type="ColorRect" parent="." unique_id=1665789868]
 layout_mode = 1
@@ -344,6 +350,10 @@ main_menu = NodePath("../..")
 
 [node name="PageSwitcher" parent="Component" unique_id=146692010 instance=ExtResource("8_x2yjq")]
 script = ExtResource("9_lqpn7")
+
+[node name="PageButtonManager" parent="Component" unique_id=498941881 node_paths=PackedStringArray("buttons") instance=ExtResource("14_vnpsp")]
+script = ExtResource("15_a1gy5")
+buttons = [NodePath("../../CanvasLayer/PageButton/MarginContainer/VBoxContainer/PageButton1"), NodePath("../../CanvasLayer/PageButton/MarginContainer/VBoxContainer/PageButton2"), NodePath("../../CanvasLayer/PageButton/MarginContainer/VBoxContainer/PageButton3"), NodePath("../../CanvasLayer/PageButton/MarginContainer/VBoxContainer/PageButton4")]
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=1457311236]
 
