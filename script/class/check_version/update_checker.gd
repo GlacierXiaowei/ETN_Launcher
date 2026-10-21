@@ -8,7 +8,6 @@ func check(local: VersionInfo, server: UpdatePolicy) -> String:
 	var equal_version: int = VersionUtils.version_to_int(local.equal_version)
 	var target_version:int = VersionUtils.version_to_int(server.target_version)
 
-	
 	if equal_version >= target_version:
 		return "UP_TO_DATE"
 	
@@ -21,6 +20,5 @@ func check(local: VersionInfo, server: UpdatePolicy) -> String:
 	
 	if equal_version < target_version:
 		return "NORMAL_UPDATE_REQUIRED"
-
 
 	return "UNKNOWN"

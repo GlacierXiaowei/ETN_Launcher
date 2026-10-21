@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://ce4gokcbgf2m0"]
+
+[ext_resource type="Script" uid="uid://c5wh8ojc60k5g" path="res://scenes/test/test_popup_phase2.gd" id="1_abc"]
+[ext_resource type="Texture2D" uid="uid://d3gtoixr80gem" path="res://assets/image/IMG_20251203_162337.jpg" id="2_v7isr"]
+
+[node name="TestPopupPhase2" type="Control" unique_id=1362165851]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_abc")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1036490669]
+layout_mode = 0
+offset_right = 2730.0
+offset_bottom = 1535.0
+texture = ExtResource("2_v7isr")
+
+[node name="VBox" type="VBoxContainer" parent="." unique_id=1764875071]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -150.0
+offset_right = 200.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="VBox" unique_id=1931494932]
+layout_mode = 2
+text = "弹窗 Phase2 测试 - 多按钮与布局"
+
+[node name="HBoxSingle" type="HBoxContainer" parent="VBox" unique_id=2102300554]
+layout_mode = 2
+
+[node name="ButtonSingle" type="Button" parent="VBox/HBoxSingle" unique_id=1034755072]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "测试1: 单按钮"
+
+[node name="HBoxTwo" type="HBoxContainer" parent="VBox" unique_id=549207826]
+layout_mode = 2
+
+[node name="ButtonTwo" type="Button" parent="VBox/HBoxTwo" unique_id=1781016417]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "测试2: 双按钮"
+
+[node name="HBoxThree" type="HBoxContainer" parent="VBox" unique_id=1111111111]
+layout_mode = 2
+
+[node name="ButtonThree" type="Button" parent="VBox/HBoxThree" unique_id=-2072745074]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "测试3: 三按钮（右对齐）"
+
+[node name="HBoxCustomSize" type="HBoxContainer" parent="VBox" unique_id=-961633963]
+layout_mode = 2
+
+[node name="ButtonCustomSize" type="Button" parent="VBox/HBoxCustomSize" unique_id=149477148]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "测试4: 自定义尺寸"
+
+[node name="HBoxShowConfirm" type="HBoxContainer" parent="VBox" unique_id=1260588259]
+layout_mode = 2
+
+[node name="ButtonShowConfirm" type="Button" parent="VBox/HBoxShowConfirm" unique_id=-1923267926]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "测试5: show_confirm"
+
+[node name="StatusLabel" type="Label" parent="VBox" unique_id=1467841314]
+layout_mode = 2
+text = "等待测试..."

@@ -1,0 +1,202 @@
+[gd_scene format=3 uid="uid://krmqa4wy3dt7"]
+
+[ext_resource type="Script" uid="uid://bavnpyclbdd7f" path="res://scenes/card/card_panel.gd" id="1_qcsas"]
+[ext_resource type="PackedScene" uid="uid://c8yvxg3ulq3a" path="res://scenes/card/game_card.tscn" id="2_2nm5h"]
+[ext_resource type="Shader" uid="uid://ct2hawbu1tjn0" path="res://assets/shaders/liquid_glass_ui.gdshader" id="4_4l0uo"]
+[ext_resource type="PackedScene" uid="uid://fkwbkys7yssn" path="res://component/InstallComponent/install_component.tscn" id="4_68lau"]
+[ext_resource type="Script" uid="uid://dmfaagbi4fdmu" path="res://scenes/card/deselected.gd" id="5_45hbk"]
+[ext_resource type="Script" uid="uid://bo7kxs2u0mykl" path="res://scenes/card/state/node_state_machine.gd" id="5_i4u0h"]
+[ext_resource type="Texture2D" uid="uid://duqtrs7k8ngd8" path="res://assets/image/quit/x.svg" id="6_45hbk"]
+[ext_resource type="Script" uid="uid://dmylsjrvy0qnq" path="res://scenes/card/state/not_installed.gd" id="6_i4u0h"]
+[ext_resource type="Script" uid="uid://nruumoeeh7qb" path="res://scenes/card/state/checking_update.gd" id="7_qw58v"]
+[ext_resource type="Script" uid="uid://dj1lse6hpcxgq" path="res://scenes/card/state/check_failed.gd" id="8_76bwr"]
+[ext_resource type="Script" uid="uid://7pna2qkbk5x" path="res://scenes/card/state/up_to_date.gd" id="9_f1p5f"]
+[ext_resource type="Script" uid="uid://l2g8pqw04o4h" path="res://scenes/card/state/need_update.gd" id="10_qw58v"]
+[ext_resource type="Script" uid="uid://dcjgdpwuqfo7j" path="res://scenes/card/state/download_started.gd" id="10_vgjac"]
+[ext_resource type="Script" uid="uid://iqfdklukyxdx" path="res://scenes/card/state/install_started.gd" id="11_4l0uo"]
+[ext_resource type="Script" uid="uid://dfhjrhkepgfel" path="res://scenes/card/state/running_state.gd" id="12_45hbk"]
+[ext_resource type="Script" uid="uid://dtnrwfsnrvmg4" path="res://scenes/card/state/update_failed.gd" id="14_76bwr"]
+[ext_resource type="PackedScene" uid="uid://xaw3rjo0357g" path="res://component/Card/start_game.tscn" id="15_vgjac"]
+[ext_resource type="Script" uid="uid://dxx563dwn4au5" path="res://scenes/card/up_shadow.gd" id="19_ek5gw"]
+[ext_resource type="Script" uid="uid://rcme7r71iekf" path="res://scenes/card/down_shadow.gd" id="20_3gbhb"]
+[ext_resource type="FontFile" uid="uid://cmjjircih2nm5" path="res://assets/fonts/MiSans-Bold.otf" id="20_vo7e3"]
+[ext_resource type="Texture2D" uid="uid://dv1goxmy2way3" path="res://assets/image/card_panel遮罩.png" id="20_w3mrt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_45hbk"]
+shader = ExtResource("4_4l0uo")
+shader_parameter/rect_size_px = Vector2(256, 256)
+shader_parameter/corner_radius_px = 24.0
+shader_parameter/tint = Color(2.117, 2.117, 2.117, 0.12)
+shader_parameter/opacity = 1.0
+shader_parameter/refraction_strength_px = 14.0
+shader_parameter/edge_refraction_boost = 4.0
+shader_parameter/edge_falloff_px = 16.0
+shader_parameter/blur_lod_center = 2.8
+shader_parameter/blur_lod_edge = 4.2
+shader_parameter/blur_strength = 1.0
+shader_parameter/blur_radius_px = 21.0
+shader_parameter/blur_quality = 0
+shader_parameter/refraction_isotropy = 0.35
+shader_parameter/refraction_edge_curve = 2.05
+shader_parameter/dispersion_strength = 1.4
+shader_parameter/dispersion_px = 16.0
+shader_parameter/border_width_px = 0.5
+shader_parameter/border_color = Color(1.353, 1.353, 1.353, 0.278)
+shader_parameter/rim_width_px = 2.25
+shader_parameter/rim_intensity = 4.0
+shader_parameter/rim_color = Color(3.294, 3.294, 3.294, 0.55)
+shader_parameter/rim_fresnel_power = 3.2
+shader_parameter/rim_curvature = 1.0
+shader_parameter/rim_f0 = 0.04
+shader_parameter/distortion_k1 = 0.15
+shader_parameter/distortion_k2 = 0.1
+
+[node name="CardPanel" type="Control" unique_id=834242767]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qcsas")
+
+[node name="GameCard" parent="." unique_id=1449577529 instance=ExtResource("2_2nm5h")]
+use_parent_material = true
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.25
+anchor_top = 0.25
+anchor_right = 0.75
+anchor_bottom = 0.75
+
+[node name="deselected" type="Control" parent="." unique_id=1944687241]
+material = SubResource("ShaderMaterial_45hbk")
+custom_minimum_size = Vector2(108, 108)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -846.0
+offset_top = -54.0
+offset_right = -738.0
+offset_bottom = 54.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+script = ExtResource("5_45hbk")
+content_type = 1
+text = " x "
+icon = ExtResource("6_45hbk")
+corner_radius_px = 48.0
+metadata/_custom_type_script = "uid://cbkwige31qsk3"
+
+[node name="InstallComponent" parent="." unique_id=378045110 instance=ExtResource("4_68lau")]
+game_name = ""
+
+[node name="NodeStateMachine" type="Node" parent="." unique_id=1475178055 node_paths=PackedStringArray("initial_node_state")]
+script = ExtResource("5_i4u0h")
+initial_node_state = NodePath("CheckingUpdate")
+metadata/_custom_type_script = "uid://qgkfdaxn36ue"
+
+[node name="NotInstalled" type="Node" parent="NodeStateMachine" unique_id=1567363670]
+script = ExtResource("6_i4u0h")
+metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
+
+[node name="CheckingUpdate" type="Node" parent="NodeStateMachine" unique_id=2078578469]
+script = ExtResource("7_qw58v")
+metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
+
+[node name="NeedUpdate" type="Node" parent="NodeStateMachine" unique_id=780602412]
+script = ExtResource("10_qw58v")
+metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
+
+[node name="CheckFailed" type="Node" parent="NodeStateMachine" unique_id=261912881]
+script = ExtResource("8_76bwr")
+metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
+
+[node name="UpToDate" type="Node" parent="NodeStateMachine" unique_id=1610313290]
+script = ExtResource("9_f1p5f")
+metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
+
+[node name="DownloadStarted" type="Node" parent="NodeStateMachine" unique_id=1402351824]
+script = ExtResource("10_vgjac")
+metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
+
+[node name="InstallStarted" type="Node" parent="NodeStateMachine" unique_id=345684160]
+script = ExtResource("11_4l0uo")
+metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
+
+[node name="RunningState" type="Node" parent="NodeStateMachine" unique_id=230346084]
+script = ExtResource("12_45hbk")
+metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
+
+[node name="UpdateFailed" type="Node" parent="NodeStateMachine" unique_id=1766383293]
+script = ExtResource("14_76bwr")
+metadata/_custom_type_script = "uid://ce3d4ngbb65e2"
+
+[node name="StartGame" parent="." unique_id=297163049 instance=ExtResource("15_vgjac")]
+
+[node name="UpShadow" type="Node2D" parent="." unique_id=2015102994]
+script = ExtResource("19_ek5gw")
+
+[node name="TextureRect" type="TextureRect" parent="UpShadow" unique_id=1397324380]
+offset_right = 1280.0
+offset_bottom = 720.0
+scale = Vector2(1.5, 1.5)
+mouse_filter = 2
+texture = ExtResource("20_w3mrt")
+
+[node name="GameName" type="Label" parent="UpShadow" unique_id=124945963]
+offset_top = 60.0
+offset_right = 1920.0
+offset_bottom = 146.0
+pivot_offset_ratio = Vector2(0.5, 0.5)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("20_vo7e3")
+theme_override_font_sizes/font_size = 52
+text = "ETN Farm"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="DownShadow" type="Node2D" parent="." unique_id=236855529]
+script = ExtResource("20_3gbhb")
+
+[node name="TextureRect" type="TextureRect" parent="DownShadow" unique_id=1768252653]
+offset_left = 1920.0
+offset_top = 1080.0
+offset_right = 3200.0
+offset_bottom = 1800.0
+rotation = 3.1415927
+scale = Vector2(1.5, 1.5)
+mouse_filter = 2
+texture = ExtResource("20_w3mrt")
+
+[node name="StateLabel" type="Label" parent="DownShadow" unique_id=1122148181]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 945.0
+offset_right = 1920.0
+offset_bottom = 1020.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+theme_override_fonts/font = ExtResource("20_vo7e3")
+theme_override_font_sizes/font_size = 56
+text = "正在检查......"
+horizontal_alignment = 1
+
+[connection signal="card_confirm" from="GameCard" to="NodeStateMachine" method="_on_card_confirm"]
+[connection signal="card_deselected" from="GameCard" to="." method="_on_game_card_card_deselected"]
+[connection signal="card_deselected" from="GameCard" to="deselected" method="_on_game_card_card_deselected"]
+[connection signal="card_deselected" from="GameCard" to="UpShadow" method="_on_game_card_card_deselected"]
+[connection signal="card_deselected" from="GameCard" to="DownShadow" method="_on_game_card_card_deselected"]
+[connection signal="card_selected" from="GameCard" to="." method="_on_game_card_card_selected"]
+[connection signal="card_selected" from="GameCard" to="deselected" method="_on_game_card_card_selected"]
+[connection signal="card_selected" from="GameCard" to="UpShadow" method="_on_game_card_card_selected"]
+[connection signal="card_selected" from="GameCard" to="DownShadow" method="_on_game_card_card_selected"]
+[connection signal="pressed" from="deselected" to="GameCard" method="_enable_deselected"]
+[connection signal="update_error_occurred" from="InstallComponent" to="." method="_on_install_test_scene_update_error_occurred"]
+[connection signal="update_state_changed" from="InstallComponent" to="." method="_on_install_test_scene_update_state_changed"]

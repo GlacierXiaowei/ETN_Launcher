@@ -17,6 +17,15 @@ func _ready():
 	
 	#连接过渡动画按钮
 	transition_button.pressed.connect(_on_transition_button_pressed)
+	_update_transition_overlay_rect_size()
+	transition_overlay.resized.connect(_update_transition_overlay_rect_size)
+
+
+func _update_transition_overlay_rect_size() -> void:
+	var mat := transition_overlay.material as ShaderMaterial
+	if mat == null:
+		return
+	mat.set_shader_parameter("rect_size_px", transition_overlay.size)
 
 func _on_card_mouse_entered():
 	#添加Tween动画：边框显示 +图片缩小

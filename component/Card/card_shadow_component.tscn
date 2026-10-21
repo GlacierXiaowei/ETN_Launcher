@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://us7l60ki2tyo"]
+
+[ext_resource type="Script" uid="uid://bnyi8a0pralxw" path="res://component/Card/card_shadow_component.gd" id="1_shadow"]
+
+[node name="CardShadowComponent" type="Node" unique_id=409364384]
+script = ExtResource("1_shadow")

@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://bc6l0u8dtj2cu"]
+
+[ext_resource type="Script" uid="uid://bfgiog241qwax" path="res://scenes/test/test_popup_phase4.gd" id="1_abc"]
+[ext_resource type="Texture2D" uid="uid://d3gtoixr80gem" path="res://assets/image/IMG_20251203_162337.jpg" id="2_v7isr"]
+
+[node name="TestPopupPhase4" type="Control" unique_id=1362165853]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_abc")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1036490671]
+layout_mode = 0
+offset_right = 2730.0
+offset_bottom = 1535.0
+texture = ExtResource("2_v7isr")
+
+[node name="VBox" type="VBoxContainer" parent="." unique_id=1764875073]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -644.0
+offset_top = -298.0
+offset_right = -244.0
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="VBox" unique_id=1931494934]
+layout_mode = 2
+text = "弹窗 Phase4 测试 - 模糊关闭动画"
+
+[node name="HBoxTestClose" type="HBoxContainer" parent="VBox" unique_id=-1192666743]
+layout_mode = 2
+
+[node name="ButtonTestClose" type="Button" parent="VBox/HBoxTestClose" unique_id=-1260212225]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "测试: 模糊关闭动画"
+
+[node name="HBoxMultiButtons" type="HBoxContainer" parent="VBox" unique_id=-92666742]
+layout_mode = 2
+
+[node name="ButtonMultiButtons" type="Button" parent="VBox/HBoxMultiButtons" unique_id=-260212224]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "测试: 多按钮弹窗"
+
+[node name="HBoxLarge" type="HBoxContainer" parent="VBox" unique_id=1007333261]
+layout_mode = 2
+
+[node name="ButtonLarge" type="Button" parent="VBox/HBoxLarge" unique_id=739787779]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "测试: 大尺寸弹窗"
+
+[node name="StatusLabel" type="Label" parent="VBox" unique_id=1467841316]
+layout_mode = 2
+text = "等待测试..."

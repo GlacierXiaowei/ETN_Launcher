@@ -1,6 +1,10 @@
 extends Node
 class_name PatchInstall
-#使用new之后 由于会使用httprequest 所以需要add_child才行
+# 使用 new 之后 由于会使用 httprequest 所以需要 add_child 才行
+
+signal state_changed(state: InstallSignalHub.InstallState)
+signal error_occurred(error_message: String)
+signal download_finished
 
 var full_package : Dictionary
 var all_patch: Array = []
@@ -21,16 +25,20 @@ var install_path: String
 var is_download_successful : bool = false
 var is_install_successful : bool = false
 
+##这个信号是一个孤儿 没有人监听 也许我们设置中自定义安装的时候 有作用吧
+##和InstallComponentHub的信号已经完成连接 等几个版本没有更新内容的时候就来修复这个bug吧
 signal install_finished
 
 
 func _init(local: VersionInfo, server: UpdatePolicy) -> void:
 	if local == null:
 		push_error("[PatchInstall] Error: local VersionInfo is null")
+		error_occurred.emit("Initialization failed: local VersionInfo is null")
 		return
 	
 	if server == null:
 		push_error("[PatchInstall] Error: server UpdatePolicy is null")
+		error_occurred.emit("Initialization failed: server UpdatePolicy is null")
 		return
 
 
@@ -93,21 +101,29 @@ func init_need_installed_patch() -> void:
 ##开始下载补丁
 func begin_download() -> void:
 	is_download_successful = false
+	state_changed.emit(InstallSignalHub.InstallState.DOWNLOAD_STARTED)
 	
-	# 步骤1：清空下载文件夹
 	if not VersionUtils.clear_folder(download_path):
 		push_error("[PatchInstall] begin_download: Failed to clear download folder")
+		error_occurred.emit("[PatchInstall] Failed to clear download folder")
 		return
 	
-	# 步骤2：获取需要下载的URL列表
 	var urls = get_patch_urls()
 	if urls.size() == 0:
 		push_error("[PatchInstall] begin_download: No URLs found for needed patches")
+		error_occurred.emit("[PatchInstall] No URLs found for needed patches")
 		return
 	
-	# 步骤3：依次下载每个文件
 	for url_info in urls:
-		download_single_file_with_shell(url_info.url, url_info.file_name)
+		if not await download_single_file(url_info.url, url_info.file_name):
+			push_error("[PatchInstall] begin_download: Failed to download " + url_info.file_name)
+			error_occurred.emit("[PatchInstall] Failed to download: " + url_info.file_name)
+			return
+	
+	is_download_successful = true
+	print("[PatchInstall] begin_download: All patches downloaded successfully")
+	state_changed.emit(InstallSignalHub.InstallState.DOWNLOAD_FINISHED)
+	download_finished.emit()
 
 
 ##清空下载文件夹
@@ -179,31 +195,38 @@ func get_patch_urls() -> Array:
 func download_single_file(url: String, file_name: String) -> bool:
 	if url == "" or url.is_empty():
 		push_error("[PatchInstall] download_single_file: URL is empty")
+		error_occurred.emit("Download failed: URL is empty")
 		return false
 	
 	if file_name == "" or file_name.is_empty():
 		push_error("[PatchInstall] download_single_file: file_name is empty")
+		error_occurred.emit("[PatchInstall] Download failed: file_name is empty")
 		return false
 	
-	# 创建HTTP请求节点
 	var http_request = HTTPRequest.new()
 	add_child(http_request)
+	
+	print("[PatchInstall] 请求 URL: ", url)
+	print("[PatchInstall] Godot HTTP 版本：", http_request.get_http_client_status())
 	
 	var download_success = false
 	var error_message = ""
 	
-	# 发送请求
 	var error = http_request.request(url)
 	if error != OK:
 		push_error("[PatchInstall] download_single_file: Request failed with error: " + str(error))
+		error_occurred.emit("[PatchInstall] Download request failed: " + str(error))
 		remove_child(http_request)
 		http_request.queue_free()
 		return false
 	
-	# 等待请求完成并获取结果
 	var result = await http_request.request_completed
 	
-	# 处理结果
+	print("[PatchInstall] request_completed 返回：")
+	print("  - result[0] (错误码): ", result[0], " (0=OK, 1=CantConnect, 2=ResolveError, 3=CannotConnect)")
+	print("  - result[1] (响应码): ", result[1])
+	print("  - result[3] (body 大小): ", result[3].size() if result.size() > 3 else "N/A")
+	
 	var response_code = result[1]
 	if response_code == 200:
 		var body = result[3]
@@ -221,12 +244,12 @@ func download_single_file(url: String, file_name: String) -> bool:
 		error_message = "HTTP error: " + str(response_code)
 		download_success = false
 	
-	# 清理
 	remove_child(http_request)
 	http_request.queue_free()
 	
 	if not download_success:
 		push_error("[PatchInstall] download_single_file: " + error_message)
+		error_occurred.emit("[PatchInstall] Download failed: " + error_message)
 	
 	return download_success
 
@@ -245,40 +268,44 @@ func download_single_file_with_shell(url: String, file_name: String) -> bool:
 ##开始安装补丁
 func begin_install() -> void:
 	is_install_successful = false
+	state_changed.emit(InstallSignalHub.InstallState.INSTALL_STARTED)
 	
 	if download_path == "" or download_path.is_empty():
 		push_error("[PatchInstall] begin_install: download_path is empty")
+		error_occurred.emit("[PatchInstall] Download path is empty")
 		install_finished.emit(is_install_successful)
 		return
 	
 	if install_path == "" or install_path.is_empty():
 		push_error("[PatchInstall] begin_install: install_path is empty")
+		error_occurred.emit("[PatchInstall] Install path is empty")
 		install_finished.emit(is_install_successful)
 		return
 	
-	# 检查下载目录是否存在
 	if not DirAccess.dir_exists_absolute(download_path):
 		push_error("[PatchInstall] begin_install: Download directory does not exist: " + download_path)
+		error_occurred.emit("[PatchInstall] Download directory does not exist")
 		install_finished.emit(is_install_successful)
 		return
 	
-	# 检查安装目录是否存在，如果不存在则创建
 	if not DirAccess.dir_exists_absolute(install_path):
 		var d = DirAccess.open("user://")
 		if d == null:
 			push_error("[PatchInstall] begin_install: Failed to open user://")
+			error_occurred.emit("[PatchInstall] Failed to open user://")
 			install_finished.emit(is_install_successful)
 			return
 		var err = d.make_dir_recursive(install_path)
 		if err != OK:
 			push_error("[PatchInstall] begin_install: Failed to create install directory")
+			error_occurred.emit("[PatchInstall] Failed to create install directory")
 			install_finished.emit(is_install_successful)
 			return
 	
-	# 获取下载目录中的所有文件
 	var download_dir = DirAccess.open(download_path)
 	if download_dir == null:
 		push_error("[PatchInstall] begin_install: Failed to open download directory")
+		error_occurred.emit("[PatchInstall] Failed to open download directory")
 		install_finished.emit(is_install_successful)
 		return
 	
@@ -293,21 +320,23 @@ func begin_install() -> void:
 	
 	if files_to_move.size() == 0:
 		push_error("[PatchInstall] begin_install: No files to install")
+		error_occurred.emit("[PatchInstall] No files to install")
 		install_finished.emit(is_install_successful)
 		return
 	
-	# 移动每个文件
 	for f in files_to_move:
 		var source_path = download_path.path_join(f)
 		var dest_path = install_path.path_join(f)
 		
 		if not move_file(source_path, dest_path):
 			push_error("[PatchInstall] begin_install: Failed to move file: " + f)
+			error_occurred.emit("[PatchInstall] Failed to move file: " + f)
 			install_finished.emit(is_install_successful)
 			return
 	
 	is_install_successful = true
 	print("[PatchInstall] begin_install: All patches installed successfully")
+	state_changed.emit(InstallSignalHub.InstallState.INSTALL_FINISHED)
 	install_finished.emit(is_install_successful)
 
 ##移动单个文件

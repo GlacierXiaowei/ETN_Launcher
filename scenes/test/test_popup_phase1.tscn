@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://testpopup001"]
+
+[ext_resource type="Script" uid="uid://cm5d8vmb6ib58" path="res://scenes/test/test_popup_phase1.gd" id="1_abc"]
+[ext_resource type="Texture2D" uid="uid://d3gtoixr80gem" path="res://assets/image/IMG_20251203_162337.jpg" id="2_v7isr"]
+
+[node name="TestPopupPhase1" type="Control" unique_id=1362165850]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_abc")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1036490668]
+layout_mode = 0
+offset_right = 2730.0
+offset_bottom = 1535.0
+texture = ExtResource("2_v7isr")
+
+[node name="VBox" type="VBoxContainer" parent="." unique_id=1764875070]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -100.0
+offset_right = 200.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="VBox" unique_id=1931494931]
+layout_mode = 2
+text = "弹窗 Phase1 测试"
+
+[node name="HBoxMedium" type="HBoxContainer" parent="VBox" unique_id=2102300553]
+layout_mode = 2
+
+[node name="ButtonMedium" type="Button" parent="VBox/HBoxMedium" unique_id=1034755071]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "打开中等弹窗 (Medium)"
+
+[node name="HBoxLarge" type="HBoxContainer" parent="VBox" unique_id=549207825]
+layout_mode = 2
+
+[node name="ButtonLarge" type="Button" parent="VBox/HBoxLarge" unique_id=1781016416]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "打开大弹窗 (Large)"
+
+[node name="StatusLabel" type="Label" parent="VBox" unique_id=1467841313]
+layout_mode = 2
+text = "等待测试..."

@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://cqmqt78ojmgw3"]
+
+[ext_resource type="Script" uid="uid://cd3olombbm4ih" path="res://scenes/test/test_popup_phase5.gd" id="1_1xjwa"]
+[ext_resource type="Texture2D" uid="uid://bd52k8jgrq3o8" path="res://Screenshot_2026-02-27-23-51-11-864_com.larus.nova-edit.jpg" id="2_ps0xy"]
+
+[node name="TestPopupPhase5" type="Control" unique_id=1123049615]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1xjwa")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=71803345]
+layout_mode = 0
+offset_right = 1913.5148
+offset_bottom = 1076.0
+texture = ExtResource("2_ps0xy")
+
+[node name="VBox" type="VBoxContainer" parent="." unique_id=2106653952]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -520.0
+offset_top = -180.0
+offset_right = 520.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="VBox" unique_id=865877268]
+layout_mode = 2
+text = "弹窗 Phase5 测试 - 请在弹窗内点击按钮进行测试"
+
+[node name="Hint" type="Label" parent="VBox" unique_id=1531932731]
+layout_mode = 2
+text = "启动后会自动弹出一个测试菜单弹窗（避免背景遮罩吸收输入导致点不到场景按钮）。"
+
+[node name="StatusLabel" type="Label" parent="VBox" unique_id=1933218596]
+layout_mode = 2
+text = "等待测试..."

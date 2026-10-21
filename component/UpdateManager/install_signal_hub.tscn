@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://72i1fqlm3pi"]
+
+[ext_resource type="Script" uid="uid://b7wstsvwidp2d" path="res://component/UpdateManager/install_signal_hub.gd" id="1_sd8an"]
+
+[node name="InstallSignalHub" type="Node" unique_id=877943049]
+script = ExtResource("1_sd8an")

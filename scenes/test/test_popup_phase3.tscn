@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://cqybdqbfr15he"]
+
+[ext_resource type="Script" uid="uid://djalgcefeocjf" path="res://scenes/test/test_popup_phase3.gd" id="1_abc"]
+[ext_resource type="Texture2D" uid="uid://d3gtoixr80gem" path="res://assets/image/IMG_20251203_162337.jpg" id="2_v7isr"]
+
+[node name="TestPopupPhase3" type="Control" unique_id=1362165852]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_abc")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1036490670]
+layout_mode = 0
+offset_right = 2730.0
+offset_bottom = 1535.0
+texture = ExtResource("2_v7isr")
+
+[node name="VBox" type="VBoxContainer" parent="." unique_id=1764875072]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -644.0
+offset_top = -298.0
+offset_right = -244.0
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="VBox" unique_id=1931494933]
+layout_mode = 2
+text = "弹窗 Phase3 测试 - 内容更新"
+
+[node name="HBoxUpdate" type="HBoxContainer" parent="VBox" unique_id=-1192666742]
+layout_mode = 2
+
+[node name="ButtonUpdateContent" type="Button" parent="VBox/HBoxUpdate" unique_id=-1260212224]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "测试1: 内容更新"
+
+[node name="HBoxUpdateFade" type="HBoxContainer" parent="VBox" unique_id=-92666741]
+layout_mode = 2
+
+[node name="ButtonUpdateFade" type="Button" parent="VBox/HBoxUpdateFade" unique_id=-260212223]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "测试2: 淡入淡出更新"
+
+[node name="HBoxCloseNew" type="HBoxContainer" parent="VBox" unique_id=1007333260]
+layout_mode = 2
+
+[node name="ButtonCloseNew" type="Button" parent="VBox/HBoxCloseNew" unique_id=739787778]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "测试3: 关闭后新开"
+
+[node name="HBoxHasPopup" type="HBoxContainer" parent="VBox" unique_id=2107333261]
+layout_mode = 2
+
+[node name="ButtonHasPopup" type="Button" parent="VBox/HBoxHasPopup" unique_id=1739787779]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "测试4: has_open_popup()"
+
+[node name="StatusLabel" type="Label" parent="VBox" unique_id=1467841315]
+layout_mode = 2
+text = "等待测试..."

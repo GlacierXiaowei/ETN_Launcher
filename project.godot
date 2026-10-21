@@ -14,7 +14,7 @@ config/name="ETN_Launcher"
 run/main_scene="uid://djepkney5e8ph"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="ETN_Launcher"
-config/features=PackedStringArray("4.6", "Forward Plus")
+config/features=PackedStringArray("4.7", "Forward Plus")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/image="uid://frf3m3jj31do"
 config/icon="uid://bs85cw4f7pn8a"
@@ -30,11 +30,19 @@ PopupManager="*uid://cc7fw4nxe6bvv"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/stretch/mode="canvas_items"
+
+[editor]
+
+movie_writer/movie_file="D:/Godot录制文件.ogv"
 
 [file_customization]
 
 folder_colors={
-"res://scenes/": "green"
+"res://assets/": "pink",
+"res://component/": "orange",
+"res://scenes/": "green",
+"res://script/": "purple"
 }
 
 [physics]
@@ -43,4 +51,5 @@ folder_colors={
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"

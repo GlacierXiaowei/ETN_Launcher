@@ -1,3 +1,12 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# Docs are versioned. If you want to ignore editor-local notes, ignore subfolders instead.
+# /docs/
+
+# Worktrees (local isolation)
+.worktrees/
+worktrees/
+godot_ui_components-main/
+nul

@@ -1,0 +1,127 @@
+[gd_scene format=3 uid="uid://yp3qm4c7udmm"]
+
+[ext_resource type="Script" uid="uid://dp12aruxr726m" path="res://component/GlassComponent/glass_button.gd" id="1_glass_button"]
+[ext_resource type="Texture2D" uid="uid://d3gtoixr80gem" path="res://assets/image/IMG_20251203_162337.jpg" id="1_oe6lu"]
+[ext_resource type="PackedScene" uid="uid://cw0ru57wgwlca" path="res://component/GlassComponent/medium_popup.tscn" id="2_to1a0"]
+[ext_resource type="PackedScene" uid="uid://bt2slew67ckvp" path="res://component/GlassComponent/large_popup.tscn" id="5_0ajtr"]
+
+[node name="GlassComponentsDemo" type="Control" unique_id=1407026804]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="." unique_id=1456028497]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_oe6lu")
+stretch_mode = 1
+
+[node name="MediumPopup" parent="." unique_id=14934888 instance=ExtResource("2_to1a0")]
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 600.0
+offset_bottom = 400.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="LargePopup" parent="." unique_id=415219225 instance=ExtResource("5_0ajtr")]
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 800.0
+offset_bottom = 600.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="ButtonSizesLabel" type="Label" parent="." unique_id=52852095]
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 660.0
+offset_right = 100.0
+offset_bottom = 686.0
+grow_horizontal = 2
+text = "=== 按钮尺寸对比 ==="
+
+[node name="ButtonSizesContainer" type="HBoxContainer" parent="." unique_id=990216221]
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = 690.0
+offset_right = 180.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="MediumButton" type="Button" parent="ButtonSizesContainer" unique_id=1256950347]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+flat = true
+script = ExtResource("1_glass_button")
+button_type = 0
+
+[node name="LargeButton" type="Button" parent="ButtonSizesContainer" unique_id=2084893578]
+custom_minimum_size = Vector2(160, 50)
+layout_mode = 2
+flat = true
+script = ExtResource("1_glass_button")
+button_type = 0
+size_variant = 1
+
+[node name="StateDemoLabel" type="Label" parent="." unique_id=1756763845]
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 750.0
+offset_right = 100.0
+offset_bottom = 776.0
+grow_horizontal = 2
+text = "=== 按钮状态演示 ==="
+
+[node name="StateDemoContainer" type="HBoxContainer" parent="." unique_id=1558226955]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 228.0
+offset_top = 770.0
+offset_right = 472.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="NormalButton" type="Button" parent="StateDemoContainer" unique_id=1621287389]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+flat = true
+script = ExtResource("1_glass_button")
+button_type = 0
+
+[node name="DisabledButton" type="Button" parent="StateDemoContainer" unique_id=855421862]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+disabled = true
+flat = true
+script = ExtResource("1_glass_button")
+disabled = true

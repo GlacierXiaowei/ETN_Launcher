@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://hcxt1bdbdwm1"]
+
+[ext_resource type="VideoStream" uid="uid://bxo1qfi5vq1ou" path="res://assets/video/small_loding.ogv" id="1_4t072"]
+[ext_resource type="Script" uid="uid://cj3w8k1iuqlct" path="res://scenes/test/test_video_play.gd" id="2_bkcn3"]
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" unique_id=784863350]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("1_4t072")
+autoplay = true
+buffering_msec = 10
+script = ExtResource("2_bkcn3")
